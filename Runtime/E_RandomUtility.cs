@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Eloi { 
 
-    public class UnityRandomUtility 
+    public class E_UnityRandomUtility 
     {
 
         public static void GetRandomEuler(out Vector3 random)

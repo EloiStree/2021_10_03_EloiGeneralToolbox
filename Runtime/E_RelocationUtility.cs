@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Eloi { 
 
-    public class EloiRelocationUtility : MonoBehaviour
+    public class E_RelocationUtility : MonoBehaviour
     {
         public static void GetWorldToLocal_Point(in Vector3 worldPosition, in Transform rootReference, out Vector3 localPosition)
         {

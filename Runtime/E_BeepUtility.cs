@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Eloi
 {
-    public class EloiBeepUtility : MonoBehaviour
+    public class E_BeepUtility : MonoBehaviour
 {
     //https://www.youtube.com/watch?v=RJVIuWrNlEg&list=PLvUgPgA2Kp_-BLkAUzR-NTA7FDowf9Ig5&index=12
 

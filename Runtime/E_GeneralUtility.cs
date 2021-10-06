@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Eloi
 {
-    public class EloiGeneralUtility
+    public class E_GeneralUtility
     {
 
 

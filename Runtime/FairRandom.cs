@@ -21,7 +21,7 @@ namespace Eloi
             m_index++;
             if (m_index >= m_value.Length) {
                 m_index = 0;
-                Eloi.UnityRandomUtility.ShuffleRef<T>(ref m_value);
+                Eloi.E_UnityRandomUtility.ShuffleRef<T>(ref m_value);
             }
         }
     }

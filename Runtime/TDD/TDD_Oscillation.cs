@@ -12,9 +12,9 @@ namespace Eloi
 
         private IEnumerator Start()
         {
-            EloiBeepUtility.SetOscillatorFull(true, 1, 0.1f, 440);
+            E_BeepUtility.SetOscillatorFull(true, 1, 0.1f, 440);
             yield return new WaitForSeconds(1);
-            EloiBeepUtility.SetOscillatorOff();
+            E_BeepUtility.SetOscillatorOff();
             E_EnumUtility.Count<OscillatorMono.Note>(out int noteCount);
             E_EnumUtility.Count<OscillatorMono.Octave>(out int octaveCount);
             E_EnumUtility.Count<OscillatorMono.LatinNoteAlias>(out int latinAliasCount);
@@ -24,7 +24,7 @@ namespace Eloi
                 for (int o = 0; o < octaveCount; o++)
                 {
                     yield return new WaitForSeconds(0.5f);
-                    EloiBeepUtility.
+                    E_BeepUtility.
                         CreateOscillatorForDuration(1,
                         (OscillatorMono.Note)n,
                         (OscillatorMono.Octave)o);
@@ -37,7 +37,7 @@ namespace Eloi
                 for (int o = 0; o < octaveCount; o++)
                 {
                     yield return new WaitForSeconds(0.5f);
-                    EloiBeepUtility.
+                    E_BeepUtility.
                         CreateOscillatorForDuration(1,
                         (OscillatorMono.LatinNoteAlias)n,
                         (OscillatorMono.Octave)o);
@@ -50,7 +50,7 @@ namespace Eloi
                 for (int o = 0; o < octaveCount; o++)
                 {
                     yield return new WaitForSeconds(0.5f);
-                    EloiBeepUtility.
+                    E_BeepUtility.
                         CreateOscillatorForDuration(1,
                         (OscillatorMono.LatinNote)n,
                         (OscillatorMono.Octave)o);

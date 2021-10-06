@@ -29,7 +29,7 @@ namespace Eloi
             m_directionPosition = m_source.position;
             m_directionRotation = m_source.rotation;
 
-            EloiRelocationUtility.GetWorldToLocal_DirectionalPoint(
+            E_RelocationUtility.GetWorldToLocal_DirectionalPoint(
                in m_directionPosition, in m_directionRotation,
                in m_rootPosition, in m_rootRotation,
                out Vector3 lp, out Quaternion lr);
@@ -37,7 +37,7 @@ namespace Eloi
             m_sourceToLocal.position = lp;
             m_sourceToLocal.rotation = lr;
 
-            EloiRelocationUtility.GetLocalToWorld_DirectionalPoint(
+            E_RelocationUtility.GetLocalToWorld_DirectionalPoint(
                 in lp, in lr,
                 in m_rootPosition, in m_rootRotation,
                 out Vector3 wp, out Quaternion wr);

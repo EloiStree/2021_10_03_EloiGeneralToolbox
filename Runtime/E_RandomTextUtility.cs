@@ -13,7 +13,7 @@ public class E_RandomTextUtility : MonoBehaviour
     }
     public static void GetRandomName_DisnayCharacter(out string name)
     {
-            UnityRandomUtility.GetRandomOf(out name, E_InCodeNameCollection.m_disneyCharacter);
+            E_UnityRandomUtility.GetRandomOf(out name, E_InCodeNameCollection.m_disneyCharacter);
            
     }
 
