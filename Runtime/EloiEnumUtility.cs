@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Eloi
 {
-    public class EloiEnumUtility
+    public class E_EnumUtility
     {
 
         public static void GetAllEnumOf<T>(out IEnumerable<T> list)

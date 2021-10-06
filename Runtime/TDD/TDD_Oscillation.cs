@@ -15,10 +15,10 @@ namespace Eloi
             EloiBeepUtility.SetOscillatorFull(true, 1, 0.1f, 440);
             yield return new WaitForSeconds(1);
             EloiBeepUtility.SetOscillatorOff();
-            EloiEnumUtility.Count<OscillatorMono.Note>(out int noteCount);
-            EloiEnumUtility.Count<OscillatorMono.Octave>(out int octaveCount);
-            EloiEnumUtility.Count<OscillatorMono.LatinNoteAlias>(out int latinAliasCount);
-            EloiEnumUtility.Count<OscillatorMono.LatinNote>(out int latinCount);
+            E_EnumUtility.Count<OscillatorMono.Note>(out int noteCount);
+            E_EnumUtility.Count<OscillatorMono.Octave>(out int octaveCount);
+            E_EnumUtility.Count<OscillatorMono.LatinNoteAlias>(out int latinAliasCount);
+            E_EnumUtility.Count<OscillatorMono.LatinNote>(out int latinCount);
             for (int n = 0; n < noteCount; n++)
             {
                 for (int o = 0; o < octaveCount; o++)
