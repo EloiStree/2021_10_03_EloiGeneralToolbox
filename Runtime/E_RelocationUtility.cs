@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Eloi { 
 
-    public class E_RelocationUtility : MonoBehaviour
+    public class E_RelocationUtility 
     {
         public static void GetWorldToLocal_Point(in Vector3 worldPosition, in Transform rootReference, out Vector3 localPosition)
         {
@@ -38,7 +38,7 @@ namespace Eloi {
         }
         public static void GetWorldToLocal_DirectionalPoint(in Vector3 worldPosition, in Quaternion worldRotation, in Vector3 positionReference, in Quaternion rotationReference, out Vector3 localPosition, out Quaternion localRotation)
         {
-            localRotation = worldRotation* Quaternion.Inverse(rotationReference);
+            localRotation = Quaternion.Inverse(rotationReference)* worldRotation;
             localPosition = Quaternion.Inverse(rotationReference) * (worldPosition - positionReference);
         }
         public static void GetLocalToWorld_DirectionalPoint(in Vector3 localPosition, in Quaternion localRotation, in Vector3 positionReference, in Quaternion rotationReference, out Vector3 worldPosition, out Quaternion worldRotation)
