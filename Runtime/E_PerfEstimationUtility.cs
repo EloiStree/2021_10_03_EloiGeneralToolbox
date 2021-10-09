@@ -228,6 +228,14 @@ namespace Eloi {
             IMethodeToTest toTest = new DelegateApproximationCodeToTest(methode);
             FullCheckOf(in toTest, out result, iterationCount, groupCount);
         }
+        public static void FullCheckOfAToB(in StuffToCheckMethodes a, in StuffToCheckMethodes b,
+          out PerformanceCompareResult report, uint iterationCount = 100000, uint groupCount = 10)
+        {
+            report = new PerformanceCompareResult();
+            FullCheckOf(in a, out report.m_a, iterationCount, groupCount);
+            FullCheckOf(in b, out report.m_b, iterationCount, groupCount);
+            FullTestScaleFactor.Compute(in report.m_a, in report.m_b, out report.m_scaleFactor);
+        }
         public static void FullCheckOfAToB(in IMethodeToTest methodeOne, in IMethodeToTest methodeTwo,
           out PerformanceCompareResult report, uint iterationCount = 100000, uint groupCount = 10)
         {

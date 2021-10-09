@@ -27,8 +27,8 @@ public class PerformanceCheckingUnityEventMono : MonoBehaviour
         IMethodeToTest a = new DelegateApproximationCodeToTest(
             () => { UnityEngine.Debug.Log("Hello worlds"); });
 
-    }
 
+    }
 
 
     double value = 1;
