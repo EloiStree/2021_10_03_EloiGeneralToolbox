@@ -6,35 +6,35 @@ using UnityEngine.Events;
 namespace Eloi {
     public class UnityMethodesTick : MonoBehaviour
     {
-        public UnityEvent m_onAwake;
-        public UnityEvent m_onStart;
-        public UnityEvent m_onEnable;
-        public UnityEvent m_onDisable;
-        public UnityEvent m_onDestroy;
-        public UnityEvent m_onApplicationQuit;
+        public UnityEvent m_onAwake = new UnityEvent();
+        public UnityEvent m_onStart = new UnityEvent();
+        public UnityEvent m_onEnable = new UnityEvent();
+        public UnityEvent m_onDisable = new UnityEvent();
+        public UnityEvent m_onDestroy = new UnityEvent();
+        public UnityEvent m_onApplicationQuit = new UnityEvent();
 
 
         public void Awake() {
-            if(gameObject.activeInHierarchy) m_onAwake.Invoke();
+             m_onAwake.Invoke();
         } 
         public void Start()
         {
-            if (gameObject.activeInHierarchy) m_onStart.Invoke();
+            m_onStart.Invoke();
         }
         public void OnEnable(){
-                if (gameObject.activeInHierarchy) m_onEnable.Invoke();
+                 m_onEnable.Invoke();
         }
         public void OnDisable()
                 {
-                    if (gameObject.activeInHierarchy) m_onDisable.Invoke();
+                   m_onDisable.Invoke();
         }
         public void OnDestroy()
                     {
-                        if (gameObject.activeInHierarchy) m_onDestroy.Invoke();
+                       m_onDestroy.Invoke();
         }
         public void OnApplicationQuit()
                         {
-                            if (gameObject.activeInHierarchy) m_onApplicationQuit.Invoke();
+                            m_onApplicationQuit.Invoke();
         }
 
     }
