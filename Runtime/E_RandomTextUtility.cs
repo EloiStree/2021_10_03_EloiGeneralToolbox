@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Eloi {
-public class E_RandomTextUtility : MonoBehaviour
+public class E_RandomTextUtility 
 {
     public string[] m_names = new string[] { "Eloi" , "Mathieu", "Quentin"};
 
@@ -17,16 +17,6 @@ public class E_RandomTextUtility : MonoBehaviour
            
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
 }
 }
-    }
+    

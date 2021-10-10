@@ -30,7 +30,16 @@ namespace Eloi {
 
             }
         }
+
+        public class NotTimeNowButUrgent
+        {
+             public static void Info(string message)
+            {
+
+            }
+        }
         
+
 
         public class ToCodeLaterWhenCodeIsReady
         {

@@ -31,6 +31,16 @@ namespace Eloi {
             GetRandom_n1_1(out random.y);
             GetRandom_n1_1(out random.z);
         }
+
+        public static void GetRandomStringFrom(in string value, int iteration, out string result)
+        {
+            result = "";
+            for (int i = 0; i < iteration; i++)
+            {
+                result += value[UnityEngine.Random.Range( 0, value.Length)];
+            }
+        }
+
         public static void GetRandom_0_1(out float random) => GetRandomN2M(0f, 1f, out random);
         public static void GetRandom_0_90(out float random) => GetRandomN2M(0f, 90f, out random);
         public static void GetRandom_0_180(out float random) => GetRandomN2M(0f, 180f, out random);
