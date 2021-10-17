@@ -12,8 +12,11 @@ namespace Eloi
             string mailValue = mail.Trim();
             Regex r = new Regex("^(?(\")(\".+?(?<!\\\\)\"@) |(([0-9a-z]((\\.(?!\\.))|[-!#\\$%&'\\*\\+/=\\?\\^`\\{\\}\\|~\\w])*)(?<=[0-9a-z])@))(?(\\[)(\\[(\\d{1,3}\\.){3}\\d{1,3}\\])|(([0-9a-z][-\\w]*[0-9a-z]*\\.)+[a-z0-9][\\-a-z0-9]{0,22}[a-z0-9]))$");
             Match m = r.Match(mailValue);
-            isMailAddress = m.Success && m.Value.Length == mailValue.Length;
-
+            bool isMailAddressRegex = m.Success && m.Value.Length == mailValue.Length;
+            int arrobasIndex = mail.LastIndexOf("@");
+            int dotIndex = mail.LastIndexOf(".");
+            bool hasMinimum = arrobasIndex > 0 && dotIndex > 0 && dotIndex > arrobasIndex;
+            isMailAddress = isMailAddressRegex && hasMinimum;
 
             //    // Should be done with Regex, but not the time now:
             ////https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression
