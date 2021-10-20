@@ -13,14 +13,14 @@ namespace Eloi
 
         public static void GetText64FromText(in string text, out string textAsB64)
         {
-            Base64EncodeUsingUnicode(in text, out textAsB64);
+            Base64EncodeUsingUTF8(in text, out textAsB64);
 
         }
         public static void GetTextFromTextB64(in string textAsB64, out bool converted, out string text)
         {
             try
             {
-                Base64DecodeUnicode(in textAsB64, out text);
+                Base64DecodeUTF8(in textAsB64, out text);
                 converted = true;
                 return;
             }
