@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
+using System.Threading;
 using UnityEngine;
 
 namespace Eloi
@@ -14,6 +16,16 @@ namespace Eloi
             string createdDate = time.ToString("yyyy MM dd HH mm ss ffff");
             id = ulong.Parse(createdDate.Replace(" ", ""));
         }
+
+        public static void SetApplicationAsCultureInvariant()
+        {
+           
+                Thread.CurrentThread.CurrentCulture = System.Globalization.CultureInfo.InvariantCulture;
+                CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+                CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+            
+        }
+
         public static void GetTimeLongId(out ulong id)
         {
             DateTime n = DateTime.Now;
