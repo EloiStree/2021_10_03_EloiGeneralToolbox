@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -47,6 +48,10 @@ namespace Eloi {
             {
 
             }
+        }
+
+        public static void I_am_Here()
+        {
         }
 
         public class NotSureIfGoodIdea {

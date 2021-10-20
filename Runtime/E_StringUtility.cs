@@ -23,6 +23,12 @@ namespace Eloi
 
         }
 
+        public static void Capitalize(in string text, out string result)
+        {
+            //source=https://stackoverflow.com/questions/913090/how-to-capitalize-the-first-character-of-each-word-or-the-first-character-of-a
+            result = Regex.Replace(text, @"(^\w)|(\s\w)", m => m.Value.ToUpper());
+        }
+
         public static bool IsNullOrEmpty( in string t)
         {
             return !IsFilled(t);
@@ -40,6 +46,23 @@ namespace Eloi
                 clampText = givenText;
             else 
                clampText = givenText.Substring(0, (int)maxChar);
+        }
+
+        public static bool StartWith(in string text, in string line, in bool useLower, in bool useTrim)
+        {
+            if (text.Length < line.Length)
+                return false;
+            string textStart = text.Substring(0, line.Length);
+
+            bool textDefined= textStart != null && textStart.Length > 0;
+            bool lineDefined= line != null && line.Length > 0;
+            if ( !textDefined || !lineDefined) {
+                return !textDefined == !lineDefined;
+            }
+           
+
+          return  AreEquals(in line, textStart, true, true);
+
         }
 
         public class Mail { 

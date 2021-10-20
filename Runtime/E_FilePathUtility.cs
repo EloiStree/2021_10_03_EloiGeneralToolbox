@@ -24,7 +24,7 @@ namespace Eloi
                 cleanPart.Add(trimmed);
 
             }
-            metlPath = string.Join("\\", cleanPart);
+            metlPath = string.Join("/", cleanPart);
             Eloi.E_CodeTag.QualityAssurance.RequestTestingInTheFuture();
         }
 
