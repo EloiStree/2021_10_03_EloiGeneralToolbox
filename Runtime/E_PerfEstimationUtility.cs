@@ -154,7 +154,7 @@ namespace Eloi {
         /// #Avatar Korra: Varrick and ZhuLie
         /// https://www.youtube.com/watch?v=ojhTu9aAa_Y
         /// </summary>
-        public void ZhuLieDoTheThing();
+         void ZhuLieDoTheThing();
     }
 
     public static class E_PerfEstimationUtility
