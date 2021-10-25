@@ -16,13 +16,59 @@ namespace Eloi {
             GetRandom_n180_180(out random.y);
             GetRandom_n180_180(out random.z);
         }
+
+        public static void GetRandomTexture(out Texture2D randomTexture, int width, int height)
+        {
+            randomTexture = new Texture2D(width, height,TextureFormat.ARGB32,true);
+            Color[] c = new Color[width * height];
+
+            for (int i = 0; i < c.Length; i++)
+            {
+                GetRandomColor(1, out Color color);
+                c[i] = color;
+            }
+            randomTexture.SetPixels(c);
+            randomTexture.Apply();
+        }
+
+        private static void GetRandomColor(float alphaPourcent, out Color color)
+        {
+            GetRandom_0_1(out float r);
+            GetRandom_0_1(out float g);
+            GetRandom_0_1(out float b);
+            color = new Color(r, g, b, alphaPourcent);
+        }
+        private static void GetRandomColor(out Color color)
+        {
+            GetRandom_0_1(out float r);
+            GetRandom_0_1(out float g);
+            GetRandom_0_1(out float b);
+            GetRandom_0_1(out float a);
+            color = new Color(r, g, b, a);
+        }
+
         public static void GetRandomQuaternion(out Quaternion random)
         {
                GetRandomEuler(out Vector3 euleur);
                random = Quaternion.Euler(euleur);
         }
 
+        public static void GetRandomBool(out bool value)
+        {
+            value = UnityEngine.Random.value <0.5f;
+        }
         
+        public static void GetRandomPositionInTransform(in Transform zoneReference, out Vector3 position, Space scaleType= Space.World)
+        {
+
+            Vector3 scale = scaleType==Space.World? zoneReference.lossyScale: zoneReference.localScale;
+            GetRandomDirectionNormalized(out Vector3 direction);
+            direction.x *= scale.x / 2f;
+            direction.y *= scale.y / 2f;
+            direction.z *= scale.z / 2f;
+            direction = zoneReference.rotation * direction;
+            position = zoneReference.position + direction;
+        }
 
         public static void GetRandomDirectionNormalized(out Vector3 random)
         {
