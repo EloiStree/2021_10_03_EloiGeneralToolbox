@@ -325,7 +325,7 @@ namespace Eloi
         public static void ExtractFileWithExtension(in MetaAbsolutePathFile filePath, out MetaFileNameWithExtension fileName)
         {
             string path = filePath.GetPathRef();
-            string name=Path.GetFileName(path),
+            string name=Path.GetFileNameWithoutExtension(path),
                 extension = Path.GetExtension(path);
             if (E_StringUtility.IsFilled(extension) && extension[0] == '.')
                 extension = extension.Substring(1);
