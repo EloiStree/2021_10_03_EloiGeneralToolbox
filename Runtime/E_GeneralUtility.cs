@@ -32,6 +32,15 @@ namespace Eloi
             GetTimeULongId(in n, out id);
         }
 
-
+        public static void ListAsQueueInsert<T>(in T value, in int maxCount, ref List<T> list)
+        {
+            if (list == null)
+                return;
+            list.Insert(0, value);
+            for (int i = 0; i < list.Count-maxCount; i++)
+            {
+                list.RemoveAt(list.Count - 1);
+            }
+        }
     }
 }
