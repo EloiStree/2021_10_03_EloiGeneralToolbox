@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace Eloi
@@ -85,6 +87,23 @@ namespace Eloi
         public static bool AreFilled(in string a, in string b, in bool ignoreCase, in bool useTrim)
         {
             return IsFilled(in a) && IsFilled(b);
+        }
+
+        public static void Contain(out bool valueIsContainedInGroup, in string value, in IEnumerable<string> groupOfValue, in bool ignoreCase, in bool useTrim) {
+            foreach (string item in groupOfValue)
+            {
+
+                if (AreEquals(in value, in item, in ignoreCase, in useTrim)) {
+                    valueIsContainedInGroup = true;
+                    return;
+                }
+            }
+            valueIsContainedInGroup = false;
+        }
+
+
+        public static bool AreNotEquals(in string a, in string b, in bool ignoreCase, in bool useTrim) {
+            return !AreEquals(in a, in b, in ignoreCase, in useTrim);
         }
         public static bool AreEquals(in string a, in string b, in bool ignoreCase, in bool useTrim)
         {
