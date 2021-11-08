@@ -63,27 +63,27 @@ namespace Eloi
                 trimRootPath = rootPath.Substring(1);
         }
 
-        public static void GetEditorWindowAssetsFolderPath(out string path)
-        {
-            throw new System.NotImplementedException("Yo");
-        }
-        public static void GetEditorWindowRootFolderPath(out string path)
-        {
-            throw new System.NotImplementedException("Yo");
-        }
+        //public static void GetEditorWindowAssetsFolderPath(out string path)
+        //{
+        //    throw new System.NotImplementedException("Yo");
+        //}
+        //public static void GetEditorWindowRootFolderPath(out string path)
+        //{
+        //    throw new System.NotImplementedException("Yo");
+        //}
 
-        public static void GetRuntimeWindowExeFolderPath(out string path)
-        {
-            throw new System.NotImplementedException("Yo");
-        }
-        public static void GetEditorWindowDataFolderPath(out string path)
-        {
-            throw new System.NotImplementedException("Yo");
-        }
-        public static void GetRuntimeWindowDataFolderPath(out string path)
-        {
-            throw new System.NotImplementedException("Yo");
-        }
+        //public static void GetRuntimeWindowExeFolderPath(out string path)
+        //{
+        //    throw new System.NotImplementedException("Yo");
+        //}
+        //public static void GetEditorWindowDataFolderPath(out string path)
+        //{
+        //    throw new System.NotImplementedException("Yo");
+        //}
+        //public static void GetRuntimeWindowDataFolderPath(out string path)
+        //{
+        //    throw new System.NotImplementedException("Yo");
+        //}
 
         public static void AllBackslash(in string source, out string result)
         {
@@ -93,7 +93,20 @@ namespace Eloi
         public static void AllSlash(in string source, out string result)
         {
             result = source.Replace("\\", "/");
+        }
 
+        public static void GetJustDirectoryName(in string directoryPath, out string name)
+        {
+            string under = Directory.GetParent(directoryPath).FullName;
+            
+            name= directoryPath.Replace(under, "");
+            name = name.Replace("/", "");
+            name = name.Replace("\\", "");
+
+        }
+        public static void GetDirectoryPathOf(in string directoryPath, out string path)
+        {
+            path = System.IO.Path.GetDirectoryName(directoryPath);
         }
     }
 

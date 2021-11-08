@@ -13,11 +13,22 @@ public class SceneSwitcherMono : MonoBehaviour
     public string m_currentSceneName;
     public string m_sceneLoadHistory;
 
-    private void OnLevelWasLoaded(int level)
+
+    void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         m_previousScene = m_currentScene;
-        m_currentScene = level;
-        m_sceneSwitchHistory.Add(level);
+        m_currentScene = scene.buildIndex;
+        m_sceneSwitchHistory.Add(scene.buildIndex);
         m_sceneLoadHistory = string.Join(" > ", m_sceneSwitchHistory);
         m_currentSceneName = SceneManager.GetActiveScene().name;
     }

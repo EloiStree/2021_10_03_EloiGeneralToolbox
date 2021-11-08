@@ -23,8 +23,17 @@ namespace Eloi
     public class PrimitiveUnityEvent_Bool : UnityEvent<bool> { }
     [System.Serializable]
     public class PrimitiveUnityEvent_String : UnityEvent<string> { }
+
     [System.Serializable]
-    public class PrimitiveUnityEvent_DoubleStirng : UnityEvent<string, string> { }
+    public class PrimitiveUnityEvent_DoubleString : UnityEvent<string, string> { }
+
+    [System.Serializable]
+    public class PrimitiveUnityEvent_UShort : UnityEvent<ushort> { }
+    [System.Serializable]
+    public class PrimitiveUnityEvent_UInt : UnityEvent<uint> { }
+    [System.Serializable]
+    public class PrimitiveUnityEvent_ULong : UnityEvent<ulong> { }
+
 
 
 }

@@ -31,14 +31,16 @@ namespace Eloi {
             randomTexture.Apply();
         }
 
-        private static void GetRandomColor(float alphaPourcent, out Color color)
+      
+
+        public static void GetRandomColor(float alphaPourcent, out Color color)
         {
             GetRandom_0_1(out float r);
             GetRandom_0_1(out float g);
             GetRandom_0_1(out float b);
             color = new Color(r, g, b, alphaPourcent);
         }
-        private static void GetRandomColor(out Color color)
+        public static void GetRandomColor(out Color color)
         {
             GetRandom_0_1(out float r);
             GetRandom_0_1(out float g);
