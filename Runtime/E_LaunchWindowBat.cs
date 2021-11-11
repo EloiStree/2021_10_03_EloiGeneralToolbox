@@ -54,7 +54,7 @@ public class E_LaunchWindowBat
         ProcessInfo = new ProcessStartInfo("cmd.exe", $"/c {command}");
         ProcessInfo.CreateNoWindow = true;
         ProcessInfo.UseShellExecute = false;
-        ProcessInfo.WorkingDirectory = whereToCreate.GetPathRef();
+        ProcessInfo.WorkingDirectory = whereToCreate.GetPath();
         // *** Redirect the output ***
         ProcessInfo.RedirectStandardError = true;
         ProcessInfo.RedirectStandardOutput = true;

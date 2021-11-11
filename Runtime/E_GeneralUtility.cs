@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 
@@ -10,7 +11,15 @@ namespace Eloi
     public class E_GeneralUtility
     {
 
-
+        public static void GetEnumEnumerable<T>(out IEnumerable<T> list) where T : Enum
+        {
+            list = Enum.GetValues(typeof(T)).Cast<T>();
+        }
+        public static void GetEnumList<T>(out List<T> listResult) where T : Enum
+        {
+            GetEnumEnumerable<T>(out IEnumerable<T> values);
+            listResult = values.ToList();
+        }
         public static void GetTimeULongId(in DateTime time, out ulong id)
         {
             string createdDate = time.ToString("yyyy MM dd HH mm ss ffff");
