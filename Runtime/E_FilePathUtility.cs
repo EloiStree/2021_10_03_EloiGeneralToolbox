@@ -98,8 +98,8 @@ namespace Eloi
         public static void GetJustDirectoryName(in string directoryPath, out string name)
         {
             string under = Directory.GetParent(directoryPath).FullName;
-            
-            name= directoryPath.Replace(under, "");
+
+            name = directoryPath.Replace(under, "");
             name = name.Replace("/", "");
             name = name.Replace("\\", "");
 
@@ -141,7 +141,7 @@ namespace Eloi
     }
 
     [System.Serializable]
-    public class MetaPath : IMetaPathSet,IMetaPathGet
+    public class MetaPath : IMetaPathSet, IMetaPathGet
     {
         [SerializeField] string m_path = "";
         public void GetPath(out string path) => path = m_path;
@@ -167,7 +167,7 @@ namespace Eloi
     [System.Serializable]
     public class MetaFileNameWithoutExtension : IMetaFileNameWithoutExtensionGet
     {
-        [SerializeField] string m_fileName="";
+        [SerializeField] string m_fileName = "";
 
         public MetaFileNameWithoutExtension()
         {
@@ -186,13 +186,13 @@ namespace Eloi
     public interface IMetaFileNameWithExtensionGet
     {
         void GetExtensionWithoutDot(out string extension);
-         void GetExtensionWithDot(out string extension);
-         void GetFileNameWithoutExtension(out string fileName);
-         void GetFileNameWithExtension(out string fileName);
+        void GetExtensionWithDot(out string extension);
+        void GetFileNameWithoutExtension(out string fileName);
+        void GetFileNameWithExtension(out string fileName);
 
     }
     [System.Serializable]
-    public class MetaFileNameWithExtension: IMetaFileNameWithExtensionGet
+    public class MetaFileNameWithExtension : IMetaFileNameWithExtensionGet
     {
         [SerializeField] string m_fileName = "";
         [SerializeField] string m_extensionNameWithoutDot = "";
@@ -208,12 +208,12 @@ namespace Eloi
             m_extensionNameWithoutDot = fileExtensionWithoutDot;
         }
         public void GetExtensionWithoutDot(out string extension) => extension = m_extensionNameWithoutDot;
-        public void GetExtensionWithDot(out string extension) => extension = "."+m_extensionNameWithoutDot;
+        public void GetExtensionWithDot(out string extension) => extension = "." + m_extensionNameWithoutDot;
         public void GetFileNameWithoutExtension(out string fileName) { fileName = m_fileName; }
-        public void GetFileNameWithExtension(out string fileName) { fileName = m_fileName+"."+m_extensionNameWithoutDot; }
+        public void GetFileNameWithExtension(out string fileName) { fileName = m_fileName + "." + m_extensionNameWithoutDot; }
     }
 
-    public interface IMetaAbsolutePathFileGet: IMetaPathGet
+    public interface IMetaAbsolutePathFileGet : IMetaPathGet
     {
     }
     [System.Serializable]
@@ -223,6 +223,27 @@ namespace Eloi
         {
         }
     }
+    public abstract class AbstractMetaRelativePathFileMono : MonoBehaviour, IMetaRelativePathFileGet
+    {
+        public abstract void GetPath(out string path);
+        public abstract string GetPath();
+    }
+    public abstract class AbstractMetaAbsolutePathFileMono : MonoBehaviour, IMetaAbsolutePathFileGet
+    {
+        public abstract void GetPath(out string path);
+        public abstract string GetPath();
+    }
+    public abstract class AbstractMetaRelativePathDirectoryMono : MonoBehaviour, IMetaRelativePathDirectoryGet
+    {
+        public abstract void GetPath(out string path);
+        public abstract string GetPath();
+    }
+    public abstract class AbstractMetaAbsolutePathDirectoryMono : MonoBehaviour, IMetaAbsolutePathDirectoryGet
+    {
+        public abstract void GetPath(out string path);
+        public abstract string GetPath();
+    }
+
     public interface IMetaRelativePathFileGet : IMetaPathGet
     {
     }
@@ -261,6 +282,18 @@ namespace Eloi
     {
         public static void CreateFolderIfNotThere(in string path)
         {
+            if (E_StringUtility.IsFilled(in path) && !Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+        public static void CreateFolderIfNotThere(in IMetaAbsolutePathFileGet filepath)
+        {
+            string path = Path.GetDirectoryName(filepath.GetPath());
+            if (E_StringUtility.IsFilled(in path) && !Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+        public static void CreateFolderIfNotThere(in IMetaAbsolutePathDirectoryGet directoryPath)
+        {
+            string path = (directoryPath.GetPath());
             if (E_StringUtility.IsFilled(in path) && !Directory.Exists(path))
                 Directory.CreateDirectory(path);
         }
@@ -329,6 +362,14 @@ namespace Eloi
                 succced = true;
             }
             catch { }
+        }
+
+        public static IMetaAbsolutePathFileGet Combine(in IMetaAbsolutePathDirectoryGet root, in IMetaRelativePathDirectoryGet subfolders, in IMetaFileNameWithExtensionGet file)
+        {
+            E_FilePathUnityUtility.MeltPathTogether(out string pathfolder, root.GetPath(), subfolders.GetPath());
+            file.GetFileNameWithExtension(out string fileNameWExt);
+            E_FilePathUnityUtility.MeltPathTogether(out string path, pathfolder, fileNameWExt);
+            return new MetaAbsolutePathFile(path);
         }
         public static IMetaAbsolutePathFileGet Combine(in IMetaAbsolutePathDirectoryGet root, in IMetaRelativePathDirectoryGet[] subfolders, in IMetaFileNameWithExtensionGet file)
         {
@@ -407,9 +448,48 @@ namespace Eloi
             fileName = new MetaFileNameWithExtension(name, extension);
         }
 
-        public static IMetaAbsolutePathFileGet GetParent(in IMetaAbsolutePathFileGet path) {
+        public static IMetaAbsolutePathFileGet GetParent(in IMetaAbsolutePathFileGet path)
+        {
             string p = System.IO.Directory.GetParent(path.GetPath()).FullName;
             return new MetaAbsolutePathFile(p);
+        }
+        public static IMetaAbsolutePathDirectoryGet GetParent(in IMetaAbsolutePathDirectoryGet path)
+        {
+            string p = System.IO.Directory.GetParent(path.GetPath()).FullName;
+            return new MetaAbsolutePathDirectory(p);
+        }
+
+
+        public delegate void AccessTextDefaultIfNeeded(out string textToUse);
+        public static void ImportOrCreateThenImport(out string imported, in IMetaAbsolutePathFileGet fileTarget, AccessTextDefaultIfNeeded defaultTextToStore)
+        {
+            string p = fileTarget.GetPath();
+            if (File.Exists(p))
+            {
+                imported = File.ReadAllText(p);
+            }
+            else
+            {
+                E_FileAndFolderUtility.CreateFolderIfNotThere(fileTarget);
+                defaultTextToStore(out string textToUse);
+                imported = textToUse;
+                File.WriteAllText(p,textToUse);
+            }
+        }
+        public static void ImportOrCreateThenImportIn<T>(ref T jsonableTarget, in IMetaAbsolutePathFileGet fileTarget)
+        {
+            string p = fileTarget.GetPath();
+            if (File.Exists(p))
+            {
+                string imported = File.ReadAllText(p);
+                jsonableTarget = JsonUtility.FromJson<T>(imported);
+            }
+            else
+            {
+                string textToExport = JsonUtility.ToJson(jsonableTarget);
+                E_FileAndFolderUtility.CreateFolderIfNotThere(fileTarget);
+                File.WriteAllText(p, textToExport);
+            }
         }
     }
 }
