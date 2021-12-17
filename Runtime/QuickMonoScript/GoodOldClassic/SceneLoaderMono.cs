@@ -7,6 +7,8 @@ public class SceneLoaderMono : MonoBehaviour
 {
 
     public string m_defaultScene;
+    public bool m_reloadEventIfCurrent=true;
+    public LoadSceneMode m_loadingMode= LoadSceneMode.Single;
 
     public void LoadDefaultSceneInMono()
     {
@@ -14,27 +16,29 @@ public class SceneLoaderMono : MonoBehaviour
     }
     public void LoadSceneWithIndex(int index)
     {
-        LoadSceneWithIndex(index, false);
+        LoadSceneWithIndex(index, m_reloadEventIfCurrent);
     }
-    public void LoadSceneWithIndex(int index, bool reloadIfCurrent=false)
+    public void LoadSceneWithIndex(int index, bool reloadIfCurrent)
     {
-        if(reloadIfCurrent)
-            SceneManager.LoadScene(index);
+        Eloi.E_CodeTag.DirtyCode.Info("I realized that GetCurrent scene is bugging when in don't destroy... To correct later");
+        if (reloadIfCurrent)
+            SceneManager.LoadScene(index, m_loadingMode);
         else if (!reloadIfCurrent && index != SceneManager.GetActiveScene().buildIndex)
-            SceneManager.LoadScene(index);
+            SceneManager.LoadScene(index, m_loadingMode);
     }
 
     public void LoadSceneWithName(string name)
     {
-        LoadSceneWithName(name, false);
+        LoadSceneWithName(name, m_reloadEventIfCurrent);
     }
-    public void LoadSceneWithName(string name, bool reloadIfCurrent = false)
+    public void LoadSceneWithName(string name, bool reloadIfCurrent )
     {
+        Eloi.E_CodeTag.DirtyCode.Info("I realized that GetCurrent scene is bugging when in don't destroy... To correct later");
         string currentScene = SceneManager.GetActiveScene().name;
         if (reloadIfCurrent)
-            SceneManager.LoadScene(name);
+            SceneManager.LoadScene(name, m_loadingMode);
         else if (!reloadIfCurrent && Eloi.E_StringUtility.AreNotEquals(in currentScene, in name,true, true))
-            SceneManager.LoadScene(name);
+            SceneManager.LoadScene(name, m_loadingMode);
     }
     public void ReloadCurrentScene()
     {

@@ -82,6 +82,16 @@ namespace Eloi
             }
             return true;
         }
+        public bool TryToGetAs(in int columnIndex, out float parsedOrDefault, in float defaultValue)
+        {
+
+            if (columnIndex < 0 || columnIndex >= m_lineValuePerColumn.Length || !float.TryParse(m_lineValuePerColumn[columnIndex], out parsedOrDefault))
+            {
+                parsedOrDefault = defaultValue;
+                return false;
+            }
+            return true;
+        }
         public bool TryToGetAs(in int columnIndex, out string valueOrDefault, in string defaultValue)
         {
             if (columnIndex < 0 || columnIndex >= m_lineValuePerColumn.Length)
@@ -101,6 +111,7 @@ namespace Eloi
     public delegate void CSVAccessDataToStore(out CSV_ExpectedColumn expectedColumn, out List<CSV_Line> lineToStore);
     public delegate void CSVSetFromLines(in CSV_ExpectedColumn importedColumn, in List<CSV_Line> lineToStore);
 
+    [System.Serializable]
     public class CSVBuilder
     {
 
@@ -159,7 +170,7 @@ namespace Eloi
             string[] lines = csvText.Split('\n');
             if (lines.Length < 1)
                 return;
-            m_expectedColumns = new CSV_ExpectedColumn(lines[0]);
+            m_expectedColumns = new CSV_ExpectedColumn(lines[0].Split(';'));
             m_lines.Clear();
             for (int i = 1; i < lines.Length; i++)
             {

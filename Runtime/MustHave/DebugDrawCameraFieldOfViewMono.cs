@@ -28,4 +28,9 @@ public class DebugDrawCameraFieldOfViewMono : MonoBehaviour
         Vector3 end = m_target.ViewportToWorldPoint(new Vector3(pt.x, pt.y, m_target.farClipPlane));
         Debug.DrawLine(start, end, m_lineColor, Time.deltaTime);
     }
+
+     void Reset()
+    {
+        m_target = Camera.main;
+    }
 }
