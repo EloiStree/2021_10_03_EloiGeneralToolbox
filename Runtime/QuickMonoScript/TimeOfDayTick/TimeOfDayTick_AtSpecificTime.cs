@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TimeOfDayTick_AtSpecificTimeOfDay : MonoBehaviour
+public class TimeOfDayTick_AtSpecificTime : MonoBehaviour
 {
 
     public OverwatchTimeOfDayUnityEventRefreshable m_timeOfDay;
