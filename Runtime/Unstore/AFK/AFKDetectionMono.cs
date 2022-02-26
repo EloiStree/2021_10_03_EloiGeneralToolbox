@@ -7,7 +7,6 @@ using UnityEngine.Events;
 public class AFKDetectionMono : MonoBehaviour
 {
     public NotifyAFK[] m_afkObserved;
-
     public UnityEvent m_activityDetected;
 
 

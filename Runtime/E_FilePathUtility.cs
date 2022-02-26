@@ -572,5 +572,18 @@ namespace Eloi
             else 
                 text = defaultValue;
         }
+
+        public static void GetExecutableOrProjectRoot(out string rootpath)
+        {
+
+            rootpath = Application.dataPath;
+
+#if PLATFORM_STANDALONE_WIN
+            rootpath = Path.Combine( Application.dataPath,"../");
+#endif
+#if UNITY_EDITOR
+            rootpath = Path.Combine(Application.dataPath, "../");
+#endif
+        }
     }
 }
