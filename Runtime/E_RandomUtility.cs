@@ -103,14 +103,25 @@ namespace Eloi {
         public static void GetRandomN2M(in int n, in int m, out int random) =>
          random = UnityEngine.Random.Range(n, m);
 
+        public static void GetRandomOfEnum<T>( out T result) where T: Enum
+        {
+            Eloi.E_GeneralUtility.GetEnumEnumerable(out IEnumerable<T> elements);
+            GetRandomOf(out result, in elements);
+        }
 
-        public static void GetRandomOf<T>(out T result, params T[] list)=>
+
+        public static void GetRandomOf<T>(out T result, params T[] list) =>
             result = list[UnityEngine.Random.Range(0, list.Length)];
-        
+        public static void GetRandomOf<T>(out T result, in T[] list) =>
+            result = list[UnityEngine.Random.Range(0, list.Length)];
+
         public static void GetRandomOf<T>(out T result, IEnumerable<T> range) =>
-        
+
            GetRandomOf<T>(out result, range.ToArray());
-        
+        public static void GetRandomOf<T>(out T result, in IEnumerable<T> range) =>
+
+                  GetRandomOf<T>(out result, range.ToArray());
+
 
         public static void Next<T>(in FairRandom<T> fairRandom, out T result) =>
             fairRandom.GetNext(out result);
@@ -139,6 +150,12 @@ namespace Eloi {
         public static void GetRandomOf(in string text, out char character)
         {
             character = text[UnityEngine.Random.Range(0, text.Length)];
+        }
+
+        public static bool GetRandomBool()
+        {
+            GetRandomBool(out bool value);
+            return value;
         }
     }
 

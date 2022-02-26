@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading;
 using UnityEngine;
 
@@ -9,6 +10,57 @@ namespace Eloi
 {
     public class E_GeneralUtility
     {
+
+        public static void GetEnumEnumerable<T>(out IEnumerable<T> list) where T : Enum
+        {
+            list = Enum.GetValues(typeof(T)).Cast<T>();
+        }
+        public static void GetEnumList<T>(out List<T> listResult) where T : Enum
+        {
+            GetEnumEnumerable<T>(out IEnumerable<T> values);
+            listResult = values.ToList();
+        }
+
+        public static void OpenProjectRoot()
+        {
+            Eloi.E_CodeTag.ToCodeLater.Info("Platform dependant");
+            //if window and editor
+            Application.OpenURL(GetProjectRoot());
+        }
+        public static string GetProjectRoot()
+        {
+            Eloi.E_CodeTag.ToCodeLater.Info("Platform dependant");
+            //if window and editor
+            return Application.dataPath + "/..";
+        }
+
+        public static void SetAllDisable(ref GameObject[] toActivateOnHide)
+        {
+            SetAllActive(ref toActivateOnHide, false);
+        }
+
+        public static void SetAllActive(ref GameObject[] toActivateOnDisplay)
+        {
+            for (int i = 0; i < toActivateOnDisplay.Length; i++)
+            {
+                if (toActivateOnDisplay[i] != null)
+                    toActivateOnDisplay[i].SetActive(true);
+            }
+        }
+
+        public static void SetAllActive(ref GameObject[] toActivateOnDisplay, in bool isActive)
+        {
+            for (int i = 0; i < toActivateOnDisplay.Length; i++)
+            {
+                if (toActivateOnDisplay[i] != null)
+                    toActivateOnDisplay[i].SetActive(isActive);
+            }
+        }
+
+        public static void GetTimeULongIdWithNow(out ulong id)
+        {
+            GetTimeULongId(DateTime.Now, out id);
+        }
 
 
         public static void GetTimeULongId(in DateTime time, out ulong id)

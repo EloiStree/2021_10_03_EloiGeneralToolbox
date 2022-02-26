@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Eloi
 {
@@ -98,8 +99,8 @@ namespace Eloi
         public static void GetJustDirectoryName(in string directoryPath, out string name)
         {
             string under = Directory.GetParent(directoryPath).FullName;
-            
-            name= directoryPath.Replace(under, "");
+
+            name = directoryPath.Replace(under, "");
             name = name.Replace("/", "");
             name = name.Replace("\\", "");
 
@@ -128,13 +129,25 @@ namespace Eloi
         public void GetExtensionWithDot(out string extension) => extension = "." + m_extensionNameWithoutDot;
     }
 
+    public interface IMetaPathSet
+    {
+        void GetPath(out string path);
+        void SetPath(string path);
+        string GetPath();
+    }
+    public interface IMetaPathGet
+    {
+        void GetPath(out string path);
+        string GetPath();
+    }
+
     [System.Serializable]
-    public class MetaPath
+    public class MetaPath : IMetaPathSet, IMetaPathGet
     {
         [SerializeField] string m_path = "";
         public void GetPath(out string path) => path = m_path;
         public void SetPath(string path) => m_path = path;
-        public string GetPathRef()
+        public string GetPath()
         {
             return m_path;
         }
@@ -147,10 +160,15 @@ namespace Eloi
             this.m_path = path;
         }
     }
-    [System.Serializable]
-    public class MetaFileNameWithoutExtension
+
+    public interface IMetaFileNameWithoutExtensionGet
     {
-        [SerializeField] string m_fileName="";
+        void GetName(out string fileName);
+    }
+    [System.Serializable]
+    public class MetaFileNameWithoutExtension : IMetaFileNameWithoutExtensionGet
+    {
+        [SerializeField] string m_fileName = "";
 
         public MetaFileNameWithoutExtension()
         {
@@ -164,8 +182,18 @@ namespace Eloi
         public void GetName(out string fileName) => fileName = m_fileName;
         public void SetPath(string fileName) => m_fileName = fileName;
     }
+
+
+    public interface IMetaFileNameWithExtensionGet
+    {
+        void GetExtensionWithoutDot(out string extension);
+        void GetExtensionWithDot(out string extension);
+        void GetFileNameWithoutExtension(out string fileName);
+        void GetFileNameWithExtension(out string fileName);
+
+    }
     [System.Serializable]
-    public class MetaFileNameWithExtension
+    public class MetaFileNameWithExtension : IMetaFileNameWithExtensionGet
     {
         [SerializeField] string m_fileName = "";
         [SerializeField] string m_extensionNameWithoutDot = "";
@@ -181,35 +209,69 @@ namespace Eloi
             m_extensionNameWithoutDot = fileExtensionWithoutDot;
         }
         public void GetExtensionWithoutDot(out string extension) => extension = m_extensionNameWithoutDot;
-        public void GetExtensionWithDot(out string extension) => extension = "."+m_extensionNameWithoutDot;
+        public void GetExtensionWithDot(out string extension) => extension = "." + m_extensionNameWithoutDot;
         public void GetFileNameWithoutExtension(out string fileName) { fileName = m_fileName; }
-        public void GetFileNameWithExtension(out string fileName) { fileName = m_fileName+"."+m_extensionNameWithoutDot; }
+        public void GetFileNameWithExtension(out string fileName) { fileName = m_fileName + "." + m_extensionNameWithoutDot; }
+    }
+
+    public interface IMetaAbsolutePathFileGet : IMetaPathGet
+    {
     }
     [System.Serializable]
-    public class MetaAbsolutePathFile : MetaPath
+    public class MetaAbsolutePathFile : MetaPath, IMetaAbsolutePathFileGet
     {
         public MetaAbsolutePathFile(string path) : base(path)
         {
         }
     }
+    public abstract class AbstractMetaRelativePathFileMono : MonoBehaviour, IMetaRelativePathFileGet
+    {
+        public abstract void GetPath(out string path);
+        public abstract string GetPath();
+    }
+    public abstract class AbstractMetaAbsolutePathFileMono : MonoBehaviour, IMetaAbsolutePathFileGet
+    {
+        public abstract void GetPath(out string path);
+        public abstract string GetPath();
+    }
+    public abstract class AbstractMetaRelativePathDirectoryMono : MonoBehaviour, IMetaRelativePathDirectoryGet
+    {
+        public abstract void GetPath(out string path);
+        public abstract string GetPath();
+    }
+    public abstract class AbstractMetaAbsolutePathDirectoryMono : MonoBehaviour, IMetaAbsolutePathDirectoryGet
+    {
+        public abstract void GetPath(out string path);
+        public abstract string GetPath();
+    }
+
+    public interface IMetaRelativePathFileGet : IMetaPathGet
+    {
+    }
     [System.Serializable]
-    public class MetaRelativePathFile : MetaPath
+    public class MetaRelativePathFile : MetaPath, IMetaRelativePathFileGet
     {
         public MetaRelativePathFile(string path) : base(path)
         {
         }
     }
+    public interface IMetaAbsolutePathDirectoryGet : IMetaPathGet
+    {
+    }
     [System.Serializable]
-    public class MetaAbsolutePathDirectory : MetaPath
+    public class MetaAbsolutePathDirectory : MetaPath, IMetaAbsolutePathDirectoryGet
     {
         public MetaAbsolutePathDirectory(string path) : base(path)
         {
         }
 
-        
+
+    }
+    public interface IMetaRelativePathDirectoryGet : IMetaPathGet
+    {
     }
     [System.Serializable]
-    public class MetaRelativePathDirectory : MetaPath
+    public class MetaRelativePathDirectory : MetaPath, IMetaRelativePathDirectoryGet
     {
         public MetaRelativePathDirectory(string path) : base(path)
         {
@@ -221,6 +283,18 @@ namespace Eloi
     {
         public static void CreateFolderIfNotThere(in string path)
         {
+            if (E_StringUtility.IsFilled(in path) && !Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+        public static void CreateFolderIfNotThere(in IMetaAbsolutePathFileGet filepath)
+        {
+            string path = Path.GetDirectoryName(filepath.GetPath());
+            if (E_StringUtility.IsFilled(in path) && !Directory.Exists(path))
+                Directory.CreateDirectory(path);
+        }
+        public static void CreateFolderIfNotThere(in IMetaAbsolutePathDirectoryGet directoryPath)
+        {
+            string path = (directoryPath.GetPath());
             if (E_StringUtility.IsFilled(in path) && !Directory.Exists(path))
                 Directory.CreateDirectory(path);
         }
@@ -254,9 +328,23 @@ namespace Eloi
         {
             return !File.Exists(path);
         }
-
+        public static bool Exists(in IMetaAbsolutePathFileGet path)
+        {
+            return File.Exists(path.GetPath());
+        }
+        public static bool DontExists(in IMetaAbsolutePathFileGet path)
+        {
+            return !File.Exists(path.GetPath());
+        }
+        public static void OverrideFilePNG(in IMetaAbsolutePathFileGet path, in Texture2D texture, out bool succced)
+        {
+            OverrideFilePNG(path.GetPath(), in texture, out succced);
+        }
         public static void OverrideFilePNG(in string path, in Texture2D texture, out bool succced)
         {
+            MetaAbsolutePathFile f = new MetaAbsolutePathFile(path);
+            E_FileAndFolderUtility.CreateFolderIfNotThere(f);
+
             succced = false;
             try
             {
@@ -264,6 +352,10 @@ namespace Eloi
                 succced = true;
             }
             catch {      }
+        }
+        public static void OverrideFileJPEG(in IMetaAbsolutePathFileGet path, in Texture2D texture, out bool succced)
+        {
+            OverrideFileJPEG(path.GetPath(), in texture, out succced);
         }
         public static void OverrideFileJPEG(in string path, in Texture2D texture, out bool succced)
         {
@@ -275,24 +367,49 @@ namespace Eloi
             }
             catch { }
         }
-
-        public static MetaAbsolutePathDirectory Combine(in MetaAbsolutePathDirectory root, params MetaRelativePathDirectory[] subfolders)
+        public static IMetaAbsolutePathDirectoryGet Combine(in IMetaAbsolutePathDirectoryGet root, in IMetaRelativePathDirectoryGet subfolders)
         {
-            string[] paths = subfolders.Select(k => k.GetPathRef()).ToArray();
-            E_FilePathUnityUtility.MeltPathTogether(out string path, root.GetPathRef(), paths);
+            E_FilePathUnityUtility.MeltPathTogether(out string pathfolder, root.GetPath(), subfolders.GetPath());
+            return new MetaAbsolutePathDirectory(pathfolder);
+        }
+        public static IMetaAbsolutePathFileGet Combine(in IMetaAbsolutePathDirectoryGet root, in IMetaRelativePathDirectoryGet subfolders, in IMetaFileNameWithExtensionGet file)
+        {
+            E_FilePathUnityUtility.MeltPathTogether(out string pathfolder, root.GetPath(), subfolders.GetPath());
+            file.GetFileNameWithExtension(out string fileNameWExt);
+            E_FilePathUnityUtility.MeltPathTogether(out string path, pathfolder, fileNameWExt);
+            return new MetaAbsolutePathFile(path);
+        }
+        public static IMetaAbsolutePathFileGet Combine(in IMetaAbsolutePathDirectoryGet root, in IMetaRelativePathDirectoryGet[] subfolders, in IMetaFileNameWithExtensionGet file)
+        {
+            string[] paths = subfolders.Select(k => k.GetPath()).ToArray();
+            E_FilePathUnityUtility.MeltPathTogether(out string pathfolder, root.GetPath(), paths);
+            file.GetFileNameWithExtension(out string fileNameWExt);
+            E_FilePathUnityUtility.MeltPathTogether(out string path, pathfolder, fileNameWExt);
+            return new MetaAbsolutePathFile(path);
+        }
+        public static IMetaAbsolutePathDirectoryGet Combine(in IMetaAbsolutePathDirectoryGet root, params IMetaRelativePathDirectoryGet[] subfolders)
+        {
+            string[] paths = subfolders.Select(k => k.GetPath()).ToArray();
+            E_FilePathUnityUtility.MeltPathTogether(out string path, root.GetPath(), paths);
             return new MetaAbsolutePathDirectory(path);
         }
-        public static MetaAbsolutePathFile Combine(in MetaAbsolutePathDirectory root, in MetaFileNameWithExtension fileName)
+        public static IMetaAbsolutePathFileGet Combine(in IMetaAbsolutePathDirectoryGet root, in IMetaFileNameWithExtensionGet fileName)
         {
             fileName.GetFileNameWithExtension(out string fileExt);
-            E_FilePathUnityUtility.MeltPathTogether(out string path, root.GetPathRef() , fileExt ) ;
+            E_FilePathUnityUtility.MeltPathTogether(out string path, root.GetPath(), fileExt);
+            return new MetaAbsolutePathFile(path);
+        }
+        public static IMetaAbsolutePathFileGet Combine(in IMetaAbsolutePathDirectoryGet root, in IMetaFileNameWithoutExtensionGet fileName)
+        {
+            fileName.GetName(out string fileNameAsString);
+            E_FilePathUnityUtility.MeltPathTogether(out string path, root.GetPath(), fileNameAsString);
             return new MetaAbsolutePathFile(path);
         }
 
-        public static void MoveOverride(in MetaAbsolutePathFile from, in MetaAbsolutePathFile to, out bool succedTransfert)
+        public static void MoveOverride(in IMetaAbsolutePathFileGet from, in IMetaAbsolutePathFileGet to, out bool succedTransfert)
         {
             succedTransfert = false;
-            string sfrom = from.GetPathRef(), sto = to.GetPathRef();
+            string sfrom = from.GetPath(), sto = to.GetPath();
 
             if (Exists(in sto))
             {
@@ -314,9 +431,9 @@ namespace Eloi
 
         }
 
-        public static void GetFilesPathsIn(out string[] paths, MetaFileExtension fileOverwatch, MetaAbsolutePathDirectory directory, bool lookInChildren=true)
+        public static void GetFilesPathsIn(out string[] paths, IMetaFileNameWithExtensionGet fileOverwatch, IMetaAbsolutePathDirectoryGet directory, bool lookInChildren=true)
         {
-            string dPath = directory.GetPathRef();
+            string dPath = directory.GetPath();
             if (E_StringUtility.IsFilled(in dPath) && Directory.Exists(dPath))
             {
                 fileOverwatch.GetExtensionWithDot(out string fileExt);
@@ -327,22 +444,133 @@ namespace Eloi
             }
         }
 
-        public static void MoveOverride(in MetaAbsolutePathFile filePath, in MetaAbsolutePathDirectory receivedDirectory, out bool succedToMove)
+        public static void MoveOverride(in IMetaAbsolutePathFileGet filePath, in IMetaAbsolutePathDirectoryGet receivedDirectory, out bool succedToMove)
         {
-            ExtractFileWithExtension(filePath, out MetaFileNameWithExtension fileName);
-            MetaAbsolutePathFile destination= Combine( in receivedDirectory, in fileName);
+            ExtractFileWithExtension(filePath, out IMetaFileNameWithExtensionGet fileName);
+            IMetaAbsolutePathFileGet destination= Combine( in receivedDirectory, in fileName);
             MoveOverride(filePath, destination, out succedToMove);
 
         }
 
-        public static void ExtractFileWithExtension(in MetaAbsolutePathFile filePath, out MetaFileNameWithExtension fileName)
+        public static void ExtractFileWithExtension(in IMetaAbsolutePathFileGet filePath, out IMetaFileNameWithExtensionGet fileName)
         {
-            string path = filePath.GetPathRef();
+            string path = filePath.GetPath();
             string name=Path.GetFileNameWithoutExtension(path),
                 extension = Path.GetExtension(path);
             if (E_StringUtility.IsFilled(extension) && extension[0] == '.')
                 extension = extension.Substring(1);
             fileName = new MetaFileNameWithExtension(name, extension);
+        }
+
+        public static IMetaAbsolutePathFileGet GetParent(in IMetaAbsolutePathFileGet path)
+        {
+            string p = System.IO.Directory.GetParent(path.GetPath()).FullName;
+            return new MetaAbsolutePathFile(p);
+        }
+        public static IMetaAbsolutePathDirectoryGet GetParent(in IMetaAbsolutePathDirectoryGet path)
+        {
+            string p = System.IO.Directory.GetParent(path.GetPath()).FullName;
+            return new MetaAbsolutePathDirectory(p);
+        }
+
+
+      
+
+
+        public delegate void AccessTextDefaultIfNeeded(out string textToUse);
+        public static void ImportOrCreateThenImport(out string imported, in IMetaAbsolutePathFileGet fileTarget, AccessTextDefaultIfNeeded defaultTextToStore)
+        {
+            string p = fileTarget.GetPath();
+            if (File.Exists(p))
+            {
+                imported = File.ReadAllText(p);
+            }
+            else
+            {
+                E_FileAndFolderUtility.CreateFolderIfNotThere(fileTarget);
+                defaultTextToStore(out string textToUse);
+                imported = textToUse;
+                File.WriteAllText(p,textToUse);
+            }
+        }
+        public static void ImportOrCreateThenImportIn<T>(ref T jsonableTarget, in IMetaAbsolutePathFileGet fileTarget)
+        {
+            string p = fileTarget.GetPath();
+            if (File.Exists(p))
+            {
+                string imported = File.ReadAllText(p);
+                jsonableTarget = JsonUtility.FromJson<T>(imported);
+            }
+            else
+            {
+                string textToExport = JsonUtility.ToJson(jsonableTarget);
+                E_FileAndFolderUtility.CreateFolderIfNotThere(fileTarget);
+                File.WriteAllText(p, textToExport);
+            }
+        }
+
+        public static void ExportOrCreateThenImportIn<T>(ref T jsonableTarget, in IMetaAbsolutePathFileGet fileTarget, bool overrideIfExisting=true)
+        {
+            string p = fileTarget.GetPath();
+            E_FileAndFolderUtility.CreateFolderIfNotThere(fileTarget);
+            string textToExport = JsonUtility.ToJson(jsonableTarget);
+
+            if (!File.Exists(p)|| (File.Exists(p) && overrideIfExisting))
+            {
+                File.WriteAllText(p, textToExport);
+            }
+            ImportOrCreateThenImportIn(ref jsonableTarget, fileTarget);
+        }
+
+        public static void ImporTexture(IMetaAbsolutePathFileGet filePath, out Texture2D texture)
+        {
+            filePath.GetPath(out string path);
+            if (File.Exists(path)) {
+               byte [] bytes= File.ReadAllBytes(path);
+                texture = new Texture2D(2, 2);
+                texture.LoadImage(bytes);
+
+            }
+            else texture = null;
+
+        }
+
+        public static void ExportByOverriding(in IMetaAbsolutePathFileGet file, string csv)
+        {
+            CreateFolderIfNotThere(in file);
+            File.WriteAllText(file.GetPath(), csv);
+        }
+
+        public static void MoveFile(IMetaAbsolutePathFileGet file, IMetaAbsolutePathDirectoryGet directory)
+        {
+            string p = file.GetPath();
+            if (File.Exists(p)) {
+                MetaFileNameWithoutExtension filename = new MetaFileNameWithoutExtension(Path.GetFileName(p));
+                CreateFolderIfNotThere(directory);
+                IMetaAbsolutePathFileGet newFile = Combine(in directory, filename);
+                File.Move(p, newFile.GetPath());
+            }
+        }
+
+
+
+        public static bool IsExisting(in IMetaAbsolutePathFileGet fileToLoad)
+        {
+            return File.Exists(fileToLoad.GetPath());
+        }
+
+        public static void CreateFile(IMetaAbsolutePathFileGet fileToLoad, string text)
+        {
+            CreateFolderIfNotThere(fileToLoad);
+            File.WriteAllText(fileToLoad.GetPath(), text);
+        }
+
+        public static void ImportFileAsText(IMetaAbsolutePathFileGet fileToLoad, out string text, string defaultValue="")
+        {
+            if (IsExisting(fileToLoad))
+                text = File.ReadAllText(fileToLoad.GetPath());
+            else 
+                text = defaultValue;
         }
     }
 }

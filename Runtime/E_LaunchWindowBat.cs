@@ -20,7 +20,7 @@ public class E_LaunchWindowBat
     //    process.WaitForExit();
     //}
 
-    public static void CreateAndExecuteBatFile(in MetaAbsolutePathDirectory whereToCreate, 
+    public static void CreateAndExecuteBatFile(in IMetaAbsolutePathDirectoryGet whereToCreate, 
         in MetaFileNameWithoutExtension batName,in bool deleteAfterRunning,
         params string[] whatToExecute)
     {
@@ -43,18 +43,19 @@ public class E_LaunchWindowBat
         if(deleteAfterRunning)
             File.Delete(path);
     }
-    public static void CreateAndLaunchBatFile(in MetaAbsolutePathDirectory whereToCreate, in MetaFileNameWithoutExtension batName, params string[] whatToExecute)
+    public static void CreateAndLaunchBatFile(in IMetaAbsolutePathDirectoryGet whereToCreate, in IMetaFileNameWithoutExtensionGet batName, params string[] whatToExecute)
     {
 
     }
-    public static void ExecuteCommandHiddenWithReturn(in MetaAbsolutePathDirectory whereToCreate,in string command, out string output, out string error, out int exitCode)
+    public static void ExecuteCommandHiddenWithReturn(in IMetaAbsolutePathDirectoryGet whereToCreate,in string command, out string output, out string error, out int exitCode)
     {
         ProcessStartInfo ProcessInfo;
         Process process;
         ProcessInfo = new ProcessStartInfo("cmd.exe", $"/c {command}");
         ProcessInfo.CreateNoWindow = true;
         ProcessInfo.UseShellExecute = false;
-        ProcessInfo.WorkingDirectory = whereToCreate.GetPathRef();
+        ProcessInfo.WindowStyle = ProcessWindowStyle.Hidden;
+        ProcessInfo.WorkingDirectory = whereToCreate.GetPath();
         // *** Redirect the output ***
         ProcessInfo.RedirectStandardError = true;
         ProcessInfo.RedirectStandardOutput = true;
@@ -67,11 +68,13 @@ public class E_LaunchWindowBat
         process.Close();
     }
 
-    public static void ExecuteCommandHiddenWithReturnInThread( MetaAbsolutePathDirectory whereToCreate,  string command)
+
+  
+public static void ExecuteCommandHiddenWithReturnInThread( IMetaAbsolutePathDirectoryGet whereToCreate,  string command)
     {
         string o, e;
         int ex;
-        new Thread(() => ExecuteCommandHiddenWithReturn( whereToCreate,  command, out o, out e, out ex)).Start();
+        new Thread(() => ExecuteCommandHiddenWithReturn(  whereToCreate,  command, out o, out e, out ex)).Start();
     }
 
     //public static void ExecuteMultipleCommandsHidden(MetaAbsolutePathDirectory whereToCreate, params string[] command)
@@ -83,7 +86,7 @@ public class E_LaunchWindowBat
     //}
     
 
-    public static void ExecuteMultipleCommandsHidden(MetaAbsolutePathDirectory whereToCreate, params string [] command) {
+    public static void ExecuteMultipleCommandsHidden(IMetaAbsolutePathDirectoryGet whereToCreate, params string [] command) {
         //static void RunCommands(List<string> cmds, string workingDirectory = "")
         //{
         //    var process = new Process();
