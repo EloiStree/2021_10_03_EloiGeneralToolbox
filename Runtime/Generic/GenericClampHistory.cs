@@ -15,6 +15,8 @@ namespace Eloi {
             if(m_historySize>0)
             Eloi.E_GeneralUtility.ListAsQueueInsert(in value, in m_historySize, ref m_history);
         }
+
+        public T GetAt(int index) { return m_history[index]; }
         public void GetHistoryAsArray(out T[] history)
         {
             history = m_history.ToArray();
@@ -32,6 +34,9 @@ namespace Eloi {
         public void GetHistoryMaxSize( out int maxSize)
         {
             maxSize = m_historySize;
+        }
+        public void Clear() {
+            m_history.Clear();
         }
     }
 

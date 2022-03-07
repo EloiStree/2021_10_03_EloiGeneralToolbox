@@ -11,8 +11,8 @@ namespace Eloi
         public List<NameId2MonoStaticEvent> m_namedIdStaticEvents;
         public bool m_autoListenAwakeDestroy = true;
 
-        public void TriggerEvent(Eloi.StringIdScriptable eventId) => MonoStaticEvent.NotifyEveryWhere(eventId.GetValue());
-        public void TriggerEvent(string eventId) => MonoStaticEvent.NotifyEveryWhere(eventId);
+        public void NotifyEventEverywhere(Eloi.StringIdScriptable eventId) => MonoStaticEvent.NotifyEveryWhere(eventId.GetValue());
+        public void NotifyEventEverywhere(string eventId) => MonoStaticEvent.NotifyEveryWhere(eventId);
 
         void Awake()
         {

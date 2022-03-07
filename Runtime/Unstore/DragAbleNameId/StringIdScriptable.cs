@@ -23,6 +23,28 @@ namespace Eloi
         {
             value = m_value.ToLower();
         }
+
+        [ContextMenu("Random Id")]
+        public void RandomId()
+        {
+            Eloi.E_GeneralUtility.GetTimeULongIdWithNow(out ulong id);
+            m_value = "" + id;
+        }
+        [ContextMenu("Set With Object Name")]
+        public void SetValueAsObjectName()
+        {
+            m_value = this.name;
+        }
+        [ContextMenu("Set With Object Name and id")]
+        public void SetValueAsObjectNamePlusId()
+        {
+            Eloi.E_GeneralUtility.GetTimeULongIdWithNow(out ulong id);
+            m_value = this.name+" - " + id;
+        }
+
+        public void Reset() {
+            RandomId();
+        }
     }
 
     [System.Serializable]

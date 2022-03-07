@@ -15,12 +15,27 @@ namespace Eloi
 
         public string m_eventId;
         public UnityEvent m_toDoOnTrigger;
+        public static EventNotification m_listenToAllGlobalEvent;
+        public delegate void EventNotification(string eventNameId);
+
+        public static void AddAllGlobalEventListener(EventNotification listener)
+        {
+            m_listenToAllGlobalEvent += listener;
+
+        }
+        public static void RemoveAllGlobalEventListener(EventNotification listener)
+        {
+
+            m_listenToAllGlobalEvent -= listener;
+        }
 
         public static void NotifyEveryWhere(string eventId)
         {
             if (m_staticListener.ContainsKey(eventId))
                 if (m_staticListener[eventId] != null)
                     m_staticListener[eventId]();
+            if(m_listenToAllGlobalEvent!=null)
+                m_listenToAllGlobalEvent(eventId);
         }
 
 

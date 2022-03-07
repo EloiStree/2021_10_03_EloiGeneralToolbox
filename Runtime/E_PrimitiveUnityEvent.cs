@@ -35,5 +35,9 @@ namespace Eloi
     public class PrimitiveUnityEvent_ULong : UnityEvent<ulong> { }
 
 
+    [System.Serializable]
+    public class ClassicUnityEvent_Texture2D : UnityEvent<Texture2D> { }
+
+
 
 }

@@ -50,10 +50,12 @@ namespace Eloi
 
         public static void SetAllActive(ref GameObject[] toActivateOnDisplay, in bool isActive)
         {
-            for (int i = 0; i < toActivateOnDisplay.Length; i++)
-            {
-                if (toActivateOnDisplay[i] != null)
-                    toActivateOnDisplay[i].SetActive(isActive);
+            if (toActivateOnDisplay != null) { 
+                for (int i = 0; i < toActivateOnDisplay.Length; i++)
+                {
+                    if (toActivateOnDisplay[i] != null)
+                        toActivateOnDisplay[i].SetActive(isActive);
+                }
             }
         }
 

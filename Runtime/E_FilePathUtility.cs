@@ -203,7 +203,22 @@ namespace Eloi
             this.m_fileName = fileName;
             this.m_extensionNameWithoutDot = extensionNameWithoutDot;
         }
-
+        public MetaFileNameWithExtension(string textToSplitWithDot)
+        {
+            SetFileFromStringSplitAtLastDot(textToSplitWithDot);
+        }
+        public void SetFileFromStringSplitAtLastDot(in string text)
+        {
+            int indexLastDot = text.LastIndexOf(".");
+            if (indexLastDot < 0)
+            {
+                m_fileName = text;
+                m_extensionNameWithoutDot = "";
+            }
+            else {
+                Eloi.E_StringUtility.SplitInTwo(in text, in indexLastDot, out m_fileName,out m_extensionNameWithoutDot);
+            }
+        }
         public void SetFileName(in string fileName, in string fileExtensionWithoutDot) {
             m_fileName = fileName;
             m_extensionNameWithoutDot = fileExtensionWithoutDot;
@@ -522,17 +537,30 @@ namespace Eloi
             ImportOrCreateThenImportIn(ref jsonableTarget, fileTarget);
         }
 
-        public static void ImporTexture(IMetaAbsolutePathFileGet filePath, out Texture2D texture)
+        public static void ImportTexture(IMetaAbsolutePathFileGet filePath, out Texture2D texture)
         {
             filePath.GetPath(out string path);
             if (File.Exists(path)) {
                byte [] bytes= File.ReadAllBytes(path);
-                texture = new Texture2D(2, 2);
+                texture = new Texture2D(2, 2, TextureFormat.ARGB32, true);
                 texture.LoadImage(bytes);
+                //Color[] pix = texture.GetPixels(); 
+                //for (int i = 0; i < pix.Length; i++)
+                //    pix[i].a = pix[i].grayscale; 
+                //texture.SetPixels(pix); 
+                //texture.Apply();
 
             }
             else texture = null;
 
+        }
+        public static void ExportTexture(in IMetaAbsolutePathFileGet filePath,  Texture2D texture)
+        {
+            CreateFolderIfNotThere(in filePath);
+            byte[] _bytes = texture.EncodeToPNG();
+            System.IO.File.WriteAllBytes(filePath.GetPath(), _bytes) ;
+            //Debug.Log(_bytes.Length / 1024 + "Kb was saved as: " + filePath.GetPath());
+            
         }
 
         public static void ExportByOverriding(in IMetaAbsolutePathFileGet file, string csv)
@@ -585,5 +613,7 @@ namespace Eloi
             rootpath = Path.Combine(Application.dataPath, "../");
 #endif
         }
+
+        
     }
 }

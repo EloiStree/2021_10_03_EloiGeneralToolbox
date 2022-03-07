@@ -23,12 +23,15 @@ public class DelayTick : MonoBehaviour
     {
         if (m_onEnable) LaunchDelayedTick();
     }
+
+    [ContextMenu("LaunchDelayedTick")]
     public void LaunchDelayedTick()
     {
         Invoke("Tick", m_timeWhenToTick);
 
     }
 
+    [ContextMenu("Tick")]
     void Tick()
     {
         m_tick.Invoke();
