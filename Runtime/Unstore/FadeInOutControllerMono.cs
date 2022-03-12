@@ -86,4 +86,19 @@ public class FadeInOutControllerMono : MonoBehaviour
             m_fadeInReach.Invoke();
     }
 
+
+    public void GoToFadeIn(bool inverse = false)
+    {
+        if (inverse)
+            GoFadeIn_Transparent();
+        else
+            GoFadeOut_Opaque();
+    }
+    public void GoToFadeOut(bool inverse = false)
+    {
+        if (inverse)
+            GoFadeOut_Opaque();
+        else
+            GoFadeIn_Transparent();
+    }
 }

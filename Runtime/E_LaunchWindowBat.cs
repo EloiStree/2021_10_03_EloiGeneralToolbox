@@ -1,4 +1,5 @@
 using Eloi;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -43,6 +44,23 @@ public class E_LaunchWindowBat
         if(deleteAfterRunning)
             File.Delete(path);
     }
+
+    public static void JustLaunchTarget(in AbstractMetaAbsolutePathFileMono batch)
+    {
+
+        Eloi.E_FilePathUnityUtility.GetDirectoryPathOf(batch.GetPath(), out string pathDir);
+        ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd.exe", "/c " + batch);
+        processStartInfo.UseShellExecute = true;
+        processStartInfo.CreateNoWindow = false;
+        processStartInfo.WorkingDirectory = pathDir;
+        processStartInfo.WindowStyle = ProcessWindowStyle.Normal;
+
+        Process p = new Process();
+        p.StartInfo = processStartInfo;
+        p.Start();
+        p.WaitForExit();
+    }
+
     public static void CreateAndLaunchBatFile(in IMetaAbsolutePathDirectoryGet whereToCreate, in IMetaFileNameWithoutExtensionGet batName, params string[] whatToExecute)
     {
 

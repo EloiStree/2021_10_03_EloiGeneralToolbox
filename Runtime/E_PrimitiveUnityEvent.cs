@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -21,6 +22,23 @@ namespace Eloi
 
     [System.Serializable]
     public class PrimitiveUnityEvent_Bool : UnityEvent<bool> { }
+    [System.Serializable]
+    public class PrimitiveUnityEventExtra_Bool {
+
+        public  PrimitiveUnityEvent_Bool m_valueEvent;
+        public  UnityEvent m_onEvent;
+        public  UnityEvent m_offEvent;
+
+        public void Invoke(bool value)
+        {
+            m_valueEvent.Invoke(value);
+            if(value)
+            m_onEvent.Invoke();
+            else
+            m_offEvent.Invoke();
+        }
+    }
+    
     [System.Serializable]
     public class PrimitiveUnityEvent_String : UnityEvent<string> { }
 

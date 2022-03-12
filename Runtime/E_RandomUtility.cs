@@ -17,6 +17,7 @@ namespace Eloi {
             GetRandom_n180_180(out random.z);
         }
 
+       
         public static void GetRandomTexture(out Texture2D randomTexture, int width, int height)
         {
             randomTexture = new Texture2D(width, height,TextureFormat.ARGB32,true);

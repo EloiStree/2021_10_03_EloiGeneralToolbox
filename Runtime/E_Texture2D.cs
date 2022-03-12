@@ -1,3 +1,4 @@
+using System;
 using Unity.Collections;
 using UnityEngine;
 
@@ -37,6 +38,11 @@ namespace Eloi
                 GameObject.Destroy(renderTexture); //Free memory
                 texture = screenShot;
             }
+        }
+
+        public static void Import(IMetaAbsolutePathFileGet file, out Texture2D texture)
+        {
+            Eloi.E_FileAndFolderUtility.ImportTexture(file, out texture);
         }
 
         public static void SetTextureAsBlackAndWhite(in Texture2D target,out Texture2D grayScaleTexture)

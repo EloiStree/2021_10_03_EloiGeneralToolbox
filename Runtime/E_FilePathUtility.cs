@@ -38,6 +38,18 @@ namespace Eloi
             TrimAtEndSlashAndBackSlashIfThereAre(in trimmedAtStart, out triRootPath);
         }
 
+        public static string RemoveFileExtension(string path)
+        {
+            int dotIndex = path.LastIndexOf('.');
+            if (dotIndex < 0)
+                return path;
+            int slashIndex = path.Replace("\\","/").LastIndexOf('/');
+            if (dotIndex <= slashIndex)
+                return path;
+            Eloi.E_StringUtility.SplitInTwo(in path, dotIndex, out string left, out string right);
+            return left;
+        }
+
         public static void TrimAtEndSlashAndBackSlashIfThereAre(in string rootPath, out string trimRootPath)
         {
             trimRootPath = rootPath;
@@ -159,6 +171,14 @@ namespace Eloi
         {
             this.m_path = path;
         }
+        [ContextMenu("Open Target")]
+        public void OpenTargetWithUnity() { Application.OpenURL(GetPath()); }
+        [ContextMenu("Open Directory")]
+        public void OpenTargetDirectoryWithUnity()
+        {
+            Eloi.E_FilePathUnityUtility.GetDirectoryPathOf(GetPath(), out string dirPath);
+            Application.OpenURL(dirPath);
+        }
     }
 
     public interface IMetaFileNameWithoutExtensionGet
@@ -238,26 +258,38 @@ namespace Eloi
         public MetaAbsolutePathFile(string path) : base(path)
         {
         }
+
+       
     }
-    public abstract class AbstractMetaRelativePathFileMono : MonoBehaviour, IMetaRelativePathFileGet
+
+    public abstract class AbstractMetaPathMono : MonoBehaviour
     {
+
         public abstract void GetPath(out string path);
         public abstract string GetPath();
+
+        [ContextMenu("Open Target")]
+        public void OpenTargetWithUnity() { Application.OpenURL(GetPath()); }
+        [ContextMenu("Open Directory")]
+        public void OpenTargetDirectoryWithUnity()
+        {
+            Eloi.E_FilePathUnityUtility.GetDirectoryPathOf(GetPath(), out string dirPath);
+            Application.OpenURL(dirPath);
+        }
     }
-    public abstract class AbstractMetaAbsolutePathFileMono : MonoBehaviour, IMetaAbsolutePathFileGet
+
+    public abstract class AbstractMetaRelativePathFileMono : AbstractMetaPathMono, IMetaRelativePathFileGet
     {
-        public abstract void GetPath(out string path);
-        public abstract string GetPath();
     }
-    public abstract class AbstractMetaRelativePathDirectoryMono : MonoBehaviour, IMetaRelativePathDirectoryGet
+    public abstract class AbstractMetaAbsolutePathFileMono : AbstractMetaPathMono, IMetaAbsolutePathFileGet
     {
-        public abstract void GetPath(out string path);
-        public abstract string GetPath();
     }
-    public abstract class AbstractMetaAbsolutePathDirectoryMono : MonoBehaviour, IMetaAbsolutePathDirectoryGet
+    public abstract class AbstractMetaRelativePathDirectoryMono : AbstractMetaPathMono, IMetaRelativePathDirectoryGet
     {
-        public abstract void GetPath(out string path);
-        public abstract string GetPath();
+    }
+    public abstract class AbstractMetaAbsolutePathDirectoryMono : AbstractMetaPathMono, IMetaAbsolutePathDirectoryGet
+    {
+
     }
 
     public interface IMetaRelativePathFileGet : IMetaPathGet
@@ -394,7 +426,10 @@ namespace Eloi
             E_FilePathUnityUtility.MeltPathTogether(out string path, pathfolder, fileNameWExt);
             return new MetaAbsolutePathFile(path);
         }
-        public static IMetaAbsolutePathFileGet Combine(in IMetaAbsolutePathDirectoryGet root, in IMetaRelativePathDirectoryGet[] subfolders, in IMetaFileNameWithExtensionGet file)
+        public static string[] emptyStringArray = new string[0];
+        public static IMetaRelativePathDirectoryGet[] emptyDirectoryStringArray = new IMetaRelativePathDirectoryGet[0];
+        
+            public static IMetaAbsolutePathFileGet Combine(in IMetaAbsolutePathDirectoryGet root, in IMetaRelativePathDirectoryGet[] subfolders, in IMetaFileNameWithExtensionGet file)
         {
             string[] paths = subfolders.Select(k => k.GetPath()).ToArray();
             E_FilePathUnityUtility.MeltPathTogether(out string pathfolder, root.GetPath(), paths);

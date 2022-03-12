@@ -15,19 +15,23 @@ namespace be.eloistree.generaltoolbox
         void Awake()
         {
             Refresh();
+            Eloi.DeveloperMode.AddListener(Refresh);
 
         }
-        void OnEnable()
+      
+        private void OnDestroy()
         {
-            Refresh();
-
+            Eloi.DeveloperMode.RemoveListener(Refresh);
         }
-
         [ContextMenu("Refresh")]
         private void Refresh()
         {
-            bool isDevMode = DeveloperMode.IsInDeveloperMode();
+            bool isDevMode = Eloi.DeveloperMode.IsInDeveloperMode();
+            Refresh(isDevMode);
+        }
 
+        private void Refresh(bool isDevMode)
+        {
             if (isDevMode)
             {
                 m_inDevMode.Invoke();
@@ -36,11 +40,11 @@ namespace be.eloistree.generaltoolbox
             {
 
                 m_inClientMode.Invoke();
-                if (m_useDefaultDeactivate)
-                    this.gameObject.SetActive(false);
                 if (m_useDefaultDestroy)
                     Destroy(this.gameObject);
             }
+            if (m_useDefaultDeactivate)
+                this.gameObject.SetActive(isDevMode);
         }
     }
 }
