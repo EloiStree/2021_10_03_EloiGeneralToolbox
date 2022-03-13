@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class RandomTextPusherMono : MonoBehaviour
@@ -11,6 +12,7 @@ public class RandomTextPusherMono : MonoBehaviour
     {
         if(m_source!=null)
             m_lines = m_source.text.Split('\n');
+        m_lines = m_lines.Where(k => k.Trim().Length > 0).ToArray();
            
     }
     public void PushRandomString()

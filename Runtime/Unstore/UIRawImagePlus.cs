@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class UIRawImagePlus : MonoBehaviour
 {
-    public Image m_target;
+    public RawImage m_target;
 
 
     public void SetTransparent(float transparenceInPourcent)
@@ -23,6 +23,6 @@ public class UIRawImagePlus : MonoBehaviour
 
     private void Reset()
     {
-        m_target = GetComponent<Image>();
+        m_target = GetComponent<RawImage>();
     }
 }
