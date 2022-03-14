@@ -1,6 +1,6 @@
 {
     "name": "be.eloistree.generaltoolbox",
-    "rootNamespace": "be.eloistree.generaltoolbox",
+    "rootNamespace": "Eloi",
     "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],

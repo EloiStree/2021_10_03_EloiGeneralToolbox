@@ -110,11 +110,12 @@ namespace Eloi
 
         public static void GetJustDirectoryName(in string directoryPath, out string name)
         {
-            string under = Directory.GetParent(directoryPath).FullName;
+            name = new DirectoryInfo(directoryPath).Name;
+            //string under = Directory.GetParent(directoryPath).FullName;
 
-            name = directoryPath.Replace(under, "");
-            name = name.Replace("/", "");
-            name = name.Replace("\\", "");
+            //name = directoryPath.Replace(under, "");
+            //name = name.Replace("/", "");
+            //name = name.Replace("\\", "");
 
         }
         public static void GetDirectoryPathOf(in string directoryPath, out string path)
