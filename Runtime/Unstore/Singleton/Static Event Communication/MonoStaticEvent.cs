@@ -29,8 +29,11 @@ namespace Eloi
             m_listenToAllGlobalEvent -= listener;
         }
 
-        public static void NotifyEveryWhere(string eventId)
+        public static bool m_debugSource=true;
+        public static void NotifyEveryWhere(string eventId,in  GameObject source)
         {
+            if (m_debugSource)
+                Debug.Log("EVENT + SOURCE:" + eventId, source);
             if (m_staticListener.ContainsKey(eventId))
                 if (m_staticListener[eventId] != null)
                     m_staticListener[eventId]();
@@ -40,9 +43,13 @@ namespace Eloi
 
 
 
+        public static void NotifyEveryWhere(StringIdScriptable eventId, in GameObject source)
+        {
+            NotifyEveryWhere(eventId.GetValue(), in source);
+        }
         public static void NotifyEveryWhere(StringIdScriptable eventId)
         {
-            NotifyEveryWhere(eventId.GetValue());
+            NotifyEveryWhere(eventId.GetValue(), null);
         }
 
         public MonoStaticEvent()
@@ -107,7 +114,7 @@ namespace Eloi
 
         public void NotifyEverywhere()
         {
-            MonoStaticEvent.NotifyEveryWhere(m_eventId);
+            MonoStaticEvent.NotifyEveryWhere(m_eventId,null);
         }
         public void TriggerLocalEvent()
         {
@@ -122,6 +129,7 @@ namespace Eloi
 
         public Eloi.StringIdScriptable m_eventId;
         public UnityEvent m_toDoOnTrigger;
+        private GameObject m_source;
 
         public NameId2MonoStaticEvent()
         {
@@ -133,8 +141,9 @@ namespace Eloi
             m_eventId = eventId;
         }
 
-        public void AddAsStaticListener()
+        public void AddAsStaticListener(in GameObject source)
         {
+            m_source = source;
             if (!MonoStaticEvent.m_staticListener.ContainsKey(GetEventId()))
                 MonoStaticEvent.m_staticListener.Add(GetEventId(), null);
             if (MonoStaticEvent.m_staticListener.ContainsKey(GetEventId()))
@@ -153,28 +162,31 @@ namespace Eloi
             return m_eventId.GetValue();
         }
 
-        public void NotifyEverywhereIfEquals(in StringIdScriptable id, in bool ignoreCase, bool useTrim)
+        public void NotifyEverywhereIfEquals(in GameObject source, in StringIdScriptable id, in bool ignoreCase, bool useTrim)
         {
             if (id == m_eventId)
             {
-                NotifyEverywhere();
+                NotifyEverywhere(in source);
             }
             else
             {
-                NotifyEverywhereIfEquals(id.GetValue(), ignoreCase, useTrim);
+                NotifyEverywhereIfEquals(in source, id.GetValue(), ignoreCase, useTrim);
             }
 
         }
-        public void NotifyEverywhereIfEquals(string id, bool ignoreCase = true, bool useTrim = true)
+        public void NotifyEverywhereIfEquals( in GameObject source ,string id, bool ignoreCase = true, bool useTrim = true)
         {
             if (Eloi.E_StringUtility.AreEquals(
                     id, m_eventId.GetValue(), ignoreCase, useTrim))
-                NotifyEverywhere();
+                NotifyEverywhere(in source);
         }
-
         public void NotifyEverywhere()
         {
-            MonoStaticEvent.NotifyEveryWhere(GetEventId());
+            MonoStaticEvent.NotifyEveryWhere(GetEventId(), in m_source);
+        }
+        public void NotifyEverywhere(in GameObject source)
+        {
+            MonoStaticEvent.NotifyEveryWhere(GetEventId(),in source);
         }
         public void TriggerLocalEvent()
         {

@@ -11,8 +11,8 @@ namespace Eloi
         public List<NameId2MonoStaticEvent> m_namedIdStaticEvents;
         public bool m_autoListenAwakeDestroy = true;
 
-        public void NotifyEventEverywhere(Eloi.StringIdScriptable eventId) => MonoStaticEvent.NotifyEveryWhere(eventId.GetValue());
-        public void NotifyEventEverywhere(string eventId) => MonoStaticEvent.NotifyEveryWhere(eventId);
+        public void NotifyEventEverywhere(Eloi.StringIdScriptable eventId) => MonoStaticEvent.NotifyEveryWhere(eventId.GetValue(),this.gameObject);
+        public void NotifyEventEverywhere(string eventId) => MonoStaticEvent.NotifyEveryWhere(eventId,this.gameObject);
 
         void Awake()
         {
@@ -23,7 +23,7 @@ namespace Eloi
                 }
                 foreach (var item in m_namedIdStaticEvents)
                 {
-                    item.AddAsStaticListener();
+                    item.AddAsStaticListener(gameObject);
                 }
             }
         }

@@ -9,11 +9,11 @@ namespace Eloi
     {
         public  void NotifyEveryWhere(string eventId)
         {
-            MonoStaticEvent.NotifyEveryWhere(eventId);
+            MonoStaticEvent.NotifyEveryWhere(eventId, this.gameObject);
         }
         public  void NotifyEveryWhere(Eloi.StringIdScriptable eventId)
         {
-            MonoStaticEvent.NotifyEveryWhere(eventId);
+            MonoStaticEvent.NotifyEveryWhere(eventId,this.gameObject);
         }
 
     }

@@ -18,11 +18,16 @@ public class E_SearchInSceneUtility : MonoBehaviour
     {
         toFill = Resources.FindObjectsOfTypeAll<T>();
     }
-    public static void TryToFetchWithActiveInScene<T>(ref T toFill) where T : UnityEngine.Object
-    {
+        public static void TryToFetchWithActiveInScene<T>(ref T toFill, bool includeInactive = false) where T : UnityEngine.Object
+        {
 
-        toFill = GameObject.FindObjectOfType<T>();
-    }
+            toFill = GameObject.FindObjectOfType<T>(includeInactive);
+        }
+        public static void TryToFetchWithActiveInScene<T>(ref T[] toFill, bool includeInactive = false) where T : UnityEngine.Object
+        {
+
+            toFill = GameObject.FindObjectsOfType<T>(includeInactive);
+        }
         public static void FetchComponent<T>(in MonoBehaviour from, ref T target) where T : UnityEngine.Object
         {
             FetchComponent(from.gameObject, ref target);

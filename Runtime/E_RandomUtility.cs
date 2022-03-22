@@ -99,8 +99,13 @@ namespace Eloi {
         public static void GetRandom_n180_180(out float random) => GetRandomN2M(-180f, 180f, out random);
         public static void GetRandom_n360_360(out float random) => GetRandomN2M(-360f, 360f, out random);
 
-        public static void GetRandomN2M(in float n, in float m, out float random) =>
-            random = UnityEngine.Random.Range(n, m); 
+        public static int  m_seed=0;
+        public static void GetRandomN2M(in float n, in float m, out float random) {
+            System. Random r = new System.Random(m_seed++);
+            random = (float)r.NextDouble();
+            random = Mathf.Lerp(n, m, random);
+            //random = UnityEngine.Random.Range(n, m); 
+        }
         public static void GetRandomN2M(in int n, in int m, out int random) =>
          random = UnityEngine.Random.Range(n, m);
 

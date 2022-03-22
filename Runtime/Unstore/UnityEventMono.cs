@@ -9,6 +9,7 @@ namespace be.eloistree.generaltoolbox
     {
         public UnityEvent m_toDoOnTriggered;
 
+        [ContextMenu("Invoke Event")]
         public void Invoke() {
             m_toDoOnTriggered.Invoke();
         }

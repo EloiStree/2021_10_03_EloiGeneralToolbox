@@ -17,4 +17,9 @@ public class DebugLogMono : MonoBehaviour
     {
         Debug.LogError(text);
     }
+
+    public void Break()
+    {
+        Debug.Break();
+    }
 }

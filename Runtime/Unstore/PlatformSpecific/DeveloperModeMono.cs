@@ -21,20 +21,22 @@ namespace Eloi
 
         public delegate void DeveloperModeChange(bool deveModeIsOn);
         public static DeveloperModeChange m_devModeChangeListener;
+        [ContextMenu("Set dev mode")]
         public static void SetAsDeveloperMode() { 
                 m_isWorkingWithDeveloperVersion = true;
             if(m_devModeChangeListener!=null)
             m_devModeChangeListener(m_isWorkingWithDeveloperVersion);
         }
 
-       
+
+        [ContextMenu("Set client mode")]
         public static void SetAsClientMode()
         {
             m_isWorkingWithDeveloperVersion = false;
             if (m_devModeChangeListener != null)
                 m_devModeChangeListener(m_isWorkingWithDeveloperVersion);
         }
-
+        [ContextMenu("Swithc dev and client mode")]
         public static void SwitchDeveloperMode()
         {
             if (m_isWorkingWithDeveloperVersion)
