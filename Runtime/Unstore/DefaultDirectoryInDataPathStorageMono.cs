@@ -34,7 +34,7 @@ public class DefaultDirectoryInDataPathStorageMono : Eloi.AbstractMetaAbsolutePa
 
     public override string GetPath()
     {
-        GetPath(out string p);
+        this.GetPath(out string p);
         return p;
     }
 

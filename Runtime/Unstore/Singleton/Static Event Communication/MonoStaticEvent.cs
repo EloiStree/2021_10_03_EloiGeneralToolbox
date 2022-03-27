@@ -29,7 +29,7 @@ namespace Eloi
             m_listenToAllGlobalEvent -= listener;
         }
 
-        public static bool m_debugSource=true;
+        public static bool m_debugSource=false;
         public static void NotifyEveryWhere(string eventId,in  GameObject source)
         {
             if (m_debugSource)

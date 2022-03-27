@@ -650,6 +650,98 @@ namespace Eloi
 #endif
         }
 
-        
+        public static void GetAllfilesInAndInChildren(IMetaAbsolutePathDirectoryGet m_targetDirectory, out string[] files)
+        {
+            string directoryPath = m_targetDirectory.GetPath();
+            if (Directory.Exists(directoryPath))
+                files = Directory.GetFiles(directoryPath, "*", SearchOption.AllDirectories);
+            else files = new string[0];
+        }
+
+        public static void GetAllfilesInAndOnlyInFolder(IMetaAbsolutePathDirectoryGet m_targetDirectory, out string[] files)
+        {
+            string directoryPath = m_targetDirectory.GetPath();
+            if(Directory.Exists(directoryPath))
+            files = Directory.GetFiles(directoryPath, "*", SearchOption.TopDirectoryOnly);
+            else files = new string[0];
+        }
+
+        public static void FilterWithSize(in string[] files,
+            out List<MetaAbsolutePathFile> filesFound,
+            in long minimumFileSize,
+            in long maxFileSize)
+        {
+            filesFound = new List<MetaAbsolutePathFile>();
+            if (files == null)
+            {
+                return;
+            }
+            for (int i = 0; i < files.Length; i++)
+            {
+                if (File.Exists(files[i]))
+                {
+                    FileInfo fi = new System.IO.FileInfo(files[i]);
+                    if (fi.Length >= minimumFileSize && fi.Length <= maxFileSize)
+                    {
+                        filesFound.Add(new MetaAbsolutePathFile(files[i]));
+                    }
+                }
+            }
+        }
+
+        public static void CreateOrOverrideFile(IMetaAbsolutePathDirectoryGet whereToSTore, string text, string fileNameWithoutExt, string extentionWithoutDot)
+        {
+            CreateOrOverrideFile(whereToSTore, text, new MetaFileNameWithExtension(fileNameWithoutExt, extentionWithoutDot));
+        }
+        public static void CreateOrOverrideFile(IMetaAbsolutePathDirectoryGet whereToSTore, string text, IMetaFileNameWithExtensionGet fileName)
+        {
+            IMetaAbsolutePathFileGet path = Combine(whereToSTore, fileName);
+            CreateFolderIfNotThere(path);
+            File.WriteAllText(path.GetPath(), text);
+        }
+        //public class CoroutinePourcentState {
+        //    public float m_pourcentProcessing;
+        //    public bool m_finished;
+        //    public bool m_processing;
+        //    public bool m_errorHappened;
+
+        //    public void SetPourcentDone(float pourcentDone) {
+        //        pourcentDone = Mathf.Clamp01(pourcentDone);
+        //        m_pourcentProcessing = pourcentDone;
+        //    }
+        //    public void SetAsFinishedSuccessfully() { m_errorHappened = false; m_processing = false; m_finished = true; }
+        //    public void SetAsHadError() { m_errorHappened = true; m_processing = false; m_finished = false; }
+        //}
+        //public static IEnumerator FilterWithSize( string[] files,
+        //   List<MetaAbsolutePathFile> filesFound,
+        //   CoroutinePourcentState pourcentDoneRef,
+        //   long minimumFileSize,
+        //   long maxFileSize
+        //   )
+        //{
+        //    if(pourcentDoneRef ==null)
+        //    pourcentDoneRef = new CoroutinePourcentState();
+        //    filesFound = new List<MetaAbsolutePathFile>();
+        //    if (files == null)
+        //    {
+        //        pourcentDoneRef.SetAsFinishedSuccessfully();
+        //        yield return null;
+        //    }
+        //    for (int i = 0; i < files.Length; i++)
+        //    {
+        //        if (File.Exists(files[i]))
+        //        {
+        //            FileInfo fi = new System.IO.FileInfo(files[i]);
+        //            if (fi.Length >= minimumFileSize && fi.Length <= maxFileSize)
+        //            {
+        //                filesFound.Add(new MetaAbsolutePathFile(files[i]));
+        //            }
+        //        }
+        //        pourcentDoneRef.SetPourcentDone(i / (float)files.Length);
+        //       // yield return;
+        //    }
+
+        //    pourcentDoneRef.SetAsFinishedSuccessfully();
+        //}
     }
 }
