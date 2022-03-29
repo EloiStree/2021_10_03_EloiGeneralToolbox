@@ -65,7 +65,7 @@ public class ApplicationBasicActionsMono : MonoBehaviour
     private void RestartApplicationWindowThreadCall( string pathToCall)
     {
         Eloi.MetaAbsolutePathDirectory dPath = new Eloi.MetaAbsolutePathDirectory(Path.GetDirectoryName(pathToCall));
-        E_LaunchWindowBat.ExecuteCommandHiddenWithReturn( in dPath, "start \"\" \"" + pathToCall + "\"", out string o, out string e, out int ex);
+        E_LaunchWindowBat.ExecuteCommandHiddenWithReturn(  dPath, "start \"\" \"" + pathToCall + "\"", out string o, out string e, out int ex);
 
     }
 

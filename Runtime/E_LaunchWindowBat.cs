@@ -20,22 +20,36 @@ public class E_LaunchWindowBat
     //    process.WaitForExit();
     //}
 
-    public static void CreateAndExecuteBatFile(in MetaAbsolutePathDirectory whereToCreate, 
-        in MetaFileNameWithoutExtension batName,in bool deleteAfterRunning,
+    public static void CreateAndExecuteBatFileInThread(in IMetaAbsolutePathDirectoryGet whereToCreate,
+        in IMetaFileNameWithoutExtensionGet batName, in bool deleteAfterRunning,
+        params string[] whatToExecute)
+    {
+        IMetaAbsolutePathDirectoryGet w=whereToCreate;
+        IMetaFileNameWithoutExtensionGet b =batName;
+            bool d= deleteAfterRunning;
+         string[] p=whatToExecute;
+        new Thread(() => CreateAndExecuteBatFile( w ,  b , d , p)).Start();
+    }
+
+
+    public static void CreateAndExecuteBatFile(in IMetaAbsolutePathDirectoryGet whereToCreate, 
+        in IMetaFileNameWithoutExtensionGet batName,in bool deleteAfterRunning,
         params string[] whatToExecute)
     {
         batName.GetName(out string batNameWithoutExt);
         whereToCreate.GetPath(out string where);
         E_FilePathUnityUtility.MeltPathTogether(out string path , where, batNameWithoutExt + ".bat");
         File.WriteAllText(path, string.Join("\n", whatToExecute));
+
+        UnityEngine.Debug.Log("-0:" + path);
+        UnityEngine.Debug.Log("-1:" + File.ReadAllText(path));
        
 
-        ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd.exe", "/c " + path);
-        processStartInfo.UseShellExecute = true;
-        processStartInfo.CreateNoWindow = true;
+        ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd.exe", "/C start \"\" \"" + path+ "\"");
+        //processStartInfo.UseShellExecute = true;
+       // processStartInfo.CreateNoWindow = true;
         processStartInfo.WorkingDirectory = where;
         processStartInfo.WindowStyle = ProcessWindowStyle.Normal;
-
         Process p = new Process();
         p.StartInfo = processStartInfo;
         p.Start();
@@ -43,11 +57,8 @@ public class E_LaunchWindowBat
         if(deleteAfterRunning)
             File.Delete(path);
     }
-    public static void CreateAndLaunchBatFile(in MetaAbsolutePathDirectory whereToCreate, in MetaFileNameWithoutExtension batName, params string[] whatToExecute)
-    {
-
-    }
-    public static void ExecuteCommandHiddenWithReturn(in MetaAbsolutePathDirectory whereToCreate,in string command, out string output, out string error, out int exitCode)
+    
+    public static void ExecuteCommandHiddenWithReturn(in IMetaAbsolutePathDirectoryGet whereToCreate,in string command, out string output, out string error, out int exitCode)
     {
         ProcessStartInfo ProcessInfo;
         Process process;
@@ -67,7 +78,7 @@ public class E_LaunchWindowBat
         process.Close();
     }
 
-    public static void ExecuteCommandHiddenWithReturnInThread( MetaAbsolutePathDirectory whereToCreate,  string command)
+    public static void ExecuteCommandHiddenWithReturnInThread( IMetaAbsolutePathDirectoryGet whereToCreate,  string command)
     {
         string o, e;
         int ex;
@@ -83,7 +94,7 @@ public class E_LaunchWindowBat
     //}
     
 
-    public static void ExecuteMultipleCommandsHidden(MetaAbsolutePathDirectory whereToCreate, params string [] command) {
+    public static void ExecuteMultipleCommandsHidden(IMetaAbsolutePathDirectoryGet whereToCreate, params string [] command) {
         //static void RunCommands(List<string> cmds, string workingDirectory = "")
         //{
         //    var process = new Process();

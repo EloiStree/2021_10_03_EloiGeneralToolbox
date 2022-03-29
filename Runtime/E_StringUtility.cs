@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using UnityEngine;
 
 namespace Eloi
 {
@@ -67,6 +68,22 @@ namespace Eloi
 
         }
 
+        public static bool EndWith(in string text, in string endWith)
+        {
+            if (text == null || text.Length == 0)
+                return false;
+            if (text.Length < endWith.Length)
+                return false;
+
+            if (text.Length == endWith.Length)
+                return AreEquals(in text, in endWith);
+            string t = text.Substring(text.Length - endWith.Length);
+            //Debug.Log("^^"+t);
+            return AreEquals(in t, in endWith);
+
+
+        }
+
         public class Mail { 
             //private static readonly string notWantedCharInMail = "!#$%&'*+-/=?^_`{|}~";//19
             //private static readonly string notWantedCharSaveEquivalent = "♚♟♞♙♘♖♕♔♜♛♗♝♤♡♧♢←↑→";//19
@@ -105,7 +122,12 @@ namespace Eloi
         public static bool AreNotEquals(in string a, in string b, in bool ignoreCase, in bool useTrim) {
             return !AreEquals(in a, in b, in ignoreCase, in useTrim);
         }
-        public static bool AreEquals(in string a, in string b, in bool ignoreCase, in bool useTrim)
+        private static bool m_true=true;
+        public static bool AreEquals(in string a, in string b)
+        {
+            return AreEquals(in a, in b, in m_true, in m_true);
+        }
+            public static bool AreEquals(in string a, in string b, in bool ignoreCase, in bool useTrim)
         {
             
             if (a == null && b == null)

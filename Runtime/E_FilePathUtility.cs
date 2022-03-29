@@ -491,5 +491,21 @@ namespace Eloi
                 File.WriteAllText(p, textToExport);
             }
         }
+
+        public static void GetFileInfoFromPath(in IMetaAbsolutePathFileGet filePath, out IMetaFileNameWithExtensionGet fileInfo)
+        {
+             ExtractFileWithExtension(in filePath, out fileInfo);
+        }
+
+        public static void GetFileInfoFromPath(in IMetaAbsolutePathFileGet filePath, out bool exist, out IMetaFileNameWithExtensionGet fileInfo)
+        {
+            ExtractFileWithExtension(in filePath, out fileInfo);
+            exist= File.Exists(filePath.GetPath());
+        }
+
+        public static void GetDirectoryFromPath(in IMetaAbsolutePathFileGet filePath, out IMetaAbsolutePathDirectoryGet directory)
+        {
+            directory = new MetaAbsolutePathDirectory(Path.GetDirectoryName(filePath.GetPath()));
+        }
     }
 }
