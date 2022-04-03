@@ -11,7 +11,7 @@ public class ApplicationBasicActionsMono : MonoBehaviour
     public static bool m_restartPlayModeInEditor=false;
     public void OpenProjectRoot()
     {
-        Application.OpenURL(Directory.GetCurrentDirectory());
+        Application.OpenURL(GetPathOfCurrentFolder());
     }
     public void OpenURL(string url)
     {
@@ -19,8 +19,11 @@ public class ApplicationBasicActionsMono : MonoBehaviour
     }
     public void OpenRootRelativeFolder(string relativePath)
     {
-        Eloi.E_FilePathUnityUtility.MeltPathTogether(out string path, Directory.GetCurrentDirectory(), relativePath);
+        Eloi.E_FilePathUnityUtility.MeltPathTogether(out string path, GetPathOfCurrentFolder(), relativePath);
         Application.OpenURL(path);
+    }
+    public string GetPathOfCurrentFolder() {
+        return Application.dataPath + "/../";
     }
 
 #if UNITY_EDITOR
@@ -64,8 +67,10 @@ public class ApplicationBasicActionsMono : MonoBehaviour
 
     private void RestartApplicationWindowThreadCall( string pathToCall)
     {
-        Eloi.MetaAbsolutePathDirectory dPath = new Eloi.MetaAbsolutePathDirectory(Path.GetDirectoryName(pathToCall));
-        E_LaunchWindowBat.ExecuteCommandHiddenWithReturn(  dPath, "start \"\" \"" + pathToCall + "\"", out string o, out string e, out int ex);
+
+        Eloi.IMetaAbsolutePathDirectoryGet dPath = new Eloi.MetaAbsolutePathDirectory(Path.GetDirectoryName(pathToCall));
+        E_LaunchWindowBat.ExecuteCommandHiddenWithReturn( in dPath, "start \"\" \"" + pathToCall + "\"", out string o, out string e, out int ex);
+
 
     }
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -22,7 +23,28 @@ namespace Eloi
     [System.Serializable]
     public class PrimitiveUnityEvent_Bool : UnityEvent<bool> { }
     [System.Serializable]
+    public class PrimitiveUnityEventExtra_Bool {
+
+        public  PrimitiveUnityEvent_Bool m_valueEvent;
+        public  UnityEvent m_onEvent;
+        public  UnityEvent m_offEvent;
+
+        public void Invoke(bool value)
+        {
+            m_valueEvent.Invoke(value);
+            if(value)
+            m_onEvent.Invoke();
+            else
+            m_offEvent.Invoke();
+        }
+    }
+
+    [System.Serializable]
     public class PrimitiveUnityEvent_String : UnityEvent<string> { }
+    [System.Serializable]
+    public class PrimitiveUnityEvent_Char : UnityEvent<char> { }
+    [System.Serializable]
+    public class PrimitiveUnityEvent_StringArray : UnityEvent<string[]> { }
 
     [System.Serializable]
     public class PrimitiveUnityEvent_DoubleString : UnityEvent<string, string> { }
@@ -33,6 +55,12 @@ namespace Eloi
     public class PrimitiveUnityEvent_UInt : UnityEvent<uint> { }
     [System.Serializable]
     public class PrimitiveUnityEvent_ULong : UnityEvent<ulong> { }
+
+
+    [System.Serializable]
+    public class ClassicUnityEvent_Texture2D : UnityEvent<Texture2D> { }
+    [System.Serializable]
+    public class ClassicUnityEvent_Color : UnityEvent<Color> { }
 
 
 

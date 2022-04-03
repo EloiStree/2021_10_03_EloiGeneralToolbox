@@ -1,4 +1,5 @@
 using Eloi;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,20 +21,20 @@ public class E_LaunchWindowBat
     //    process.WaitForExit();
     //}
 
-    public static void CreateAndExecuteBatFileInThread(in IMetaAbsolutePathDirectoryGet whereToCreate,
-        in IMetaFileNameWithoutExtensionGet batName, in bool deleteAfterRunning,
-        params string[] whatToExecute)
-    {
-        IMetaAbsolutePathDirectoryGet w=whereToCreate;
-        IMetaFileNameWithoutExtensionGet b =batName;
-            bool d= deleteAfterRunning;
-         string[] p=whatToExecute;
-        new Thread(() => CreateAndExecuteBatFile( w ,  b , d , p)).Start();
-    }
+    // public static void CreateAndExecuteBatFileInThread(in IMetaAbsolutePathDirectoryGet whereToCreate,
+        // in IMetaFileNameWithoutExtensionGet batName, in bool deleteAfterRunning,
+        // params string[] whatToExecute)
+    // {
+        // IMetaAbsolutePathDirectoryGet w=whereToCreate;
+        // IMetaFileNameWithoutExtensionGet b =batName;
+            // bool d= deleteAfterRunning;
+         // string[] p=whatToExecute;
+        // new Thread(() => CreateAndExecuteBatFile( w ,  b , d , p)).Start();
+    // }
 
 
     public static void CreateAndExecuteBatFile(in IMetaAbsolutePathDirectoryGet whereToCreate, 
-        in IMetaFileNameWithoutExtensionGet batName,in bool deleteAfterRunning,
+        in MetaFileNameWithoutExtension batName,in bool deleteAfterRunning,
         params string[] whatToExecute)
     {
         batName.GetName(out string batNameWithoutExt);
@@ -57,7 +58,65 @@ public class E_LaunchWindowBat
         if(deleteAfterRunning)
             File.Delete(path);
     }
-    
+
+    public static void JustLaunchTarget(in IMetaAbsolutePathFileGet batch)
+    {
+
+        Eloi.E_FilePathUnityUtility.GetDirectoryPathOf(batch.GetPath(), out string pathDir);
+        ProcessStartInfo processStartInfo = new ProcessStartInfo("cmd.exe", "/c " + batch);
+        processStartInfo.UseShellExecute = true;
+        processStartInfo.CreateNoWindow = false;
+        processStartInfo.WorkingDirectory = pathDir;
+        processStartInfo.WindowStyle = ProcessWindowStyle.Normal;
+
+        Process p = new Process();
+        p.StartInfo = processStartInfo;
+        p.Start();
+        p.WaitForExit();
+    }
+
+    public static void CreateAndExecuteBatFileInThread(in IMetaAbsolutePathDirectoryGet whereToCreate,
+     in IMetaFileNameWithoutExtensionGet batName, in bool deleteAfterRunning,
+     params string[] whatToExecute)
+    {
+        IMetaAbsolutePathDirectoryGet w = whereToCreate;
+        IMetaFileNameWithoutExtensionGet b = batName;
+        bool d = deleteAfterRunning;
+        string[] p = whatToExecute;
+        new Thread(() => CreateAndExecuteBatFile(w, b, d, p)).Start();
+    }
+
+    private static void CreateAndExecuteBatFile(
+        IMetaAbsolutePathDirectoryGet whereToCreate,
+        IMetaFileNameWithoutExtensionGet batName, 
+        bool deleteAfterRunning,
+        string[] whatToExecute)
+    {
+        batName.GetName(out string name);
+        MetaFileNameWithExtension file = new MetaFileNameWithExtension(name, "bat");
+        IMetaAbsolutePathFileGet filePath = Eloi.E_FileAndFolderUtility.Combine(whereToCreate, file);
+        string rawPath = filePath.GetPath();
+        Eloi.E_FileAndFolderUtility.CreateFolderIfNotThere(filePath);
+        File.WriteAllText(rawPath, string.Join("\n", whatToExecute));
+        JustLaunchTarget(filePath);
+        if (deleteAfterRunning && File.Exists(rawPath))
+        {
+            try
+            {
+                File.Delete(rawPath);
+            }
+            catch (Exception) {
+                Eloi.E_CodeTag.DirtyCode.Info("Shit code but to ill in real life for the moment to think about it.")
+              ;  //Humm;
+            }
+        }
+
+    }
+
+    public static void CreateAndLaunchBatFile(in IMetaAbsolutePathDirectoryGet whereToCreate, in IMetaFileNameWithoutExtensionGet batName, params string[] whatToExecute)
+    {
+        Eloi.E_CodeTag.ToCodeLater.Info("Git Merge: Should I code that ?");
+    }
     public static void ExecuteCommandHiddenWithReturn(in IMetaAbsolutePathDirectoryGet whereToCreate,in string command, out string output, out string error, out int exitCode)
     {
         ProcessStartInfo ProcessInfo;
@@ -65,6 +124,7 @@ public class E_LaunchWindowBat
         ProcessInfo = new ProcessStartInfo("cmd.exe", $"/c {command}");
         ProcessInfo.CreateNoWindow = true;
         ProcessInfo.UseShellExecute = false;
+        ProcessInfo.WindowStyle = ProcessWindowStyle.Hidden;
         ProcessInfo.WorkingDirectory = whereToCreate.GetPath();
         // *** Redirect the output ***
         ProcessInfo.RedirectStandardError = true;
@@ -78,11 +138,15 @@ public class E_LaunchWindowBat
         process.Close();
     }
 
-    public static void ExecuteCommandHiddenWithReturnInThread( IMetaAbsolutePathDirectoryGet whereToCreate,  string command)
+
+
+  
+public static void ExecuteCommandHiddenWithReturnInThread( IMetaAbsolutePathDirectoryGet whereToCreate,  string command)
+
     {
         string o, e;
         int ex;
-        new Thread(() => ExecuteCommandHiddenWithReturn( whereToCreate,  command, out o, out e, out ex)).Start();
+        new Thread(() => ExecuteCommandHiddenWithReturn(  whereToCreate,  command, out o, out e, out ex)).Start();
     }
 
     //public static void ExecuteMultipleCommandsHidden(MetaAbsolutePathDirectory whereToCreate, params string[] command)

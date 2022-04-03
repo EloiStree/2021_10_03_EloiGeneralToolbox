@@ -51,21 +51,26 @@ namespace Eloi
                clampText = givenText.Substring(0, (int)maxChar);
         }
 
-        public static bool StartWith(in string text, in string line, in bool useLower, in bool useTrim)
+        public static bool StartWith( string text,  string line, bool ignoreCase, bool trim)
         {
+            if (ignoreCase)
+            {
+                text = text.ToLower();
+                line = line.ToLower();
+            }
+            if (trim)
+            {
+                text = text.Trim();
+                line = line.Trim();
+            }
+
+            if (text == null || line == null)
+                return false;
             if (text.Length < line.Length)
                 return false;
-            string textStart = text.Substring(0, line.Length);
 
-            bool textDefined= textStart != null && textStart.Length > 0;
-            bool lineDefined= line != null && line.Length > 0;
-            if ( !textDefined || !lineDefined) {
-                return !textDefined == !lineDefined;
-            }
-           
-
-          return  AreEquals(in line, textStart, true, true);
-
+          string textStart = text.Substring(0, line.Length);
+          return  AreEquals(in line, in textStart, false, false);
         }
 
         public static bool EndWith(in string text, in string endWith)
@@ -127,24 +132,22 @@ namespace Eloi
         {
             return AreEquals(in a, in b, in m_true, in m_true);
         }
-            public static bool AreEquals(in string a, in string b, in bool ignoreCase, in bool useTrim)
+        public static bool AreEquals(in string a, in string b, in bool ignoreCase, in bool useTrim)
         {
-            
+
             if (a == null && b == null)
                 return true;
             if ((a != null && b == null) 
                 || (a == null && b != null))
                 return false;
 
-            if (!ignoreCase && !useTrim)
-            {
-
-                if (a.Length == b.Length && a.IndexOf(b) == 0)
-                    return true;
-            }
-            else {
-                string ta=a, tb=b;
-                if (ignoreCase)
+            string ta = a.ToString(), tb = b.ToString();
+            //if (!ignoreCase && !useTrim)
+            //{
+            //    return (a.Length == b.Length && a.IndexOf(b) == 0);
+            //}
+            //else {
+            if (ignoreCase)
                 {
                     ta = ta.ToLower();
                     tb = tb.ToLower();
@@ -153,12 +156,12 @@ namespace Eloi
                 {
                     ta = ta.Trim();
                     tb = tb.Trim();
-                }
-                if (ta.Length == tb.Length && ta.IndexOf(tb) == 0)
-                    return true;
             }
-            
-            return false;
+            return (ta.Length == tb.Length && ta == tb);
+           // return (ta.Length == tb.Length && ta .IndexOf( tb)==0);
+            //}
+
+            //return false;
         }
 
         public static void SplitInTwo(in string text, in  int charIndex, out string leftPart, out string rightPart)

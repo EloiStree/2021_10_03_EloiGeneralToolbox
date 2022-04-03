@@ -11,6 +11,12 @@ public class E_DebugLog
         public static void B(in string info="", params object[] parameters) => DisplaySmallText("B", in info, parameters);
         public static void C(in string info="", params object[] parameters) => DisplaySmallText("C", in info, parameters);
         public static void D(in string info="", params object[] parameters) => DisplaySmallText("D", in info, parameters);
+
+        public static void NowLog(string debugText, string nowFormat="hh:mm ss fff")
+        {
+            Debug.Log(string.Format(debugText, DateTime.Now.ToString(nowFormat)));
+        }
+
         public static void E(in string info="", params object[] parameters) => DisplaySmallText("E", in info, parameters);
         public static void F(in string info="", params object[] parameters) => DisplaySmallText("F", in info, parameters);
         public static void G(in string info="", params object[] parameters) => DisplaySmallText("G", in info, parameters);

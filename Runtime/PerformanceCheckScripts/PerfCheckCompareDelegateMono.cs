@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PerformanceCheckingCOmpareDelegateMono : MonoBehaviour
+public class PerfCheckCompareDelegateMonoDemo : MonoBehaviour
 {
 
     public PerformanceCompareResult m_resultMethodes;

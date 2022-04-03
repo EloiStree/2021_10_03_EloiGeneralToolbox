@@ -7,6 +7,15 @@ namespace Eloi
     public class E_ColorUtility : MonoBehaviour
     {
 
+        public static bool IsAlmostEqual(in Color a, in Color b, in float minPourcent) {
+
+            return
+                Mathf.Abs(a.r - b.r) < Mathf.Abs(minPourcent) &&
+                Mathf.Abs(a.g - b.g) < Mathf.Abs(minPourcent) &&
+                Mathf.Abs(a.b - b.b) < Mathf.Abs(minPourcent);
+        
+        }
+
         public static class RGBCodesChart
         {
             public static Color Black = new Color(0, 0, 0);

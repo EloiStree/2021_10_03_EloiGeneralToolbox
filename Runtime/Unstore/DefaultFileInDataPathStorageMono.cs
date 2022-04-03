@@ -14,7 +14,6 @@ public class DefaultFileInDataPathStorageMono : Eloi.AbstractMetaAbsolutePathFil
     [ContextMenu("Verify Path builded in Editor")]
     public void GetEditorDebugPath()
     {
-
         GetPath(out string p);
     }
     [ContextMenu("Verify Path builded in Editor")]
@@ -45,5 +44,18 @@ public class DefaultFileInDataPathStorageMono : Eloi.AbstractMetaAbsolutePathFil
         return p;
     }
 
-  
+    public void CreateEmptyFileAtDestinationIfNotExisting()
+    {
+        GetPath(out string p);
+        if (!File.Exists(p))
+            File.CreateText(p);
+    }
+    public void CreateFileAtDestinationIfNotExisting(string text)
+    {
+        GetPath(out string p);
+        if (!File.Exists(p))
+            File.WriteAllText(p,text);
+    }
+
+
 }

@@ -36,5 +36,12 @@ namespace Eloi
             int dotIndex = mail.LastIndexOf(".");
             isMailAddress = arrobasIndex > 0 && dotIndex > 0 && dotIndex > arrobasIndex;
         }
+
+        public static void CheckIfStringContainCharacterThatDontFitPhoneNumber(in string phone, out bool couldBePhoneNumber)
+        {
+            Regex rgx = new Regex("[^+0-9 ()-]");
+            string phoneNumber = rgx.Replace(phone, "");
+            couldBePhoneNumber = phone.Length == phoneNumber.Length;
+        }
     }
 }

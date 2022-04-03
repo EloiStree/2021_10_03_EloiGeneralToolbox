@@ -13,20 +13,25 @@ public class DelayTick : MonoBehaviour
 
     void Awake()
     {
-        if (m_onAwake)
-            Invoke("Tick", m_timeWhenToTick);
+        if (m_onAwake) LaunchDelayedTick();
     }
     void Start()
     {
-        if (m_onStart)
-            Invoke("Tick", m_timeWhenToTick);
+        if (m_onStart) LaunchDelayedTick();
     }
     void OnEnable()
     {
-        if (m_onEnable)
-            Invoke("Tick", m_timeWhenToTick);
+        if (m_onEnable) LaunchDelayedTick();
     }
 
+    [ContextMenu("LaunchDelayedTick")]
+    public void LaunchDelayedTick()
+    {
+        Invoke("Tick", m_timeWhenToTick);
+
+    }
+
+    [ContextMenu("Tick")]
     void Tick()
     {
         m_tick.Invoke();
