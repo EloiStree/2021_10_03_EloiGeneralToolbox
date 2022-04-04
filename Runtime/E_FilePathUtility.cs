@@ -424,6 +424,7 @@ namespace Eloi
             E_FilePathUnityUtility.MeltPathTogether(out string pathfolder, root.GetPath(), subfolders.GetPath());
             return new MetaAbsolutePathDirectory(pathfolder);
         }
+       
         public static IMetaAbsolutePathFileGet Combine(in IMetaAbsolutePathDirectoryGet root, in IMetaRelativePathDirectoryGet subfolders, in IMetaFileNameWithExtensionGet file)
         {
             E_FilePathUnityUtility.MeltPathTogether(out string pathfolder, root.GetPath(), subfolders.GetPath());

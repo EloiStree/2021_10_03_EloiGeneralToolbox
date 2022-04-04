@@ -162,7 +162,7 @@ namespace Eloi
 
         public static void RenderTextureToTexture2D(in RenderTexture renderTexture , out Texture2D texture)
         {
-             texture = new Texture2D(512, 512, TextureFormat.RGB24, false);
+            texture = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGB24, false);
             RenderTexture.active = renderTexture;
             texture.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
             texture.Apply();

@@ -16,12 +16,11 @@ public class DirectDirectoryPathMono : Eloi.AbstractMetaAbsolutePathDirectoryMon
     {
         return m_directoryPath.GetPath(); 
     }
-    [ContextMenu("Open Target")]
-    public void OpenTargetWithUnity() { Application.OpenURL(GetPath()); }
-    [ContextMenu("Open Directory")]
-    public void OpenTargetDirectoryWithUnity()
+
+    public void SetDirectPath(string absolutePath)
     {
-        Eloi.E_FilePathUnityUtility.GetDirectoryPathOf(GetPath(), out string dirPath);
-        Application.OpenURL(dirPath);
+        m_directoryPath.SetPath(absolutePath);
+
     }
+  
 }
