@@ -14,7 +14,7 @@ namespace Eloi
             if (m_directoryPath != null)
             {
                 m_directoryPath.GetPath(out string directPath);
-                if (directPath.Trim().Length >= 0)
+                if (directPath.Trim().Length > 0)
                 {
                     path = directPath;
                     return;

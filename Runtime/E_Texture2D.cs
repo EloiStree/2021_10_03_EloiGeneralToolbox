@@ -93,8 +93,24 @@ namespace Eloi
             //grayScaleTExture.Apply();
             grayScaleTexture = target;
         }
-       
 
+        public static void TextureToTexture2DCopy(Texture2D texture, out Texture2D texture2D)
+        {
+           
+                texture2D = new Texture2D(texture.width, texture.height, TextureFormat.RGBA32, false);
+                RenderTexture currentRT = RenderTexture.active;
+                RenderTexture renderTexture = RenderTexture.GetTemporary(texture.width, texture.height, 32);
+                Graphics.Blit(texture, renderTexture);
+
+                RenderTexture.active = renderTexture;
+                texture2D.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
+                texture2D.Apply();
+
+                RenderTexture.active = currentRT;
+                RenderTexture.ReleaseTemporary(renderTexture);
+            
+            
+        }
 
         public static void FlipTextureVertical(in Texture2D original , out Texture newFlipTexture)
         {
@@ -119,15 +135,16 @@ namespace Eloi
             newFlipTexture = flipped;
         }
 
-        public static void CropTexture2DWithPourcent(in Texture2D textureOrigine, out Texture2D result,in float topPct, in float rightPct, in float downPct, in float leftPct)
+        public static void CropTexture2DWithPourcent(in Texture2D textureOrigine, out Texture2D result,
+            in float topPct, in float rightPct, in float downPct, in float leftPct)
         {
             int width = textureOrigine.width;
             int height = textureOrigine.height;
             int startHorizontal = (int)(width * (leftPct));
-            int startVertical = (int)(height * (topPct));
+            int startVertical = (int)(height * (downPct));
 
             int widthNew = (int) (width * (1f - (leftPct + rightPct)));
-            int heightNew = (int) (height * (1f - (topPct + downPct)));
+            int heightNew = (int) (height * (1f - (downPct + topPct)));
 
             Color [] c=  textureOrigine.GetPixels(startHorizontal, startVertical, widthNew, heightNew);
             result = new Texture2D(widthNew, heightNew, textureOrigine.format, true);
@@ -162,8 +179,12 @@ namespace Eloi
 
         public static void RenderTextureToTexture2D(in RenderTexture renderTexture , out Texture2D texture)
         {
-            texture = new Texture2D(renderTexture.width, renderTexture.height, TextureFormat.RGB24, false);
+
+            texture = new Texture2D(renderTexture.width, renderTexture.height, 
+                TextureFormat.RGB24, true,true); 
+
             RenderTexture.active = renderTexture;
+            
             texture.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
             texture.Apply();
         }

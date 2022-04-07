@@ -8,9 +8,15 @@ public class UIRawImageWithRatioMono : MonoBehaviour
     public RawImage m_imageToAffect;
     public AspectRatioFitter m_ratioToAffect;
 
-    public void ApplyTexture(Texture2D texture) {
+    public void ApplyTexture(Texture2D texture)
+    {
         m_imageToAffect.texture = texture;
-        m_ratioToAffect.aspectRatio = texture.width /(float) texture.height;
+        m_ratioToAffect.aspectRatio = texture.width / (float)texture.height;
+    }
+    public void ApplyTexture(RenderTexture texture)
+    {
+        m_imageToAffect.texture = texture;
+        m_ratioToAffect.aspectRatio = texture.width / (float)texture.height;
     }
 
     private void Reset()

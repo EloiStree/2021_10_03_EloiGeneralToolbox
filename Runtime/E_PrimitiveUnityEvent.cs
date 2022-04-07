@@ -59,6 +59,9 @@ namespace Eloi
 
     [System.Serializable]
     public class ClassicUnityEvent_Texture2D : UnityEvent<Texture2D> { }
+
+    [System.Serializable]
+    public class ClassicUnityEvent_RenderTexture : UnityEvent<RenderTexture> { }
     [System.Serializable]
     public class ClassicUnityEvent_Color : UnityEvent<Color> { }
 
