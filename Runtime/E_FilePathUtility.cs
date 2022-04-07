@@ -740,6 +740,31 @@ namespace Eloi
                 }
             }
         }
+
+        public static void SplitInfo(in IMetaAbsolutePathFileGet file, out IMetaAbsolutePathDirectoryGet directoryFound, out IMetaFileNameWithExtensionGet fileFound)
+        {
+            GetDirectoryPathFromPath(in file, out directoryFound);
+            GetFileInfoFromPath(in file, out fileFound);
+        }
+
+        public static void SplitInfoAsString(in IMetaAbsolutePathFileGet file, out string directoryPathOfFile, out string fileName, out string fileExtension)
+        {
+            if (file == null)
+            {
+                directoryPathOfFile = "";
+                fileName = "";
+                fileExtension = "";
+                return;
+            }
+            GetDirectoryPathFromPath(in file, out IMetaAbsolutePathDirectoryGet directoryFound);
+            GetFileInfoFromPath(in file, out IMetaFileNameWithExtensionGet fileFound);
+
+            directoryFound.GetPath(out directoryPathOfFile);
+            fileFound.GetFileNameWithoutExtension(out fileName);
+            fileFound.GetExtensionWithoutDot(out fileExtension);
+
+
+        }
         //public class CoroutinePourcentState {
         //    public float m_pourcentProcessing;
         //    public bool m_finished;
