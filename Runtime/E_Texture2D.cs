@@ -40,6 +40,18 @@ namespace Eloi
             }
         }
 
+        public static void Texture2DToRenderTexture(in Texture2D refTexture, out RenderTexture rt)
+        {
+
+            rt = new RenderTexture(refTexture.width, refTexture.height, 0);
+            rt.enableRandomWrite = true;
+                RenderTexture.active = rt;
+                Graphics.Blit(refTexture, rt);
+
+               
+            
+        }
+
         public static void Import(IMetaAbsolutePathFileGet file, out Texture2D texture)
         {
             Eloi.E_FileAndFolderUtility.ImportTexture(file, out texture);

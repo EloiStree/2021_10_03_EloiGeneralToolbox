@@ -359,14 +359,24 @@ namespace Eloi
                 File.WriteAllText(path, text);
             }
         }
+        public static void LoadTexture2DFromFile(in IMetaAbsolutePathFileGet path, out Texture2D texture, bool mipmap = true, bool linear = false)
+        {
+            if (path == null) { 
+                texture = null;
+                return;
+            }
+            path.GetPath(out string p);
+            LoadTexture2DFromFile(p, out texture);
+        }
 
-        public static void LoadTexture2DFromFile(in string path, out Texture2D texture) {
+        public static void LoadTexture2DFromFile(in string path, out Texture2D texture, bool mipmap=true, bool linear=false) {
 
             if (Exists(in path))
             {
                 byte[] buffer = File.ReadAllBytes(path);
-                texture = new Texture2D(1, 1);
+                texture = new Texture2D(1, 1, TextureFormat.RGBA32, mipmap, linear);
                 texture.LoadImage(buffer);
+                texture.Apply();
             }
             else texture = null;
 
@@ -764,6 +774,65 @@ namespace Eloi
             fileFound.GetExtensionWithoutDot(out fileExtension);
 
 
+        }
+
+        public static void DeleteFile(in IMetaAbsolutePathFileGet toDeleteFile)
+        {
+            if (toDeleteFile == null)
+                return;
+            toDeleteFile.GetPath(out string p);
+            if (File.Exists(p))
+                File.Delete(p);
+        }
+
+        public static void Move(IMetaAbsolutePathDirectoryGet from
+            , IMetaAbsolutePathDirectoryGet to, bool overrideFile)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static bool IsNotLock(IMetaAbsolutePathFileGet m_destinationImage)
+        {
+            if (m_destinationImage == null)
+                return false;
+            m_destinationImage.GetPath(out string p);
+            if (!File.Exists(p))
+                return false;
+
+            FileInfo fi = new FileInfo(p);
+            return !IsFileLocked(fi);
+        }
+        public static bool IsLock(IMetaAbsolutePathFileGet m_destinationImage)
+        {
+            if (m_destinationImage == null)
+                return false;
+            m_destinationImage.GetPath(out string p);
+            if (!File.Exists(p))
+                return false;
+
+            FileInfo fi = new FileInfo(p);
+            return IsFileLocked(fi);
+        }
+        public static bool IsFileLocked(FileInfo file)
+        {
+            try
+            {
+                using (FileStream stream = file.Open(FileMode.Open, FileAccess.Read, FileShare.None))
+                {
+                    stream.Close();
+                }
+            }
+            catch (IOException)
+            {
+                //the file is unavailable because it is:
+                //still being written to
+                //or being processed by another thread
+                //or does not exist (has already been processed)
+                return true;
+            }
+
+            //file is not locked
+            return false;
         }
         //public class CoroutinePourcentState {
         //    public float m_pourcentProcessing;

@@ -79,7 +79,7 @@ public class WebCamToRenderTexture : MonoBehaviour
 		Texture2D t = GetTexture2DFromWebcamTexture(m_webcamTextureUsed);
 		m_texturePushOut.Invoke(t);
 		if (m_reusedRendererPushedContainer == null) { 
-			RenderTexture rt = new RenderTexture(t.width, t.height,0, RenderTextureFormat.ARGB32, RenderTextureReadWrite.sRGB);
+			RenderTexture rt = new RenderTexture(t.width, t.height,0, RenderTextureFormat.ARGB32);
 			rt.enableRandomWrite = true;
 			rt.Create();
 			m_reusedRendererPushedContainer = rt;
