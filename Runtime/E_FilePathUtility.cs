@@ -606,13 +606,62 @@ namespace Eloi
             else texture = null;
 
         }
-        public static void ExportTexture(in IMetaAbsolutePathFileGet filePath,  Texture2D texture)
+        public static void ExportTexture(in IMetaAbsolutePathFileGet filePath, Texture2D texture)
         {
             CreateFolderIfNotThere(in filePath);
-            byte[] _bytes = texture.EncodeToPNG();
-            System.IO.File.WriteAllBytes(filePath.GetPath(), _bytes) ;
+            E_FileAndFolderUtility.SplitInfoAsString(in filePath, 
+                out string dir,
+                out string fileName, out string fileExtension);
+            fileExtension = fileExtension.Trim().ToLower();
+            if (fileExtension == "png")
+                ExportTextureAsPNG(in filePath, texture, true, false);
+            if (fileExtension == "tag")
+                ExportTextureAsTGA(in filePath, texture, true, false);
+            if (fileExtension == "jpg" ||
+                fileExtension == "jpeg")
+                ExportTextureAsJPEG(in filePath, texture, true, false);
+        }
+        public static void ExportTextureAsJPEG(in IMetaAbsolutePathFileGet filePath, Texture2D t,
+           bool mipmap, bool linear)
+        {
+            CreateFolderIfNotThere(in filePath);
+            byte[] _bytes = t.EncodeToJPG();
+            System.IO.File.WriteAllBytes(filePath.GetPath(), _bytes);
             //Debug.Log(_bytes.Length / 1024 + "Kb was saved as: " + filePath.GetPath());
-            
+
+        }
+
+        public static void ExportTextureAsPNG(in IMetaAbsolutePathFileGet filePath, Texture2D t,
+            bool mipmap, bool linear)
+        {
+           
+            CreateFolderIfNotThere(in filePath);
+
+            //if (t.format != TextureFormat.ARGB32) {
+            //    byte[] pixelsR8 = t.GetRawTextureData();
+            //    Color32[] pixelsRGBA32 = new Color32[pixelsR8.Length];
+            //    for (int i = pixelsR8.Length - 1; i != -1; i--)
+            //    {
+            //        byte value = pixelsR8[i];
+            //        pixelsRGBA32[i] = new Color32(value, value, value, 255);//simplest R8 to RGBA32 conversion
+            //    }
+            //    t.SetPixels32(pixelsRGBA32);//updates textureRGBA32 data in CPU memory
+            //    t.Apply();
+            //}
+            byte[] _bytes = t.EncodeToPNG();
+            System.IO.File.WriteAllBytes(filePath.GetPath(), _bytes);
+            //Debug.Log(_bytes.Length / 1024 + "Kb was saved as: " + filePath.GetPath());
+
+        }
+        public static void ExportTextureAsTGA(in IMetaAbsolutePathFileGet filePath, Texture2D t,
+           bool mipmap, bool linear)
+        {
+           
+            CreateFolderIfNotThere(in filePath);
+            byte[] _bytes = t.EncodeToTGA();
+            System.IO.File.WriteAllBytes(filePath.GetPath(), _bytes);
+            //Debug.Log(_bytes.Length / 1024 + "Kb was saved as: " + filePath.GetPath());
+
         }
 
         public static void ExportByOverriding(in IMetaAbsolutePathFileGet file, string csv)
@@ -833,6 +882,16 @@ namespace Eloi
 
             //file is not locked
             return false;
+        }
+
+        public static void GetAllDirectoriesInAndInChildren(IMetaAbsolutePathDirectoryGet targetDirectory, out string[] directories)
+        {
+            directories=Directory.GetDirectories(targetDirectory.GetPath(), "*", SearchOption.AllDirectories);
+        }
+
+        public static void GetAllDirectoriesInAndOnlyInFolder(IMetaAbsolutePathDirectoryGet targetDirectory, out string[] directories)
+        {
+            directories= Directory.GetDirectories(targetDirectory.GetPath(), "*", SearchOption.TopDirectoryOnly);
         }
         //public class CoroutinePourcentState {
         //    public float m_pourcentProcessing;

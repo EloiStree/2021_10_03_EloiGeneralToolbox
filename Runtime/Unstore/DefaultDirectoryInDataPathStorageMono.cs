@@ -21,8 +21,12 @@ public class DefaultDirectoryInDataPathStorageMono : Eloi.AbstractMetaAbsolutePa
 
         Application.OpenURL(m_debugPath);
     }
-    
-   
+
+
+    public void SetRelativeFolderPath(string relativePath) {
+        m_subfolders.SetPath(relativePath);
+    }
+
 
     public override void GetPath(out string path)
     {

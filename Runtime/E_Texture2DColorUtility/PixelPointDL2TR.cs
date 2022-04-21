@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -64,6 +65,51 @@ public class PixelPointUtility
     public static void GetUpOf(in PixelPointDL2TR cursor, ref PixelPointDL2TR nextPoint)
     {
         nextPoint.Set(in cursor);
+        nextPoint.m_y += 1;
+    }
+
+    public static bool IsInRange(in PixelPointDL2TR focus, in int width2D, in int width1D )
+    {
+        int i = focus.Get1D(in width2D);
+        return i > -1 && i < width1D;
+    }
+
+    public static bool IsTransparent(in Color[] colors, in int width2D, in PixelPointDL2TR focus)
+    {
+        int index = focus.Get1D(width2D);
+        return colors[index].a <= 0f;
+    }
+    public static bool IsTransparent(in Color[] colors, in int width2D, in PixelPointDL2TR focus, float theshold=0.01f)
+    {
+        int index = focus.Get1D(width2D);
+        return colors[index].a <= theshold;
+    }
+
+    public static void GetTopLeftOf(in PixelPointDL2TR cursor, ref PixelPointDL2TR nextPoint)
+    {
+        nextPoint.Set(in cursor);
+        nextPoint.m_x -= 1;
+        nextPoint.m_y += 1;
+    }
+
+    public static void GetTopRightOf(in PixelPointDL2TR cursor, ref PixelPointDL2TR nextPoint)
+    {
+        nextPoint.Set(in cursor);
+        nextPoint.m_x += 1;
+        nextPoint.m_y += 1;
+    }
+
+    public static void GetDownLeftOf(in PixelPointDL2TR cursor, ref PixelPointDL2TR nextPoint)
+    {
+        nextPoint.Set(in cursor);
+        nextPoint.m_x -= 1;
+        nextPoint.m_y += 1;
+    }
+
+    public static void GetUpRightOf(in PixelPointDL2TR cursor, ref PixelPointDL2TR nextPoint)
+    {
+        nextPoint.Set(in cursor);
+        nextPoint.m_x += 1;
         nextPoint.m_y += 1;
     }
 }

@@ -40,6 +40,36 @@ namespace Eloi
             }
         }
 
+        public static void Copy(in Texture2D from, out Texture2D to)
+        {
+            throw new NotImplementedException();
+            //to = new Texture2D(from.width, from.height);
+            //Graphics.CopyTexture(from, to);
+        }
+
+        public static void SetFullBlackToTransparent(ref Texture2D refTexture)
+        {
+            Color[] c = refTexture.GetPixels();
+            for (int i = 0; i < c.Length; i++)
+            {
+                if (c[i].r == 0 && c[i].g == 0 && c[i].b == 0)
+                    c[i].a = 0;
+            }
+            refTexture.SetPixels(c);
+            refTexture.Apply();
+        }
+        public static void SetFullBlackToTransparent(ref Texture2D refTexture, in float thershold=0.01f)
+        {
+            Color[] c = refTexture.GetPixels();
+            for (int i = 0; i < c.Length; i++)
+            {
+                if (c[i].r < thershold && c[i].g < thershold && c[i].b < thershold)
+                    c[i].a = 0;
+            }
+            refTexture.SetPixels(c);
+            refTexture.Apply();
+        }
+
         public static void Texture2DToRenderTexture(in Texture2D refTexture, out RenderTexture rt)
         {
 
@@ -191,12 +221,9 @@ namespace Eloi
 
         public static void RenderTextureToTexture2D(in RenderTexture renderTexture , out Texture2D texture)
         {
-
             texture = new Texture2D(renderTexture.width, renderTexture.height, 
-                TextureFormat.RGB24, true,true); 
-
+                TextureFormat.RGBA32, true,true); 
             RenderTexture.active = renderTexture;
-            
             texture.ReadPixels(new Rect(0, 0, renderTexture.width, renderTexture.height), 0, 0);
             texture.Apply();
         }
@@ -235,7 +262,7 @@ namespace Eloi
                 }
             }
 
-            rotatedTexture = new Texture2D(h, w);
+            rotatedTexture = new Texture2D(h, w, TextureFormat.RGBA32, true);
             rotatedTexture.SetPixels32(rotated);
             rotatedTexture.Apply();
         }
