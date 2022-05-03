@@ -248,6 +248,11 @@ namespace Eloi
         public void GetExtensionWithDot(out string extension) => extension = "." + m_extensionNameWithoutDot;
         public void GetFileNameWithoutExtension(out string fileName) { fileName = m_fileName; }
         public void GetFileNameWithExtension(out string fileName) { fileName = m_fileName + "." + m_extensionNameWithoutDot; }
+
+        public bool IsEmpty()
+        {
+            return m_fileName.Trim().Length <= 0 && m_extensionNameWithoutDot.Trim().Length <= 0;
+        }
     }
 
     public interface IMetaAbsolutePathFileGet : IMetaPathGet
@@ -317,7 +322,11 @@ namespace Eloi
         {
         }
 
-
+        public bool IsEmpty()
+        {
+            GetPath(out string p);
+            return p.Trim().Length <= 0;
+        }
     }
     public interface IMetaRelativePathDirectoryGet : IMetaPathGet
     {

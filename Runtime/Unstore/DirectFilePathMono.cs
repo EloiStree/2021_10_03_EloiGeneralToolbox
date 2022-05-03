@@ -11,6 +11,12 @@ public class DirectFilePathMono : Eloi.AbstractMetaAbsolutePathFileMono
 
 public override void GetPath(out string path)
 {
+        if (m_folderPath.IsEmpty() && m_fileName.IsEmpty())
+        { 
+            path= "";
+            return;
+        }
+
         IMetaAbsolutePathDirectoryGet d = m_folderPath;
                IMetaFileNameWithExtensionGet f = m_fileName;
          path =E_FileAndFolderUtility.Combine(in d, in  f).GetPath();
