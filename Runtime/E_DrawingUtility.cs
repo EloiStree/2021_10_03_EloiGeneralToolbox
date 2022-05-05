@@ -21,6 +21,14 @@ namespace Eloi
 
         }
 
+        public static void DrawLines(float deltaTime, Color color, params Vector3 [] worldPosition)
+        {
+            for (int i = 1; i < worldPosition.Length; i++)
+            {
+                Debug.DrawLine(worldPosition[i - 1], worldPosition[i], color, deltaTime);
+            }
+        }
+
         public static void DrawCartesianOrigine(in Vector3 where, in Quaternion direction, in float distanceOfAxis, in float timeInSeconds)
         {
 
