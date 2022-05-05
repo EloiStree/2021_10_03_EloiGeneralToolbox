@@ -11,7 +11,7 @@ public abstract class AbstractUI2Display : MonoBehaviour
     [ContextMenu("Switch")]
     public void SwitchState(){
         IsDisplaying(out bool state);
-        SetDisplayOn(state);
+        SetDisplayOn(!state);
     }
     public abstract void SetDisplayOn(bool setAsDisplaying);
     public abstract void IsDisplaying(out bool isDisplaying);
