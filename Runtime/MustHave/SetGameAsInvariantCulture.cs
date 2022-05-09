@@ -15,7 +15,11 @@ public class SetGameAsInvariantCulture : MonoBehaviour
     {
         Eloi.E_GeneralUtility.SetApplicationAsCultureInvariant();
     }
+    private void OnValidate()
+    {
+        Eloi.E_GeneralUtility.SetApplicationAsCultureInvariant();
 
-    
+    }
+
 
 }
