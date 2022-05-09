@@ -24,9 +24,11 @@ public class TransformPlayerPrefsMono : MonoBehaviour
         string jsonTransform = PlayerPrefs.GetString(m_id, "");
 
         TransformToStore t = JsonUtility.FromJson<TransformToStore>(jsonTransform);
-        m_toAffect.position = t.m_position;
-        m_toAffect.rotation = t.m_rotation;
-        m_toAffect.localScale = t.m_localScale;
+        if (t != null) { 
+            m_toAffect.position = t.m_position;
+            m_toAffect.rotation = t.m_rotation;
+            m_toAffect.localScale = t.m_localScale;
+        }
     }
     public void ExportSave() {
         TransformToStore t = new TransformToStore(m_toAffect);
