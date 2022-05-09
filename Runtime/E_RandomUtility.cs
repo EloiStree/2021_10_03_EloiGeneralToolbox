@@ -135,10 +135,21 @@ namespace Eloi {
         public static void ShuffleParams<T>(out T[] result, params T[] toAffect) =>
         
             ShuffleAsNew(in toAffect, out result);
-        
+
         public static void ShuffleRef<T>(ref T[] toAffect)
         {
             int n = toAffect.Length;
+            while (n > 1)
+            {
+                int k = UnityEngine.Random.Range(0, n--);
+                T temp = toAffect[n];
+                toAffect[n] = toAffect[k];
+                toAffect[k] = temp;
+            }
+        }
+        public static void ShuffleRef<T>(ref List<T> toAffect)
+        {
+            int n = toAffect.Count;
             while (n > 1)
             {
                 int k = UnityEngine.Random.Range(0, n--);

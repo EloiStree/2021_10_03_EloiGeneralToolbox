@@ -59,6 +59,11 @@ namespace Eloi
             }
         }
 
+        public static void RemoveDouble(ref List<string> list)
+        {
+            list= list.Distinct().ToList();
+        }
+
         public static void GetTimeULongIdWithNow(out ulong id)
         {
             GetTimeULongId(DateTime.Now, out id);

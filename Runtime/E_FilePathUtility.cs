@@ -673,10 +673,10 @@ namespace Eloi
 
         }
 
-        public static void ExportByOverriding(in IMetaAbsolutePathFileGet file, string csv)
+        public static void ExportByOverriding(in IMetaAbsolutePathFileGet file, string text)
         {
             CreateFolderIfNotThere(in file);
-            File.WriteAllText(file.GetPath(), csv);
+            File.WriteAllText(file.GetPath(), text);
         }
 
         public static void MoveFile(IMetaAbsolutePathFileGet file, IMetaAbsolutePathDirectoryGet directory)

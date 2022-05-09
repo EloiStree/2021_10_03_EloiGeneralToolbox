@@ -13,6 +13,10 @@ public class Texture2DToRendererMono : MonoBehaviour
         m_texture = texture;
         m_target.material.SetTexture(m_textureName, texture);
     }
+    public void PushTexture2D(RenderTexture texture)
+    {
+        m_target.material.SetTexture(m_textureName, texture);
+    }
     public void Reset()
     {
         m_target = GetComponent<Renderer>();
