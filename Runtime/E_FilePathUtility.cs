@@ -122,6 +122,8 @@ namespace Eloi
         {
             path = System.IO.Path.GetDirectoryName(directoryPath);
         }
+
+        
     }
 
     [System.Serializable]
@@ -283,6 +285,8 @@ namespace Eloi
             Application.OpenURL(dirPath);
         }
 
+       
+
         public void CreateDirectory() {
             Directory.CreateDirectory(GetPath());
         }
@@ -293,13 +297,36 @@ namespace Eloi
     }
     public abstract class AbstractMetaAbsolutePathFileMono : AbstractMetaPathMono, IMetaAbsolutePathFileGet
     {
+        [ContextMenu("Create Empty")]
+        public void CreateEmpty()
+        {
+            File.WriteAllText(GetPath(), "") ;
+        }
+        [ContextMenu("Delete Directory")]
+        public void Delete()
+        {
+
+            if (File.Exists(GetPath()))
+                File.Delete(GetPath());
+        }
     }
     public abstract class AbstractMetaRelativePathDirectoryMono : AbstractMetaPathMono, IMetaRelativePathDirectoryGet
     {
     }
     public abstract class AbstractMetaAbsolutePathDirectoryMono : AbstractMetaPathMono, IMetaAbsolutePathDirectoryGet
     {
+        [ContextMenu("Create Empty")]
+        public void CreateEmpty()
+        {
+            Directory.CreateDirectory(GetPath());
+        }
+        [ContextMenu("Delete Directory")]
+        public void Delete()
+        {
 
+            if (Directory.Exists(GetPath()))
+                Directory.Delete(GetPath());
+        }
     }
 
     public interface IMetaRelativePathFileGet : IMetaPathGet
@@ -390,7 +417,22 @@ namespace Eloi
             else texture = null;
 
         }
-
+        public static bool Exists(in IMetaAbsolutePathFileGet path)
+        {
+            return File.Exists(path.GetPath());
+        }
+        public static bool Exists(in IMetaAbsolutePathDirectoryGet path)
+        {
+            return Directory.Exists(path.GetPath());
+        }
+        public static bool DontExists(in IMetaAbsolutePathFileGet path)
+        {
+            return !File.Exists(path.GetPath());
+        }
+        public static bool DontExists(in IMetaAbsolutePathDirectoryGet path)
+        {
+            return !Directory.Exists(path.GetPath());
+        }
         public static bool Exists(in string path)
         {
             return File.Exists(path);
@@ -399,14 +441,7 @@ namespace Eloi
         {
             return !File.Exists(path);
         }
-        public static bool Exists(in IMetaAbsolutePathFileGet path)
-        {
-            return File.Exists(path.GetPath());
-        }
-        public static bool DontExists(in IMetaAbsolutePathFileGet path)
-        {
-            return !File.Exists(path.GetPath());
-        }
+       
         public static void OverrideFilePNG(in IMetaAbsolutePathFileGet path, in Texture2D texture, out bool succced)
         {
             OverrideFilePNG(path.GetPath(), in texture, out succced);
@@ -902,6 +937,77 @@ namespace Eloi
         {
             directories= Directory.GetDirectories(targetDirectory.GetPath(), "*", SearchOption.TopDirectoryOnly);
         }
+
+        public static void GetRelativePathFrom(in IMetaAbsolutePathDirectoryGet root, in IMetaAbsolutePathFileGet selection,
+            out IMetaRelativePathFileGet relativePath)
+        {
+            GetRealPathOfExistingDirectory(root, out IMetaAbsolutePathDirectoryGet rootRealPath);
+            GetRealPathOfExistingFile(selection, out IMetaAbsolutePathFileGet selectionRealPath);
+            string relative = SubstractRootPath(rootRealPath.GetPath(), selectionRealPath.GetPath());
+            relativePath = new MetaRelativePathFile(relative);
+        }
+        public static void GetRelativePathFrom(in IMetaAbsolutePathDirectoryGet root, in IMetaAbsolutePathDirectoryGet selection,
+           out IMetaRelativePathDirectoryGet relativePath)
+        {
+            GetRealPathOfExistingDirectory(root, out IMetaAbsolutePathDirectoryGet rootRealPath);
+            GetRealPathOfExistingDirectory(selection, out IMetaAbsolutePathDirectoryGet selectionRealPath);
+            string relative = SubstractRootPath(rootRealPath.GetPath(), selectionRealPath.GetPath());
+            relativePath = new MetaRelativePathDirectory(relative);
+        }
+
+        public static void GetRealPathOfExistingFile(IMetaAbsolutePathFileGet file, out IMetaAbsolutePathFileGet newFilePath)
+        {
+            if (file == null || !File.Exists(file.GetPath()))
+            {
+                newFilePath = file;
+                return;
+            }
+            newFilePath = new MetaAbsolutePathFile((new FileInfo(file.GetPath())).FullName);
+        }
+        public static void GetRealPathOfExistingDirectory(IMetaAbsolutePathDirectoryGet file, out IMetaAbsolutePathDirectoryGet newDirectoryPath)
+        {
+            if (file == null || !Directory.Exists(file.GetPath()))
+            {
+                newDirectoryPath = file;
+                return;
+            }
+            newDirectoryPath = new MetaAbsolutePathDirectory((new DirectoryInfo(file.GetPath())).FullName);
+        }
+
+        private static string SubstractRootPath(string root, string selection)
+        {
+            Eloi.E_FilePathUnityUtility.AllSlash(root, out root);
+            Eloi.E_FilePathUnityUtility.AllSlash(selection, out selection);
+            //Debug.Log("root:" + root + "\nselect:" + selection);
+            string relative = selection.Replace(root, "");
+            if (relative.Length > 0 && ( relative[0] == '\\' || relative[0] == '/') )
+                relative = relative.Substring(1);
+            return relative;
+        }
+
+        public static void AppendTextAtStart(IMetaAbsolutePathFileGet target, string textToAppend)
+        {
+            if (!Exists(target)) {
+                ExportByOverriding(target, textToAppend);
+            }
+            else {
+                ImportFileAsText(target, out string text, "");
+                ExportByOverriding(target, textToAppend + text);
+            }
+        }
+        public static void AppendTextAtEnd(IMetaAbsolutePathFileGet target, string textToAppend)
+        {
+            if (!Exists(target))
+            {
+                ExportByOverriding(target, textToAppend);
+            }
+            else {
+                ImportFileAsText(target, out string text, "");
+                ExportByOverriding(target,  text+ textToAppend);
+            }
+        }
+
+
         //public class CoroutinePourcentState {
         //    public float m_pourcentProcessing;
         //    public bool m_finished;

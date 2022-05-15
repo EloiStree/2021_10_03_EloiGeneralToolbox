@@ -1,19 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UIRawImageWithRatioMono : MonoBehaviour
 {
     public RawImage m_imageToAffect;
     public AspectRatioFitter m_ratioToAffect;
+    public UnityEvent m_toDoIfNull;
 
     public void ApplyTexture(Texture2D texture) {
+        if (texture == null) {
+            m_toDoIfNull.Invoke();
+            return;
+        }
         m_imageToAffect.texture = texture;
         m_ratioToAffect.aspectRatio = texture.width / (float)texture.height;
     }
     public void ApplyTexture(RenderTexture texture)
     {
+        if (texture == null)
+        {
+            m_toDoIfNull.Invoke();
+            return;
+        }
         m_imageToAffect.texture = texture;
         m_ratioToAffect.aspectRatio = texture.width / (float)texture.height;
     }
