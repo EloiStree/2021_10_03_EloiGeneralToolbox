@@ -16,8 +16,13 @@ namespace Eloi {
             GetRandom_n180_180(out random.y);
             GetRandom_n180_180(out random.z);
         }
+        public static void GetRandomVector3Direction(out Vector3 random)
+        {
+            random = new Vector3(UnityEngine.Random.Range(-1f,1f)
+                , UnityEngine.Random.Range(-1f, 1f)
+                , UnityEngine.Random.Range(-1f, 1f) );
+        }
 
-       
         public static void GetRandomTexture(out Texture2D randomTexture, int width, int height)
         {
             randomTexture = new Texture2D(width, height,TextureFormat.ARGB32,true);
