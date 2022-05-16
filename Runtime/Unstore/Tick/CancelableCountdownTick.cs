@@ -19,6 +19,7 @@ namespace Eloi
 
         void Awake()
         {
+            m_timeleft = m_countdownValue;
             if (m_startAtAwake)
                 StartCountdown();
         }

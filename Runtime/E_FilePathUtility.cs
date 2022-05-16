@@ -713,6 +713,30 @@ namespace Eloi
             CreateFolderIfNotThere(in file);
             File.WriteAllText(file.GetPath(), text);
         }
+        public static void ExportByOverridingAsJson<T>(in IMetaAbsolutePathFileGet file, T givenSerializable)
+        {
+            CreateFolderIfNotThere(in file);
+            string json = JsonUtility.ToJson(givenSerializable);
+            File.WriteAllText(file.GetPath(), json);
+        }
+        public static void ImportFromJson<T>(in IMetaAbsolutePathFileGet file, out T returnSerializable)
+        {
+            CreateFolderIfNotThere(in file);
+            string json = File.ReadAllText(file.GetPath());
+            returnSerializable = JsonUtility.FromJson<T>(json);
+        }
+        public static void ImportFromJson<T>(in IMetaAbsolutePathFileGet file, out T returnSerializable, T defaultErrorHappenOrNotThere)
+        {
+            try
+            {
+                CreateFolderIfNotThere(in file);
+                string json = File.ReadAllText(file.GetPath());
+                returnSerializable = JsonUtility.FromJson<T>(json);
+            }
+            catch (Exception e) {
+                returnSerializable = defaultErrorHappenOrNotThere;
+            }
+        }
 
         public static void MoveFile(IMetaAbsolutePathFileGet file, IMetaAbsolutePathDirectoryGet directory)
         {
@@ -1005,6 +1029,27 @@ namespace Eloi
                 ImportFileAsText(target, out string text, "");
                 ExportByOverriding(target,  text+ textToAppend);
             }
+        }
+        public static void IsContentAreNotEquals(IMetaAbsolutePathFileGet a, IMetaAbsolutePathFileGet b, out bool areNotEqual, bool ignoreCase = false, bool useTrim = true)
+        {
+            IsContentAreEquals(a, b,out bool areEqualsValue, ignoreCase, useTrim);
+            areNotEqual = !areEqualsValue;
+        }
+            public static void IsContentAreEquals(IMetaAbsolutePathFileGet a, IMetaAbsolutePathFileGet b, out bool areEquals, bool ignoreCase=false, bool useTrim=true)
+        {
+            if (a==null || b==null ||  DontExists(a) || DontExists(b))
+            {
+                areEquals = false;
+                return;
+            }
+            ImportFileAsText(a, out string textA);
+            ImportFileAsText(b, out string textB);
+            areEquals = Eloi.E_StringUtility.AreEquals(textA, textB, ignoreCase, useTrim);
+        }
+
+        public static void IsFileNameAndSizeAreEquals(AbstractMetaAbsolutePathFileMono m_readOnlyFileStorageLocker, AbstractMetaAbsolutePathFileMono m_readOnlyFileStorageLockerDouble, out bool areEquals)
+        {
+            throw new NotImplementedException();
         }
 
 

@@ -1,10 +1,10 @@
+using Eloi;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using Eloi;
 using System.IO;
+using UnityEngine;
 
-public class DefaultFileInDataPathStorageMono : Eloi.AbstractMetaAbsolutePathFileMono
+public class UnityDataPath_FilePathMono : Eloi.AbstractMetaAbsolutePathFileMono
 {
     public Eloi.MetaRelativePathDirectory m_subfolders;
     public Eloi.MetaFileNameWithExtension m_fileName;
@@ -26,15 +26,18 @@ public class DefaultFileInDataPathStorageMono : Eloi.AbstractMetaAbsolutePathFil
     public void TryToOpenEditorDebugPathFolder()
     {
 
-        Application.OpenURL(Path.GetDirectoryName( m_debugPath));
+        Application.OpenURL(Path.GetDirectoryName(m_debugPath));
     }
 
     public override void GetPath(out string path)
     {
-        IMetaAbsolutePathDirectoryGet dir = new MetaAbsolutePathDirectory(Application.dataPath);
-        dir = E_FileAndFolderUtility.GetParent(in dir);
-       IMetaAbsolutePathFileGet pathResult = Eloi.E_FileAndFolderUtility.Combine(dir, m_subfolders, m_fileName);
-       pathResult.GetPath(out path);
+        IMetaAbsolutePathDirectoryGet dir;
+        dir = new MetaAbsolutePathDirectory(Application.dataPath);
+        #if UNITY_EDITOR 
+                dir =  new MetaAbsolutePathDirectory(Application.persistentDataPath);
+#endif
+        IMetaAbsolutePathFileGet pathResult = Eloi.E_FileAndFolderUtility.Combine(dir, m_subfolders, m_fileName);
+        pathResult.GetPath(out path);
         m_debugPath = path;
     }
 
@@ -54,8 +57,7 @@ public class DefaultFileInDataPathStorageMono : Eloi.AbstractMetaAbsolutePathFil
     {
         GetPath(out string p);
         if (!File.Exists(p))
-            File.WriteAllText(p,text);
+            File.WriteAllText(p, text);
     }
-
-
 }
+
