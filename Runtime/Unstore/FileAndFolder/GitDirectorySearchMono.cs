@@ -16,7 +16,13 @@ namespace Eloi
         [ContextMenu("Search For Files")]
         public void SearchForFiles()
         {
+            m_directoriesGit.Clear();
+            m_directoriesGitIgnore.Clear();
+            if (m_targetDirectory)
             E_FileAndFolderUtility.GetAllDirectoriesInAndInChildren(m_targetDirectory, out m_directories);
+            else
+                E_FileAndFolderUtility.GetAllDirectoriesInAndInChildren(
+                 new MetaAbsolutePathDirectory(  Application.dataPath) , out m_directories);
             for (int i = 0; i < m_directories.Length; i++)
             {
                 string name = new DirectoryInfo(m_directories[i]).Name;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -49,8 +50,7 @@ namespace be.eloistree.generaltoolbox
         [ContextMenu("Generate New ID")]
         private void GenerateId()
         {
-            Eloi.E_GeneralUtility.GetTimeULongIdWithNow(out ulong id);
-            m_id = "" + id;
+            m_id = "" + Guid.NewGuid();
         }
     }
 }

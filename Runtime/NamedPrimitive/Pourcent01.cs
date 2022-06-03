@@ -45,4 +45,30 @@ namespace Eloi
 
 
     }
+
+
+    [System.Serializable]
+    public class Bot2TopPercent01 : Eloi.Percent01
+    {
+        public Bot2TopPercent01() : base(0) { }
+        public Bot2TopPercent01(in float percentValue) : base(percentValue) { }
+    }
+    [System.Serializable]
+    public class Left2RightPercent01 : Eloi.Percent01
+    {
+        public Left2RightPercent01() : base(0) { }
+        public Left2RightPercent01(in float percentValue) : base(percentValue) { }
+    }
+    [System.Serializable]
+    public class Top2BotPercent01 : Eloi.Percent01
+    {
+        public Top2BotPercent01() : base(0) { }
+        public Top2BotPercent01(in float percentValue) : base(percentValue) { }
+    }
+    [System.Serializable]
+    public class Right2LeftPercent01 : Eloi.Percent01
+    {
+        public Right2LeftPercent01() : base(0) { }
+        public Right2LeftPercent01(in float percentValue) : base(percentValue) { }
+    }
 }

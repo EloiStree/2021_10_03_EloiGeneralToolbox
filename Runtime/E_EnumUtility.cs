@@ -31,7 +31,15 @@ namespace Eloi
             list = l.ToList();
         }
 
+        public enum LeftRightEnum
+        { Left, Right }
+        public enum LeftRightMidEnum
+        { Left, Middle, Right }
+        public enum TopDownEnum
+        { Top, Down }
 
 
+        public enum PressionTypeEnum
+        { Press,Release }
     }
 }
