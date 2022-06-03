@@ -16,8 +16,13 @@ namespace Eloi {
             GetRandom_n180_180(out random.y);
             GetRandom_n180_180(out random.z);
         }
+        public static void GetRandomVector3Direction(out Vector3 random)
+        {
+            random = new Vector3(UnityEngine.Random.Range(-1f,1f)
+                , UnityEngine.Random.Range(-1f, 1f)
+                , UnityEngine.Random.Range(-1f, 1f) );
+        }
 
-       
         public static void GetRandomTexture(out Texture2D randomTexture, int width, int height)
         {
             randomTexture = new Texture2D(width, height,TextureFormat.ARGB32,true);
@@ -135,10 +140,21 @@ namespace Eloi {
         public static void ShuffleParams<T>(out T[] result, params T[] toAffect) =>
         
             ShuffleAsNew(in toAffect, out result);
-        
+
         public static void ShuffleRef<T>(ref T[] toAffect)
         {
             int n = toAffect.Length;
+            while (n > 1)
+            {
+                int k = UnityEngine.Random.Range(0, n--);
+                T temp = toAffect[n];
+                toAffect[n] = toAffect[k];
+                toAffect[k] = temp;
+            }
+        }
+        public static void ShuffleRef<T>(ref List<T> toAffect)
+        {
+            int n = toAffect.Count;
             while (n > 1)
             {
                 int k = UnityEngine.Random.Range(0, n--);

@@ -18,6 +18,7 @@ public class UI2Display_ActivateGameObjectsMirror : AbstractUI2Display
       //  Eloi.E_DebugLog.C("Disable All Start");
         Eloi.E_GeneralUtility.SetAllActive(ref toMirrorDisplayValue, setAsDisplaying);
         Eloi.E_GeneralUtility.SetAllActive(ref toMirrorInverseDisplayValue, !setAsDisplaying);
+        m_isDisplaying = setAsDisplaying;
        // Eloi.E_DebugLog.D("Disable All End");
     }
 

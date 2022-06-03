@@ -122,6 +122,8 @@ namespace Eloi
         {
             path = System.IO.Path.GetDirectoryName(directoryPath);
         }
+
+        
     }
 
     [System.Serializable]
@@ -248,6 +250,11 @@ namespace Eloi
         public void GetExtensionWithDot(out string extension) => extension = "." + m_extensionNameWithoutDot;
         public void GetFileNameWithoutExtension(out string fileName) { fileName = m_fileName; }
         public void GetFileNameWithExtension(out string fileName) { fileName = m_fileName + "." + m_extensionNameWithoutDot; }
+
+        public bool IsEmpty()
+        {
+            return m_fileName.Trim().Length <= 0 && m_extensionNameWithoutDot.Trim().Length <= 0;
+        }
     }
 
     public interface IMetaAbsolutePathFileGet : IMetaPathGet
@@ -278,6 +285,8 @@ namespace Eloi
             Application.OpenURL(dirPath);
         }
 
+       
+
         public void CreateDirectory() {
             Directory.CreateDirectory(GetPath());
         }
@@ -288,13 +297,36 @@ namespace Eloi
     }
     public abstract class AbstractMetaAbsolutePathFileMono : AbstractMetaPathMono, IMetaAbsolutePathFileGet
     {
+        [ContextMenu("Create Empty")]
+        public void CreateEmpty()
+        {
+            File.WriteAllText(GetPath(), "") ;
+        }
+        [ContextMenu("Delete Directory")]
+        public void Delete()
+        {
+
+            if (File.Exists(GetPath()))
+                File.Delete(GetPath());
+        }
     }
     public abstract class AbstractMetaRelativePathDirectoryMono : AbstractMetaPathMono, IMetaRelativePathDirectoryGet
     {
     }
     public abstract class AbstractMetaAbsolutePathDirectoryMono : AbstractMetaPathMono, IMetaAbsolutePathDirectoryGet
     {
+        [ContextMenu("Create Empty")]
+        public void CreateEmpty()
+        {
+            Directory.CreateDirectory(GetPath());
+        }
+        [ContextMenu("Delete Directory")]
+        public void Delete()
+        {
 
+            if (Directory.Exists(GetPath()))
+                Directory.Delete(GetPath());
+        }
     }
 
     public interface IMetaRelativePathFileGet : IMetaPathGet
@@ -317,7 +349,11 @@ namespace Eloi
         {
         }
 
-
+        public bool IsEmpty()
+        {
+            GetPath(out string p);
+            return p.Trim().Length <= 0;
+        }
     }
     public interface IMetaRelativePathDirectoryGet : IMetaPathGet
     {
@@ -381,7 +417,22 @@ namespace Eloi
             else texture = null;
 
         }
-
+        public static bool Exists(in IMetaAbsolutePathFileGet path)
+        {
+            return File.Exists(path.GetPath());
+        }
+        public static bool Exists(in IMetaAbsolutePathDirectoryGet path)
+        {
+            return Directory.Exists(path.GetPath());
+        }
+        public static bool DontExists(in IMetaAbsolutePathFileGet path)
+        {
+            return !File.Exists(path.GetPath());
+        }
+        public static bool DontExists(in IMetaAbsolutePathDirectoryGet path)
+        {
+            return !Directory.Exists(path.GetPath());
+        }
         public static bool Exists(in string path)
         {
             return File.Exists(path);
@@ -390,14 +441,7 @@ namespace Eloi
         {
             return !File.Exists(path);
         }
-        public static bool Exists(in IMetaAbsolutePathFileGet path)
-        {
-            return File.Exists(path.GetPath());
-        }
-        public static bool DontExists(in IMetaAbsolutePathFileGet path)
-        {
-            return !File.Exists(path.GetPath());
-        }
+       
         public static void OverrideFilePNG(in IMetaAbsolutePathFileGet path, in Texture2D texture, out bool succced)
         {
             OverrideFilePNG(path.GetPath(), in texture, out succced);
@@ -664,10 +708,34 @@ namespace Eloi
 
         }
 
-        public static void ExportByOverriding(in IMetaAbsolutePathFileGet file, string csv)
+        public static void ExportByOverriding(in IMetaAbsolutePathFileGet file, string text)
         {
             CreateFolderIfNotThere(in file);
-            File.WriteAllText(file.GetPath(), csv);
+            File.WriteAllText(file.GetPath(), text);
+        }
+        public static void ExportByOverridingAsJson<T>(in IMetaAbsolutePathFileGet file, T givenSerializable)
+        {
+            CreateFolderIfNotThere(in file);
+            string json = JsonUtility.ToJson(givenSerializable);
+            File.WriteAllText(file.GetPath(), json);
+        }
+        public static void ImportFromJson<T>(in IMetaAbsolutePathFileGet file, out T returnSerializable)
+        {
+            CreateFolderIfNotThere(in file);
+            string json = File.ReadAllText(file.GetPath());
+            returnSerializable = JsonUtility.FromJson<T>(json);
+        }
+        public static void ImportFromJson<T>(in IMetaAbsolutePathFileGet file, out T returnSerializable, T defaultErrorHappenOrNotThere)
+        {
+            try
+            {
+                CreateFolderIfNotThere(in file);
+                string json = File.ReadAllText(file.GetPath());
+                returnSerializable = JsonUtility.FromJson<T>(json);
+            }
+            catch (Exception e) {
+                returnSerializable = defaultErrorHappenOrNotThere;
+            }
         }
 
         public static void MoveFile(IMetaAbsolutePathFileGet file, IMetaAbsolutePathDirectoryGet directory)
@@ -893,6 +961,98 @@ namespace Eloi
         {
             directories= Directory.GetDirectories(targetDirectory.GetPath(), "*", SearchOption.TopDirectoryOnly);
         }
+
+        public static void GetRelativePathFrom(in IMetaAbsolutePathDirectoryGet root, in IMetaAbsolutePathFileGet selection,
+            out IMetaRelativePathFileGet relativePath)
+        {
+            GetRealPathOfExistingDirectory(root, out IMetaAbsolutePathDirectoryGet rootRealPath);
+            GetRealPathOfExistingFile(selection, out IMetaAbsolutePathFileGet selectionRealPath);
+            string relative = SubstractRootPath(rootRealPath.GetPath(), selectionRealPath.GetPath());
+            relativePath = new MetaRelativePathFile(relative);
+        }
+        public static void GetRelativePathFrom(in IMetaAbsolutePathDirectoryGet root, in IMetaAbsolutePathDirectoryGet selection,
+           out IMetaRelativePathDirectoryGet relativePath)
+        {
+            GetRealPathOfExistingDirectory(root, out IMetaAbsolutePathDirectoryGet rootRealPath);
+            GetRealPathOfExistingDirectory(selection, out IMetaAbsolutePathDirectoryGet selectionRealPath);
+            string relative = SubstractRootPath(rootRealPath.GetPath(), selectionRealPath.GetPath());
+            relativePath = new MetaRelativePathDirectory(relative);
+        }
+
+        public static void GetRealPathOfExistingFile(IMetaAbsolutePathFileGet file, out IMetaAbsolutePathFileGet newFilePath)
+        {
+            if (file == null || !File.Exists(file.GetPath()))
+            {
+                newFilePath = file;
+                return;
+            }
+            newFilePath = new MetaAbsolutePathFile((new FileInfo(file.GetPath())).FullName);
+        }
+        public static void GetRealPathOfExistingDirectory(IMetaAbsolutePathDirectoryGet file, out IMetaAbsolutePathDirectoryGet newDirectoryPath)
+        {
+            if (file == null || !Directory.Exists(file.GetPath()))
+            {
+                newDirectoryPath = file;
+                return;
+            }
+            newDirectoryPath = new MetaAbsolutePathDirectory((new DirectoryInfo(file.GetPath())).FullName);
+        }
+
+        private static string SubstractRootPath(string root, string selection)
+        {
+            Eloi.E_FilePathUnityUtility.AllSlash(root, out root);
+            Eloi.E_FilePathUnityUtility.AllSlash(selection, out selection);
+            //Debug.Log("root:" + root + "\nselect:" + selection);
+            string relative = selection.Replace(root, "");
+            if (relative.Length > 0 && ( relative[0] == '\\' || relative[0] == '/') )
+                relative = relative.Substring(1);
+            return relative;
+        }
+
+        public static void AppendTextAtStart(IMetaAbsolutePathFileGet target, string textToAppend)
+        {
+            if (!Exists(target)) {
+                ExportByOverriding(target, textToAppend);
+            }
+            else {
+                ImportFileAsText(target, out string text, "");
+                ExportByOverriding(target, textToAppend + text);
+            }
+        }
+        public static void AppendTextAtEnd(IMetaAbsolutePathFileGet target, string textToAppend)
+        {
+            if (!Exists(target))
+            {
+                ExportByOverriding(target, textToAppend);
+            }
+            else {
+                ImportFileAsText(target, out string text, "");
+                ExportByOverriding(target,  text+ textToAppend);
+            }
+        }
+        public static void IsContentAreNotEquals(IMetaAbsolutePathFileGet a, IMetaAbsolutePathFileGet b, out bool areNotEqual, bool ignoreCase = false, bool useTrim = true)
+        {
+            IsContentAreEquals(a, b,out bool areEqualsValue, ignoreCase, useTrim);
+            areNotEqual = !areEqualsValue;
+        }
+            public static void IsContentAreEquals(IMetaAbsolutePathFileGet a, IMetaAbsolutePathFileGet b, out bool areEquals, bool ignoreCase=false, bool useTrim=true)
+        {
+            if (a==null || b==null ||  DontExists(a) || DontExists(b))
+            {
+                areEquals = false;
+                return;
+            }
+            ImportFileAsText(a, out string textA);
+            ImportFileAsText(b, out string textB);
+            areEquals = Eloi.E_StringUtility.AreEquals(textA, textB, ignoreCase, useTrim);
+        }
+
+        public static void IsFileNameAndSizeAreEquals(AbstractMetaAbsolutePathFileMono m_readOnlyFileStorageLocker, AbstractMetaAbsolutePathFileMono m_readOnlyFileStorageLockerDouble, out bool areEquals)
+        {
+            throw new NotImplementedException();
+        }
+
+
         //public class CoroutinePourcentState {
         //    public float m_pourcentProcessing;
         //    public bool m_finished;

@@ -21,6 +21,24 @@ public class E_DateTime
         public static void IsBetween(in DateTime time, in DateTime start, in DateTime end, out bool isBetween)
             => isBetween = (time >= start && time <= end);
 
+        public static DateTime Get1970Date()
+        {
+            return new DateTime(1970, 1, 1, 0, 0, 0);
+        }
+        public static DateTime Get2000Date()
+        {
+            return new DateTime(2000, 1, 1, 0, 0, 0);
+        }
+        public static DateTime GetHarambeDate()
+        {
+            //The day were everything change forever...
+            return new DateTime(2016, 05, 28, 0, 0, 0);
+        }
+        public double GetSecondsTimeSince1970()
+        {
+            return DateTime.Now.Subtract(Get1970Date()).TotalSeconds;
+        }
+
         public static void IsBetween(in DateTime time, in DateTime start, in DateTime end, out bool isBetween, in bool startInclusive, in bool endInclusive)
         {
             if (start == end)
