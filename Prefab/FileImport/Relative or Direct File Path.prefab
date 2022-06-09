@@ -139,7 +139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_subfolders:
-    m_path: 
+    m_path: ReadOnly/ImportBackground
   m_fileName:
     m_fileName: 
     m_extensionNameWithoutDot: 

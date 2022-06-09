@@ -12,8 +12,14 @@ namespace Eloi
         {
             throw new System.NotImplementedException(message);
         }
-
-
+        public static void ThrowEasyToCodeButNotCodedYet(string message = "")
+        {
+            throw new EasyToCodeButNotCodedYet(message);
+        }
+        public static void ThrowTrustMeBroWarningException(string message = "")
+        {
+            throw new TrustMeBroException(message);
+        }
         public static void ThrowNotMyProblemException(string whoToContactIfNeedHelpOrCorrection, string message = "")
         {
             throw new NotMyProblemException(whoToContactIfNeedHelpOrCorrection, message);
@@ -30,6 +36,17 @@ namespace Eloi
             {
                 m_whoToContactIfNeedHelpOrCorrection = devName;
             }
+        }
+
+        public class TrustMeBroException : Exception
+        {
+            public TrustMeBroException(string message = "") : base(message) { }
+        }
+
+        public class EasyToCodeButNotCodedYet : Exception
+        {
+
+            public EasyToCodeButNotCodedYet(string message="") : base(message) { }
         }
     }
 }

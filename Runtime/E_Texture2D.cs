@@ -178,7 +178,7 @@ namespace Eloi
         }
 
         public static void CropTexture2DWithPourcent(in Texture2D textureOrigine, out Texture2D result,
-            in float topPct, in float rightPct, in float downPct, in float leftPct)
+            in float topPct, in float rightPct, in float downPct, in float leftPct, bool mipmap=true)
         {
             int width = textureOrigine.width;
             int height = textureOrigine.height;
@@ -189,7 +189,7 @@ namespace Eloi
             int heightNew = (int) (height * (1f - (downPct + topPct)));
 
             Color [] c=  textureOrigine.GetPixels(startHorizontal, startVertical, widthNew, heightNew);
-            result = new Texture2D(widthNew, heightNew, textureOrigine.format, true);
+            result = new Texture2D(widthNew, heightNew, textureOrigine.format, mipmap);
             result.SetPixels(c);
             result.Apply();
 

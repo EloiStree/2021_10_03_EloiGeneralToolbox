@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_subfolders:
-    m_path: ImportTexture
+    m_path: ReadOnly/ImportTexture
   m_debugPath: 
 --- !u!1 &4786013610272148279
 GameObject:

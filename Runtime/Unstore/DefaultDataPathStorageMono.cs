@@ -8,6 +8,10 @@ public class DefaultDataPathStorageMono : Eloi.AbstractMetaAbsolutePathDirectory
     public override void GetPath(out string path)
     {
         path = Application.dataPath;
+#if UNITY_EDITOR 
+        path = Application.dataPath+"/..";
+#endif
+
         m_debug = path;
     }
 

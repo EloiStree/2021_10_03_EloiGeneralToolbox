@@ -19,6 +19,8 @@ namespace Eloi
     public class PrimitiveUnityEvent_Long : UnityEvent<long> { }
     [System.Serializable]
     public class PrimitiveUnityEvent_Doube : UnityEvent<double> { }
+    [System.Serializable]
+    public class PrimitiveUnityEvent_IntPtr : UnityEvent<IntPtr> { }
 
     [System.Serializable]
     public class PrimitiveUnityEvent_Bool : UnityEvent<bool> { }
@@ -65,6 +67,8 @@ namespace Eloi
     [System.Serializable]
     public class ClassicUnityEvent_Color : UnityEvent<Color> { }
 
+    [System.Serializable]
+    public class GenericObjectEvent<T> : UnityEvent<T> { }
 
 
 }

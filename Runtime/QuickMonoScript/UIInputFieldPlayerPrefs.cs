@@ -1,4 +1,6 @@
+
 using Eloi;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,6 +25,7 @@ namespace be.eloistree.generaltoolbox
         public override void SetWithStoredInfoFromString(string recoveredInfo)
         {
             m_inputfield.text = recoveredInfo;
+            m_id = "" + Guid.NewGuid();
         }
     }
 }

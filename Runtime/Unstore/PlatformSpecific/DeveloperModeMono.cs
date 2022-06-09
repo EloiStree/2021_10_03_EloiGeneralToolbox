@@ -47,6 +47,9 @@ namespace Eloi
 
         }
 
+
+
+
         public static void SetDeveloperModeAs(bool value)
         {
             m_isWorkingWithDeveloperVersion = value;
@@ -58,13 +61,17 @@ namespace Eloi
     }
     public class DeveloperModeMono : MonoBehaviour
     {
+        [ContextMenu("Set As developer")]
         public  void SetAsDeveloperMode() => DeveloperMode.SetAsDeveloperMode();
+        [ContextMenu("Set As Client")]
         public  void SetAsClientMode() => DeveloperMode.SetAsClientMode();
         public  void SetDeveloperModeAs(bool value) => DeveloperMode.SetDeveloperModeAs(value);
         public  void IsInDeveloperMode(out bool isInDevMode) 
         { DeveloperMode.IsInDeveloperMode(out isInDevMode); }
         public  bool IsInDeveloperMode() 
         { return DeveloperMode.IsInDeveloperMode(); }
+
+        [ContextMenu("Switch developer mode")]
         public void SwitchDeveloperMode()
         => DeveloperMode.SwitchDeveloperMode();
 
