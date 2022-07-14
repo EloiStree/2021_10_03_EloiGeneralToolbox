@@ -55,6 +55,11 @@ namespace Eloi {
             color = new Color(r, g, b, a);
         }
 
+        public static void GetRandomGUID(out string id)
+        {
+            id =Guid.NewGuid().ToString();
+        }
+
         public static void GetRandomQuaternion(out Quaternion random)
         {
                GetRandomEuler(out Vector3 euleur);
