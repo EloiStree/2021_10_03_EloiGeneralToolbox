@@ -122,6 +122,14 @@ namespace Eloi {
         }
         public class DirtyCode
         {
+            public static void DirtyCatch()
+            {
+                DirtyCatch("Apprentely I had not patience to handle the catch overthere.");
+            }
+            public static void DirtyCatch(string message)
+            {
+            }
+
             /// <summary>
             /// This script is use just to say that I don't have the time now but need to code something later.
             /// </summary>

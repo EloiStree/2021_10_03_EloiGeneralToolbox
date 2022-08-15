@@ -32,6 +32,50 @@ namespace Eloi
             result = Regex.Replace(text, @"(^\w)|(\s\w)", m => m.Value.ToUpper());
         }
 
+        public static void SubstringBetween(int indexStart, int indexEnd, in string text, out string textFound)
+        {
+            int tl = text.Length;
+            if (indexStart >= tl) indexStart = tl;
+            if (indexEnd >= tl) indexEnd = tl;
+            if (indexStart <0) indexStart = 0;
+            if (indexEnd <0) indexEnd = 0;
+
+            if (indexEnd < indexStart) {
+                int t = indexEnd;
+                indexEnd = indexStart;
+                indexStart = t;
+            }
+            int l = indexEnd - indexStart;
+            if (l == 0) textFound = "";
+            else textFound = text.Substring(indexStart, l);
+        }
+        public static void SubstringBetween(int indexStart, int indexEnd, in string text, out string textFound, bool startInclude = true, bool endInclude = true)
+        {
+          
+            if (!startInclude)
+                indexStart += 1;
+            if (!endInclude)
+                indexEnd -= 1;
+            SubstringBetween(indexStart, indexEnd, in text, out textFound);
+        }
+
+        public static void ConvertHexaToInt(string hexaText, out byte result)
+        {
+            try
+            {
+                result = byte.Parse(hexaText, System.Globalization.NumberStyles.HexNumber);
+            }
+            catch (Exception) { result = 0; };
+        }
+        public static void ConvertHexaToInt(string hexaText, out int result)
+        {
+            try
+            {
+                result = Int32.Parse(hexaText, System.Globalization.NumberStyles.HexNumber);
+            }
+            catch (Exception) { result = 0;};
+        }
+
         public static bool IsNullOrEmpty( in string t)
         {
             return !IsFilled(t);

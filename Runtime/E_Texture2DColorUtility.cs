@@ -67,5 +67,51 @@ namespace Eloi
         {
             return y * width + x;
         }
+
+        public static void InverseHorizontal(ref Color[] pixelColors,in int width, in int height)
+        {
+
+            int xN = width / 2;
+            int yN = height;
+
+            Color c;
+            int iFrom;
+            int iTo;
+            for (int y = 0; y < yN; y++)
+            {
+                for (int x = 0; x < xN; x++)
+                {
+                    iFrom = Get1DIndex(in x, in y, in width);
+                    iTo = Get1DIndex(width-1-x, in  y, in width);
+                    SwitchTwoPixel(ref pixelColors, in iFrom, in iTo);
+                }
+            }
+        }
+
+        public static void InverseVertical(ref Color[] pixelColors,in int width, in int height)
+        {
+            Eloi.E_CodeTag.QualityAssurance.TestedState(E_CodeTag.QualityAssurance.TestedStateType.NotAtAll);
+            int xN = width;
+            int yN = height/2;
+
+            Color c;
+            int iFrom;
+            int iTo;
+            for (int y = 0; y < yN; y++)
+            {
+                for (int x = 0; x < xN; x++)
+                {
+                    iFrom = Get1DIndex(in x, in y, in width);
+                    iTo = Get1DIndex(in x, height - 1 - y , in width);
+                    SwitchTwoPixel(ref pixelColors, in iFrom, in iTo);
+                }
+            }
+        }
+        public static void SwitchTwoPixel(ref Color[] table, in int index1DFrom, in int index1DTo)
+        {
+            Color c = table[index1DFrom];
+            table[index1DFrom] = table[index1DTo];
+            table[index1DTo] = c;
+        }
     }
 }

@@ -1,31 +1,34 @@
-using Eloi;
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DirectOrRelativeFilePathMono : AbstractMetaAbsolutePathFileMono
-{
-    public Eloi.AbstractMetaAbsolutePathFileMono m_filePath;
-    public Eloi.AbstractMetaAbsolutePathFileMono m_relativeToProjectFilePath;
 
-    public override void GetPath(out string path)
+    namespace Eloi
     {
-        if (m_filePath != null)
+        public class DirectOrRelativeFilePathMono : Eloi.AbstractMetaAbsolutePathFileMono
         {
-            m_filePath.GetPath(out string directPath);
-            if (directPath.Trim().Length > 0)
+            public Eloi.AbstractMetaAbsolutePathFileMono m_filePath;
+            public Eloi.AbstractMetaAbsolutePathFileMono m_relativeToProjectFilePath;
+
+            public override void GetPath(out string path)
             {
-                path = directPath;
-                return;
+                if (m_filePath != null)
+                {
+                    m_filePath.GetPath(out string directPath);
+                    if (directPath.Trim().Length > 0)
+                    {
+                        path = directPath;
+                        return;
+                    }
+                }
+                path = m_relativeToProjectFilePath.GetPath();
+            }
+
+            public override string GetPath()
+            {
+                GetPath(out string p);
+                return p;
             }
         }
-        path = m_relativeToProjectFilePath.GetPath();
     }
-
-    public override string GetPath()
-    {
-        GetPath(out string p);
-        return p;
-    }
-}
-

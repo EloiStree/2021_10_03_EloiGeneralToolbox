@@ -1,3 +1,6 @@
+
+using Eloi;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,52 +8,24 @@ using UnityEngine.UI;
 
 namespace be.eloistree.generaltoolbox
 {
-    public class UIInputFieldPlayerPrefs : MonoBehaviour
+    public class UIInputFieldPlayerPrefs : AbstrectUIPlayerPrefs
     {
-        public InputField m_inputfield;
-        public string m_id;
-        public Eloi.PrimitiveUnityEvent_String m_onLoad;
-        // Start is called before the first frame update
-        void Awake()
+        public InputField m_inputfield;      
+        protected override void Reset()
         {
-            string t = PlayerPrefs.GetString(m_id);
-            m_inputfield.text = t;
-            m_onLoad.Invoke(t);
-        }
-
-        private void OnDestroy()
-        {
-            SaveInputField();
-        }
-
-        private void SaveInputField()
-        {
-            PlayerPrefs.SetString(m_id, m_inputfield.text);
-        }
-
-        private void OnApplicationPause(bool pause)
-        {
-            SaveInputField();
-
-        }
-        private void OnApplicationQuit()
-        {
-
-            SaveInputField();
-        }
-
-
-        private void Reset()
-        {
-            GenerateId();
+            base.Reset();
             m_inputfield = GetComponent<InputField>();
         }
-
-        [ContextMenu("Generate New ID")]
-        private void GenerateId()
+       
+        public override void GetInfoToStoreAsString(out string infoToStore)
         {
-            Eloi.E_GeneralUtility.GetTimeULongIdWithNow(out ulong id);
-            m_id = "" + id;
+            infoToStore = m_inputfield.text;
+        }
+
+        public override void SetWithStoredInfoFromString(string recoveredInfo)
+        {
+            m_inputfield.text = recoveredInfo;
+            m_id = "" + Guid.NewGuid();
         }
     }
 }

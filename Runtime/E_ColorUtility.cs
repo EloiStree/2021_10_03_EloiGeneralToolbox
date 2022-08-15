@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -178,5 +179,51 @@ namespace Eloi
 
         }
 
+        public static void ConvertHashFFFFFFFFToColor(in string text, out bool converted, out Color color)
+        {
+            color = new Color();
+            int indexStart = 0;
+            if (text[0] == '#')
+                indexStart = 1;
+
+            if (text.Length >= 6 + indexStart)
+            {
+                Eloi.E_StringUtility.ConvertHexaToInt(text.Substring(indexStart, 2), out byte r);
+                color.r = r / 255f;
+                Eloi.E_StringUtility.ConvertHexaToInt(text.Substring(indexStart + 2, 2), out byte g);
+                color.g = g / 255f;
+                Eloi.E_StringUtility.ConvertHexaToInt(text.Substring(indexStart + 4, 2), out byte b);
+                color.b = b / 255f;
+                if (text.Length >= 8 + indexStart)
+                {
+                    Eloi.E_StringUtility.ConvertHexaToInt(text.Substring(indexStart + 6, 2), out byte a);
+                    color.a = a / 255f;
+                }
+                converted = true;
+                return;
+            }
+            converted = false;
+        }
+        public static void ConvertFromSplitTextToColor(in string text,  out bool converted, out Color color, in char spliter=':')
+        {
+            color = new Color();
+            string[] tokens = text.Split(spliter);
+            if (tokens.Length < 3)
+            { 
+                converted = false;
+                return;
+            }
+            for (int i = 0; i < 4 ; i++)
+            {
+                if (i < tokens.Length)
+                {
+                    if (i == 0) if (!float.TryParse(tokens[i], out color.r)) color.r = 0; 
+                    if (i == 1) if (!float.TryParse(tokens[i], out color.g)) color.g = 0; 
+                    if (i == 2) if (!float.TryParse(tokens[i], out color.b)) color.b = 0; 
+                    if (i == 3) if (!float.TryParse(tokens[i], out color.a)) color.a = 1;
+                }
+            }
+            converted = true;
+        }
     }
 }
