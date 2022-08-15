@@ -121,6 +121,51 @@ namespace Eloi {
         }
 
 
+        public static void GetRandomOf<T>(out T[] result, in int count, params T[] list)
+        {
+
+            if (list == null || list.Length <= 0)
+            {
+                result = new T[0];
+                return;
+            }
+            else
+            {
+                    result = new T[count];
+                    for (int i = 0; i < count; i++)
+                    {
+                        GetRandomOf(out result[i],  list);
+                    }
+                return;
+                
+            }
+
+        }
+        public static void GetRandomOfOrLess<T>(out T[] result, in int count, params T[] list)
+        {
+
+            if (list == null || list.Length <= 0)
+            {
+                result = new T[0];
+                return;
+            }
+            else
+            {
+                if (list.Length < count) { 
+                    result = list;
+                    return;
+                }
+                else
+                {
+                    result = new T[count];
+                    for (int i = 0; i < count; i++)
+                    {
+                        GetRandomOf(out result[i],  list);
+                    }
+                    return;
+                }
+            }
+        }
         public static void GetRandomOf<T>(out T result, params T[] list) =>
             result = list[UnityEngine.Random.Range(0, list.Length)];
         public static void GetRandomOf<T>(out T result, in T[] list) =>

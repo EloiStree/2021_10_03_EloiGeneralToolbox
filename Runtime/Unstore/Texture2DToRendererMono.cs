@@ -7,7 +7,9 @@ public class Texture2DToRendererMono : MonoBehaviour
     public Renderer m_target;
     public string m_textureName = "_Base";
 
+    [Header("Log")]
     public Texture2D m_texture;
+    public RenderTexture m_renderTexture;
     public void PushTexture2D(Texture2D texture)
     {
         m_texture = texture;
@@ -16,6 +18,7 @@ public class Texture2DToRendererMono : MonoBehaviour
     public void PushTexture2D(RenderTexture texture)
     {
         m_target.material.SetTexture(m_textureName, texture);
+        m_renderTexture = texture;
     }
     public void Reset()
     {

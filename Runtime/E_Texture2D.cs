@@ -40,6 +40,7 @@ namespace Eloi
             }
         }
 
+        
         public static void Copy(in Texture2D from, out Texture2D to)
         {
             throw new NotImplementedException();
@@ -77,10 +78,15 @@ namespace Eloi
             rt.enableRandomWrite = true;
                 RenderTexture.active = rt;
                 Graphics.Blit(refTexture, rt);
-
-               
-            
         }
+
+        public static void Texture2DInRenderTexture(in Texture2D refTexture, ref RenderTexture rt)
+        {
+            //rt.enableRandomWrite = true;
+            RenderTexture.active = rt;
+            Graphics.Blit(refTexture, rt);
+        }
+
 
         public static void Import(IMetaAbsolutePathFileGet file, out Texture2D texture)
         {
