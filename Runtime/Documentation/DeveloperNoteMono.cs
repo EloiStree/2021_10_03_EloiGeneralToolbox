@@ -8,7 +8,7 @@ public class DeveloperNoteMono : MonoBehaviour
     [TextArea(0,10)]
     public string m_note;
     public string m_author;
-    private void OnValidate()
+    protected virtual void OnValidate()
     {
         m_currentDev = m_author;
     }
@@ -16,7 +16,7 @@ public class DeveloperNoteMono : MonoBehaviour
     private void Reset()
     {
         if (m_author == "") 
-        m_author = m_currentDev;
+            m_author = m_currentDev;
     }
 
     public static string m_currentDev="";

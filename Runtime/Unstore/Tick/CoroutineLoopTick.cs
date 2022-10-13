@@ -16,6 +16,10 @@ namespace Eloi
 
         public void OnEnable()
         {
+            if (m_loop != null) {
+                StopCoroutine(m_loop);
+                m_loop = null;
+            }
             m_loop =  StartCoroutine(Loop());
         }
         public void OnDisable()
