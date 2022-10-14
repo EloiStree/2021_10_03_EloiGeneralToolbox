@@ -6,6 +6,7 @@ namespace Eloi
 {
     public class DeveloperNote_B64Image : DeveloperNoteMono
     {
+
         public B64Text m_b64Text;
         [HideInInspector]
         public Texture2D m_image;
@@ -51,8 +52,34 @@ namespace Eloi
                 Eloi.E_Base64ToImage.ConvertTextureToBase64(m_image, E_Base64ToImage.SupportedImageTypeB64.PNG,
                        out bool c,
                        out string data, out m_b64Text.m_b64Text);
-           
+
         }
+        [ContextMenu("Scale down -10%")]
+
+        public void ScaleDownImageBy10Percent() => ScaleDownImageSize(0.9f);
+        [ContextMenu("Scale down -25%")]
+
+        public void ScaleDownImageBy25Percent() => ScaleDownImageSize(0.75f);
+        
+        [ContextMenu("Scale down -50%")]
+
+        public void ScaleDownImageBy50Percent() => ScaleDownImageSize(0.5f);
+
+        [ContextMenu("Flush")]
+        public void Flush() {
+
+            m_image = null;
+            m_b64Text.m_b64Text = "";
+        }
+
+
+        public void ScaleDownImageSize(float percentScaleDown) {
+             TextureScale.Scale(m_image
+                ,(int)( m_image.width * percentScaleDown)
+                , (int)(m_image.height * percentScaleDown));
+            ConvertImageToB64Text();
+        }
+
         [ContextMenu("Convert B64 Text To Image")]
         public void ConvertB64TextToImage()
         {
@@ -82,6 +109,14 @@ namespace Eloi
                 m_image = new Texture2D(2, 2);
         }
 
-       
+
+        protected override void OnValidate()
+        {
+            base.OnValidate();
+            if (m_image==null &&  m_b64Text.m_b64Text != null && m_b64Text.m_b64Text.Length > 1) {
+                ConvertB64TextToImage();
+            }
+
+        }
     }
 }

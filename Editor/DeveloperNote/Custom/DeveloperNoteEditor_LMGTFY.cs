@@ -13,12 +13,9 @@ namespace Eloi
         public override void OnInspectorGUI()
         {
             DeveloperNote_LMGTFY myScript = (DeveloperNote_LMGTFY)target;
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Let's me google that for you"))
-            {
-                myScript.OpenLMGTFY();
-            }
-            GUILayout.EndHorizontal();
+
+            DeveloperNoteEditor_Links.DrawLinks(myScript, "Let's me google that for you");
+           
             base.DrawDefaultInspector();
         }
     }

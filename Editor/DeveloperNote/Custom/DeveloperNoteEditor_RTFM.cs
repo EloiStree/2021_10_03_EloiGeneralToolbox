@@ -11,12 +11,9 @@ namespace Eloi
         public override void OnInspectorGUI()
         {
             DeveloperNote_RTFM myScript = (DeveloperNote_RTFM)target;
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Go to Manual(s)"))
-            {
-                myScript.OpenRTFM();
-            }
-            GUILayout.EndHorizontal();
+
+            DeveloperNoteEditor_Links.DrawLinks(myScript, "Read the manuals");
+          
             base.DrawDefaultInspector();
         }
     }

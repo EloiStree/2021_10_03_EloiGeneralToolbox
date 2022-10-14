@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +8,7 @@ namespace Eloi
 {
     public class DeveloperNote_MarkDown : MonoBehaviour
     {
-        [TextArea(0,10)]
+        [TextArea(0,20)]
         public string m_markdown;
 
         [ContextMenu("OpenInBrowser")]
@@ -33,6 +34,9 @@ namespace Eloi
         {
             OpenMarkDownAsFile(m_markdown,"md");
         }
+
+      
+
         public static void OpenMarkDownAsFile(string text, string fileExtensionNoDot="mddd")
         {
             string path = Application.temporaryCachePath + "/Markdown."+ fileExtensionNoDot;

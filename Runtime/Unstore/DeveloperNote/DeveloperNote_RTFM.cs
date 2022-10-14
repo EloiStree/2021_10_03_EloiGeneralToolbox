@@ -4,17 +4,11 @@ using UnityEngine;
 
 namespace Eloi
 {
-    public class DeveloperNote_RTFM : DeveloperNoteMono
+    public class DeveloperNote_RTFM : DeveloperNote_Links
     {
-        public string[] m_RTFMsUrl;
-
         [ContextMenu("Open RTFM")]
         public void OpenRTFM() {
-            for (int i = 0; i < m_RTFMsUrl.Length; i++)
-            {
-                if(!string.IsNullOrEmpty(m_RTFMsUrl[i]))
-                    Application.OpenURL(m_RTFMsUrl[i]);
-            }
+            base.OpenLinks();
         }
         protected override void OnValidate()
         {

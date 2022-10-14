@@ -6,12 +6,12 @@ using UnityEngine;
 public class DeveloperNote_VideoOdyseeWithThumbnail : DeveloperNote_B64ImageFromURL
 {
     public string m_odyseeUrl;
-    public string m_thumbnailUrl;
+    string m_previousOdyseeUrl;
 
-    private void OnValidate()
+    protected override void OnValidate()
     {
-        m_thumbnailUrl = GetUrl(m_odyseeUrl, 0, 800, 450);
-
+        base.OnValidate();
+        
 
     }
 

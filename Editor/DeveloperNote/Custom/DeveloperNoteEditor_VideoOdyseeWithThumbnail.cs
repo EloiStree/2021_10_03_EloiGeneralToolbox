@@ -13,14 +13,22 @@ namespace Eloi
         public override void OnInspectorGUI()
         {
             DeveloperNote_VideoOdyseeWithThumbnail myScript = (DeveloperNote_VideoOdyseeWithThumbnail)target;
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Open on Odysee"))
+           
+            if (myScript.m_image != null)
+                DeveloperNoteEditor_B64Image.DrawImage(myScript.m_image, Open);
+            
+            if (GUILayout.Button("Open On Odysee", GUILayout.Width(250)))
             {
                 Application.OpenURL(myScript.m_odyseeUrl);
             }
-            GUILayout.EndHorizontal();
             DeveloperNoteEditor_B64Image.WarningAboutSizeB64();
             base.DrawDefaultInspector();
+        }
+        private void Open()
+        {
+            DeveloperNote_VideoOdyseeWithThumbnail myScript = (DeveloperNote_VideoOdyseeWithThumbnail)target;
+            Application.OpenURL(myScript.m_odyseeUrl);
+
         }
     }
 }

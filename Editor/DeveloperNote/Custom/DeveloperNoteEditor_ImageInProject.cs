@@ -13,12 +13,7 @@ namespace Eloi
         public override void OnInspectorGUI()
         {
             DeveloperNote_ImageInProject myScript = (DeveloperNote_ImageInProject)target;
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Open / Watch"))
-            {
-                Application.OpenURL(AssetDatabase.GetAssetPath(myScript.m_image));
-            }
-            GUILayout.EndHorizontal();
+            DeveloperNoteEditor_B64Image.DrawImage(myScript.m_image);
             base.DrawDefaultInspector();
         }
     }

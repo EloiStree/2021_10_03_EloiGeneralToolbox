@@ -13,16 +13,13 @@ namespace Eloi
         public override void OnInspectorGUI()
         {
             DeveloperNote_B64ImageFromURL myScript = (DeveloperNote_B64ImageFromURL)target;
+            DeveloperNoteEditor_B64Image.DrawImage(myScript.m_image);
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Open:");
-            if (GUILayout.Button("From Url"))
+            if (GUILayout.Button("Open Given url", GUILayout.Width(250)))
             {
                 Application.OpenURL(myScript.m_imageUrl);
             }
-            if (GUILayout.Button("Local"))
-            {
-                Application.OpenURL(myScript.m_b64Text.m_b64Text);
-            }
+           
             GUILayout.EndHorizontal();
             DeveloperNoteEditor_B64Image.WarningAboutSizeB64();
             base.DrawDefaultInspector();
