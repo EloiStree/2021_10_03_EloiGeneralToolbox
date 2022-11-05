@@ -8,6 +8,7 @@ public class InverseBoolStateRelayMono : MonoBehaviour
     public Eloi.PrimitiveUnityEvent_Bool m_relayValue;
     public void SetState(bool value) { m_relayValue.Invoke(value); }
 
+    [ContextMenu("SwitchState")]
     public void SwitchState()
     {
         m_state = !m_state;

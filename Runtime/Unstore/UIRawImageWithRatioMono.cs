@@ -9,7 +9,13 @@ public class UIRawImageWithRatioMono : MonoBehaviour
     public RawImage m_imageToAffect;
     public AspectRatioFitter m_ratioToAffect;
     public UnityEvent m_toDoIfNull;
-
+    public void ApplyTexture(Texture texture)
+    {
+        if (texture is Texture2D)
+            ApplyTexture((Texture2D)texture);
+        else if (texture is RenderTexture)
+            ApplyTexture((RenderTexture)texture);
+    }
     public void ApplyTexture(Texture2D texture) {
         if (texture == null) {
             m_toDoIfNull.Invoke();

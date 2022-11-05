@@ -23,6 +23,12 @@ namespace Eloi
             if (m_startAtAwake)
                 StartCountdown();
         }
+        public void SetTimeToAndReset(float time) {
+
+            m_timeleft = time;
+            m_countdownValue = time;
+            StartCountdown();
+        }
         private void StartCountdown()
         {
             m_timeleft = m_countdownValue;

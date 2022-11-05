@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 [System.Serializable]
 public abstract class BooleanChangeListener 
@@ -41,6 +42,25 @@ public class DefaultBooleanChangeListener : BooleanChangeListener
         m_onChanged.Invoke(newValue);
         if (m_onChangedDelegate != null)
             m_onChangedDelegate(newValue);
+    }
+}
+[System.Serializable]
+public class DefaultOnOffBooleanChangeListener : BooleanChangeListener
+{
+    public Eloi.PrimitiveUnityEvent_Bool m_onChanged;
+    public BooleanChanged m_onChangedDelegate;
+    public UnityEvent  m_onChangedTrue;
+    public UnityEvent m_onChangedFalse;
+    public delegate void BooleanChanged(bool newValue);
+    protected override void NotifyChangeToChildren(bool newValue)
+    {
+        m_onChanged.Invoke(newValue);
+        if (m_onChangedDelegate != null)
+            m_onChangedDelegate(newValue);
+        if (newValue)
+            m_onChangedTrue.Invoke();
+        else
+            m_onChangedFalse.Invoke();
     }
 }
 [System.Serializable]
