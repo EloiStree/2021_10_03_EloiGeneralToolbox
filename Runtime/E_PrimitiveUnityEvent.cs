@@ -73,5 +73,11 @@ namespace Eloi
     [System.Serializable]
     public class GenericObjectEvent<T> : UnityEvent<T> { }
 
+    [System.Serializable]
+    public class ClassicUnityEvent_Vector3 : UnityEvent<Vector3> { }
+    [System.Serializable]
+    public class ClassicUnityEvent_Vector2 : UnityEvent<Vector2> { }
+    [System.Serializable]
+    public class ClassicUnityEvent_Quaternion : UnityEvent<Quaternion> { }
 
 }
