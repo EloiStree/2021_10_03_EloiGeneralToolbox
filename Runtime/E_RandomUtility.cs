@@ -70,17 +70,68 @@ namespace Eloi {
         {
             value = UnityEngine.Random.value <0.5f;
         }
-        
-        public static void GetRandomPositionInTransform(in Transform zoneReference, out Vector3 position, Space scaleType= Space.World)
-        {
 
-            Vector3 scale = scaleType==Space.World? zoneReference.lossyScale: zoneReference.localScale;
-            GetRandomDirectionNormalized(out Vector3 direction);
-            direction.x *= scale.x / 2f;
-            direction.y *= scale.y / 2f;
-            direction.z *= scale.z / 2f;
-            direction = zoneReference.rotation * direction;
-            position = zoneReference.position + direction;
+        public static void GetRandomPositionInTransform(in Transform zoneReference, out Vector3 position, Space scaleType = Space.World)
+        {
+            ////Old version
+            //Vector3 scale = scaleType==Space.World? zoneReference.lossyScale: zoneReference.localScale;
+            //GetRandomVector3Direction(out Vector3 direction);
+            //direction.x *= scale.x / 2f;
+            //direction.y *= scale.y / 2f;
+            //direction.z *= scale.z / 2f;
+            //direction = zoneReference.rotation * direction;
+            //position = zoneReference.position + direction;
+            Vector3 scale = scaleType == Space.World ? zoneReference.lossyScale : zoneReference.localScale;
+            Vector3 localPoint = Vector3.zero;
+            localPoint.x = UnityEngine.Random.Range(-scale.x / 2f, scale.x / 2f);
+            localPoint.y = UnityEngine.Random.Range(-scale.y / 2f, scale.y / 2f);
+            localPoint.z = UnityEngine.Random.Range(-scale.z / 2f, scale.z / 2f);
+            Eloi.E_RelocationUtility.GetLocalToWorld_Point(in localPoint, in zoneReference, out position);
+        }
+        public enum SquareFace:int { Left, Right, Up, Down, Front, Back }
+
+        public static void GetRandomPositionInTransformWalls(in Transform zoneReference, out Vector3 position, Space scaleType = Space.World)
+        {
+            
+            Vector3 scale = scaleType == Space.World ? zoneReference.lossyScale : zoneReference.localScale;
+            Vector3 localPoint = Vector3.zero;
+            scale /= 2f;
+
+            localPoint.x = UnityEngine.Random.Range(-scale.x , scale.x );
+            localPoint.y = UnityEngine.Random.Range(-scale.y , scale.y);
+            localPoint.z = UnityEngine.Random.Range(-scale.z, scale.z );
+            GetRandomN2M(0, 5, out int r);
+            switch ((SquareFace)r)
+            {
+                case SquareFace.Left:
+
+                    localPoint.x = -scale.x  ;
+                    break;
+                case SquareFace.Right:
+                    localPoint.x =  scale.x ;
+                    break;
+                case SquareFace.Up:
+                    localPoint.y = scale.y ;
+                    break;
+                case SquareFace.Down:
+                    localPoint.y = -scale.y ;
+                    break;
+                case SquareFace.Front:
+                    localPoint.z = -scale.z;
+                    break;
+                case SquareFace.Back:
+                    localPoint.z = scale.z;
+                    break;
+                default:
+                    break;
+            }
+
+            Eloi.E_RelocationUtility.GetLocalToWorld_Point(in localPoint, in zoneReference, out position);
+        }
+
+        private static bool R_Bool()
+        {
+            return randomSeed.Next() % 2 == 0;
         }
 
         public static void GetRandomDirectionNormalized(out Vector3 random)
@@ -109,15 +160,14 @@ namespace Eloi {
         public static void GetRandom_n180_180(out float random) => GetRandomN2M(-180f, 180f, out random);
         public static void GetRandom_n360_360(out float random) => GetRandomN2M(-360f, 360f, out random);
 
-        public static int  m_seed=0;
-        public static void GetRandomN2M(in float n, in float m, out float random) {
-            System. Random r = new System.Random(m_seed++);
-            random = (float)r.NextDouble();
-            random = Mathf.Lerp(n, m, random);
-            //random = UnityEngine.Random.Range(n, m); 
+        public static System.Random randomSeed = new System.Random((int)(DateTime.Now - new DateTime(DateTime.Now.Year,1,1)).TotalSeconds);
+        public static void GetRandomN2M(in float minValue, in float maxValue, out float random) {
+            Eloi.E_CodeTag.ChatGPTSource();
+            random = (float)(randomSeed.NextDouble() * (maxValue - minValue) + minValue);
+            
         }
-        public static void GetRandomN2M(in int n, in int m, out int random) =>
-         random = UnityEngine.Random.Range(n, m);
+        public static void GetRandomN2M(in int nInclusive, in int mInclusive, out int random) =>
+         random = UnityEngine.Random.Range(nInclusive, mInclusive+1);
 
         public static void GetRandomOfEnum<T>( out T result) where T: Enum
         {
