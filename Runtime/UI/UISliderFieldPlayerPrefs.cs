@@ -8,24 +8,24 @@ using UnityEngine.UI;
 
 namespace be.eloistree.generaltoolbox
 {
-    public class UIInputFieldPlayerPrefs : AbstrectUIPlayerPrefs
+    public class UISliderFieldPlayerPrefs : AbstrectUIPlayerPrefs
     {
-        public InputField m_inputfield;      
+        public Slider m_inputfield;
         protected override void Reset()
         {
             base.Reset();
-            m_inputfield = GetComponent<InputField>();
+            m_inputfield = GetComponent<Slider>();
         }
-       
+
         public override void GetInfoToStoreAsString(out string infoToStore)
         {
-            infoToStore = m_inputfield.text;
+            infoToStore = m_inputfield.value.ToString();
         }
 
         public override void SetWithStoredInfoFromString(string recoveredInfo)
         {
-            m_inputfield.text = recoveredInfo;
-            m_id = "" + Guid.NewGuid();
+            float.TryParse(recoveredInfo, out float value);
+            m_inputfield.value = value;
         }
     }
 }
