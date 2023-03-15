@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -99,6 +100,19 @@ namespace Eloi
         {
             Eloi.E_UnityRandomUtility.GetRandomGUID(out string id);
             m_uniqueId = "" + id;
+        }
+
+        public void Save()
+        {
+            SaveAbstractInfoFromText();
+        }
+        public void Load()
+        {
+            ReloadInfoStoredAndPushItBack();
+        }
+
+        public void SaveAndReload() {
+            Save();Load();
         }
     }
 }

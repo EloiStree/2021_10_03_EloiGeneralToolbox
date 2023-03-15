@@ -41,6 +41,16 @@ namespace Eloi
         #endregion
 
 
+        public virtual void OpenFileIfUsingFile() {
+            if (m_storageType != StorageType.PlayerPrefs) {
+                string p = GetFilePathWhereToStore();
+                string d = Path.GetDirectoryName(p);
+
+                Application.OpenURL(d);
+                Debug.Log(p);
+            }
+        }
+
         public void GetUniqueIdWithContext(out string id) {
              id = m_uniqueIdOfPlayerPrefs+"_"+m_currentContextId;
         }
@@ -67,6 +77,17 @@ namespace Eloi
                 m_onLoad.Invoke(text);
             }
         }
+
+        public void SaveAndLoadNewContext(string newContext) {
+            Save();
+            SetCurrentContextId(newContext);
+            Load();
+        }
+
+        [ContextMenu("Save")]
+        public virtual void Save() { SaveAbstractInfoFromText(); }
+        [ContextMenu("Load")]
+        public virtual void Load() { ReloadInfoStoredAndPushItBack(); }
 
         public void SaveAbstractInfoFromText()
         {
