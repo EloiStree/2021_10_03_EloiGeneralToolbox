@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace be.eloistree.generaltoolbox
 {
-    public class UISliderFieldPlayerPrefs : AbstrectUIPlayerPrefs
+    public class UISliderFieldPlayerPrefs : AbstractPlayerPrefs
     {
         public Slider m_inputfield;
         protected override void Reset()

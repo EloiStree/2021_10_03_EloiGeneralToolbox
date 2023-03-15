@@ -8,7 +8,7 @@ using UnityEngine.UI;
 
 namespace be.eloistree.generaltoolbox
 {
-    public class UIInputFieldPlayerPrefs : AbstrectUIPlayerPrefs
+    public class UIInputFieldPlayerPrefs : AbstractPlayerPrefs
     {
         public InputField m_inputfield;      
         protected override void Reset()

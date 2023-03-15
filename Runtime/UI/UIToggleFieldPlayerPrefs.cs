@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace be.eloistree.generaltoolbox
 {
-    public class UIToggleFieldPlayerPrefs : AbstrectUIPlayerPrefs
+    public class UIToggleFieldPlayerPrefs : AbstractPlayerPrefs
     {
 
         public bool m_toggleValue;

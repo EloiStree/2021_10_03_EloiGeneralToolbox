@@ -5,9 +5,10 @@ using UnityEngine;
 
 namespace Eloi
 {
-    public abstract class AbstrectUIPlayerPrefs : MonoBehaviour
+    public abstract class AbstractPlayerPrefs : MonoBehaviour
     {
-        public string m_id;
+        public string m_uniqueId;
+        public string m_subfolder="P";
         public Eloi.PrimitiveUnityEvent_String m_onLoad;
         public StorageType m_storageType = StorageType.PersistentDataPath;
         public enum StorageType { 
@@ -17,17 +18,17 @@ namespace Eloi
 
         public abstract void GetInfoToStoreAsString(out string infoToStore);
         public abstract void SetWithStoredInfoFromString(string recoveredInfo);
-        void Awake()
+        protected void Awake()
         {
             ReloadInfoStoredAndPushItBack();
         }
 
-        private void ReloadInfoStoredAndPushItBack()
+        public void ReloadInfoStoredAndPushItBack()
         {
             if (m_storageType == StorageType.PlayerPrefs) { 
                 string t = "";
-                if (PlayerPrefs.HasKey(m_id))
-                    t = PlayerPrefs.GetString(m_id);
+                if (PlayerPrefs.HasKey(m_uniqueId))
+                    t = PlayerPrefs.GetString(m_uniqueId);
                 else GetInfoToStoreAsString(out t);
 
                 SetWithStoredInfoFromString(t);
@@ -43,12 +44,12 @@ namespace Eloi
             }
         }
 
-        private void SaveInputField()
+        public void SaveAbstractInfoFromText()
         {
             if (m_storageType == StorageType.PlayerPrefs)
             {
                 GetInfoToStoreAsString(out string infoToStore);
-                PlayerPrefs.SetString(m_id, infoToStore);
+                PlayerPrefs.SetString(m_uniqueId, infoToStore);
             }
             else
             {
@@ -56,7 +57,6 @@ namespace Eloi
                 string folderPath = GetFilePathWhereToStore();
                 MetaAbsolutePathFile p = new MetaAbsolutePathFile(folderPath);
                 Eloi.E_FileAndFolderUtility.ExportByOverriding(p, infoToStore);
-               //Debug.Log("PS|" + folderPath);
             }
 
         }
@@ -64,28 +64,28 @@ namespace Eloi
         private string GetFilePathWhereToStore()
         {
             string folderPath = Application.persistentDataPath;
-            if (m_storageType == StorageType.PlayerPrefs)
+            if (m_storageType == StorageType.DataPath)
             {
                 folderPath = Application.dataPath;
             }
-            Eloi.E_StringByte64Utility.Base64EncodeUsingUTF8FileSafe(m_id, out string idB64);
-            Eloi.E_FilePathUnityUtility.MeltPathTogether(out folderPath, folderPath, idB64);
+            Eloi.E_StringByte64Utility.Base64EncodeUsingUTF8FileSafe(m_uniqueId, out string idB64);
+            Eloi.E_FilePathUnityUtility.MeltPathTogether(out folderPath, folderPath , m_subfolder , idB64);
             return folderPath;
         }
 
         private void OnDestroy()
         {
-            SaveInputField();
+            SaveAbstractInfoFromText();
         }
         private void OnApplicationPause(bool pause)
         {
-            SaveInputField();
+            SaveAbstractInfoFromText();
 
         }
         private void OnApplicationQuit()
         {
 
-            SaveInputField();
+            SaveAbstractInfoFromText();
         }
 
 
@@ -98,7 +98,7 @@ namespace Eloi
         private void GenerateId()
         {
             Eloi.E_UnityRandomUtility.GetRandomGUID(out string id);
-            m_id = "" + id;
+            m_uniqueId = "" + id;
         }
     }
 }
