@@ -42,7 +42,9 @@ namespace Eloi
     }
 
     [System.Serializable]
-    public class PrimitiveUnityEvent_String : UnityEvent<string> { }
+    public class PrimitiveUnityEvent_String : UnityEvent<string>
+    {
+    }
     [System.Serializable]
     public class PrimitiveUnityEvent_Char : UnityEvent<char> { }
     [System.Serializable]
