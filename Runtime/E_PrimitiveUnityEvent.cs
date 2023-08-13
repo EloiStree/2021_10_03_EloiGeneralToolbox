@@ -41,10 +41,19 @@ namespace Eloi
         }
     }
 
+
+
+    //[System.Serializable]
+    //public class PrimitiveUnityEventWithValue_String : UnityEvent<string> {
+    //    public string m_lastValue;
+    //    public new void Invoke(string arg0) {
+    //        m_lastValue = arg0;
+    //        base.Invoke(arg0);
+    //    }
+    //}
+
     [System.Serializable]
-    public class PrimitiveUnityEvent_String : UnityEvent<string>
-    {
-    }
+    public class PrimitiveUnityEvent_String : UnityEvent<string> { }
     [System.Serializable]
     public class PrimitiveUnityEvent_Char : UnityEvent<char> { }
     [System.Serializable]
@@ -65,9 +74,6 @@ namespace Eloi
     public class ClassicUnityEvent_Texture2D : UnityEvent<Texture2D> { }
 
     [System.Serializable]
-    public class ClassicUnityEvent_Texture : UnityEvent<Texture> { }
-
-    [System.Serializable]
     public class ClassicUnityEvent_RenderTexture : UnityEvent<RenderTexture> { }
     [System.Serializable]
     public class ClassicUnityEvent_Color : UnityEvent<Color> { }
@@ -75,11 +81,5 @@ namespace Eloi
     [System.Serializable]
     public class GenericObjectEvent<T> : UnityEvent<T> { }
 
-    [System.Serializable]
-    public class ClassicUnityEvent_Vector3 : UnityEvent<Vector3> { }
-    [System.Serializable]
-    public class ClassicUnityEvent_Vector2 : UnityEvent<Vector2> { }
-    [System.Serializable]
-    public class ClassicUnityEvent_Quaternion : UnityEvent<Quaternion> { }
 
 }

@@ -60,9 +60,6 @@ namespace Eloi {
         {
         }
 
-        public static void ChatGPTSource() { }
-        public static void ChatGPTSource(string message) { }
-
         public class NotSureIfGoodIdea {
             public static void Info(string message)
             {
@@ -93,39 +90,6 @@ namespace Eloi {
         {
             /// <summary>
             /// This script is use just to say that I don't have the time now but need to code something later.
-            /// </summary>
-            /// <param name="message"></param>
-            public static void Info(string message)
-            {
-
-            }
-        }
-        public class NeedHelp
-        {
-            /// <summary>
-            /// This script is use just to say that I need help and can't code this part yet.
-            /// </summary>
-            /// <param name="message"></param>
-            public static void Info(string message)
-            {
-
-            }/// <summary>
-             /// This script is use just to say that I need help and can't code this part yet.
-             /// </summary>
-             /// <param name="message"></param>
-            public static void DontKnowHowToCodeThat(string message="")
-            { }
-            public static void NotSureItIsTheRightWay(string message = "")
-            { }
-            public static void ShouldBeAllRightButIsIt(string message = "")
-            { }
-        }
-
-        public class NeedCommunityHelp
-        {
-            /// <summary>
-            /// There is a taks that I could spend day doing that community could do if someone want to help.
-            /// Feel free to search this tag if you want to help.
             /// </summary>
             /// <param name="message"></param>
             public static void Info(string message)

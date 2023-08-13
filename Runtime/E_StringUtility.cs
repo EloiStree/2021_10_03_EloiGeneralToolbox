@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
@@ -27,73 +25,11 @@ namespace Eloi
             return true;
 
         }
-        public static void  ComputeSha256Hash(string textTohash, out string hash256Result)
-        {
-            //source: https://www.c-sharpcorner.com/article/compute-sha256-hash-in-c-sharp/#:~:text=The%20HashAlgorithm%20class%20is%20the,byte%20array%20of%20256%20bits.
-            // Create a SHA256   
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(textTohash));
 
-                // Convert byte array to a string   
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < bytes.Length; i++)
-                {
-                    builder.Append(bytes[i].ToString("x2"));
-                }
-                hash256Result=  builder.ToString();
-            }
-        }
-        
         public static void Capitalize(in string text, out string result)
         {
             //source=https://stackoverflow.com/questions/913090/how-to-capitalize-the-first-character-of-each-word-or-the-first-character-of-a
             result = Regex.Replace(text, @"(^\w)|(\s\w)", m => m.Value.ToUpper());
-        }
-
-        public static void SubstringBetween(int indexStart, int indexEnd, in string text, out string textFound)
-        {
-            int tl = text.Length;
-            if (indexStart >= tl) indexStart = tl;
-            if (indexEnd >= tl) indexEnd = tl;
-            if (indexStart <0) indexStart = 0;
-            if (indexEnd <0) indexEnd = 0;
-
-            if (indexEnd < indexStart) {
-                int t = indexEnd;
-                indexEnd = indexStart;
-                indexStart = t;
-            }
-            int l = indexEnd - indexStart;
-            if (l == 0) textFound = "";
-            else textFound = text.Substring(indexStart, l);
-        }
-        public static void SubstringBetween(int indexStart, int indexEnd, in string text, out string textFound, bool startInclude = true, bool endInclude = true)
-        {
-          
-            if (!startInclude)
-                indexStart += 1;
-            if (!endInclude)
-                indexEnd -= 1;
-            SubstringBetween(indexStart, indexEnd, in text, out textFound);
-        }
-
-        public static void ConvertHexaToInt(string hexaText, out byte result)
-        {
-            try
-            {
-                result = byte.Parse(hexaText, System.Globalization.NumberStyles.HexNumber);
-            }
-            catch (Exception) { result = 0; };
-        }
-        public static void ConvertHexaToInt(string hexaText, out int result)
-        {
-            try
-            {
-                result = Int32.Parse(hexaText, System.Globalization.NumberStyles.HexNumber);
-            }
-            catch (Exception) { result = 0;};
         }
 
         public static bool IsNullOrEmpty( in string t)
@@ -170,6 +106,9 @@ namespace Eloi
             //    }
             //}
         }
+
+      
+
         public static bool AreFilled(in string a, in string b, in bool ignoreCase, in bool useTrim)
         {
             return IsFilled(in a) && IsFilled(b);
@@ -196,6 +135,7 @@ namespace Eloi
         {
             return AreEquals(in a, in b, in m_true, in m_true);
         }
+
         public static bool AreEquals(in string a, in string b, in bool ignoreCase, in bool useTrim)
         {
 
@@ -226,6 +166,26 @@ namespace Eloi
             //}
 
             //return false;
+        }
+
+        public static int IndexOf(string text, string lookFor, bool ignoreCase, bool useTrim)
+        {
+            if (text == null || lookFor == null)
+                return -1;
+
+            if (ignoreCase)
+            {
+                text = text.ToLower();
+                lookFor = lookFor.ToLower();
+            }
+
+            if (useTrim)
+            {
+                text = text.Trim();
+                lookFor = lookFor.Trim();
+            }
+
+            return text.IndexOf(lookFor);
         }
 
         public static void SplitInTwo(in string text, in  int charIndex, out string leftPart, out string rightPart)
