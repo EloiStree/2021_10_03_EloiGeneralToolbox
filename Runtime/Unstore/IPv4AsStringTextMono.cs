@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Sockets;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Eloi
 {
@@ -14,6 +15,9 @@ namespace Eloi
 
         public string [] m_lines;
         public List<IPV4AsUShort> m_ipfound = new List<IPV4AsUShort>();
+        //public StringEvent m_onTextChanged;
+        //[System.Serializable]
+        //public class StringEvent : UnityEvent<string> { }
 
         public void SetText(string text) {
             m_textAsIP = text;
@@ -42,7 +46,6 @@ namespace Eloi
                     }
 
                 }
-
             }
         }
     }

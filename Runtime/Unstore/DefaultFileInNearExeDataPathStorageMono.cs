@@ -34,6 +34,8 @@ public class DefaultFileInNearExeDataPathStorageMono : Eloi.AbstractMetaAbsolute
         IMetaAbsolutePathDirectoryGet dir = new MetaAbsolutePathDirectory(Application.dataPath);
 #if UNITY_EDITOR || UNITY_STANDALONE_WIN
         dir = E_FileAndFolderUtility.GetParent(in dir);
+#else 
+        dir = new MetaAbsolutePathDirectory(Application.persistentDataPath);
 #endif
         IMetaAbsolutePathFileGet pathResult = Eloi.E_FileAndFolderUtility.Combine(dir, m_subfolders, m_fileName);
        pathResult.GetPath(out path);
