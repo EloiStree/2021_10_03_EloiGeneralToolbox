@@ -9,7 +9,7 @@ public class UniqueIdToGenericListRegisterMono<T> : MonoBehaviour
     public GroupOfUniqueIdToListObject<T> m_groupOfIdToListObject;
     public bool m_ignoreCase = true;
 
-    public void AddComToList(string com, params T[] givenObject)
+    public void AddToList(string com, params T[] givenObject)
     {
         m_groupOfIdToListObject.Get(com, m_ignoreCase, out bool found, out UniqueIdToListOfObject<T> link);
         if (found)
@@ -17,7 +17,7 @@ public class UniqueIdToGenericListRegisterMono<T> : MonoBehaviour
         else m_groupOfIdToListObject.m_registeredIdToList.Add(new UniqueIdToListOfObject<T>(com, givenObject));
 
     }
-    public void AddComToList(string com, IEnumerable<T> givenObject)
+    public void AddToList(string com, IEnumerable<T> givenObject)
     {
         m_groupOfIdToListObject.Get(com, m_ignoreCase, out bool found, out UniqueIdToListOfObject<T> link);
         if (found)
