@@ -7,6 +7,7 @@ namespace Eloi
 {
     public class E_DrawingUtility
     {
+
         public static Color fowardColor= Color.blue;
         public static Color rightColor = Color.red;
         public static Color upColor = Color.green;
@@ -94,6 +95,34 @@ namespace Eloi
             Debug.DrawLine(localPosition, localPosition + localDirection, color, deltaTime);
             Debug.DrawLine(Vector3.zero, localDirection, color*0.9f, deltaTime);
 
+        }
+
+        public static void DrawCube(float time, Color color, Vector3 center, Quaternion rotation, Vector3 halfDim)
+        {
+            Vector3 topLeftFront =  new Vector3(-halfDim.x, halfDim.y, halfDim.z) ,
+                    topRightFront   =    new Vector3(halfDim.x, halfDim.y, halfDim.z),
+                    topLeftBack     =      new Vector3(-halfDim.x, halfDim.y, -halfDim.z),
+                    topRightBack    =      new Vector3(halfDim.x, halfDim.y, -halfDim.z),
+                    downLeftFront   =     new Vector3(-halfDim.x,- halfDim.y, halfDim.z),
+                    downRightFront  =    new Vector3(halfDim.x,- halfDim.y, halfDim.z),
+                    downLeftBack    =      new Vector3(-halfDim.x, -halfDim.y, -halfDim.z),
+                    downRightBack   =     new Vector3(halfDim.x, -halfDim.y, -halfDim.z);
+            Eloi.E_RelocationUtility.GetLocalToWorld_Point(topLeftFront , center, rotation, out topLeftFront );
+            Eloi.E_RelocationUtility.GetLocalToWorld_Point(topRightFront, center, rotation, out topRightFront);
+            Eloi.E_RelocationUtility.GetLocalToWorld_Point(topLeftBack  , center, rotation, out topLeftBack  );
+            Eloi.E_RelocationUtility.GetLocalToWorld_Point(topRightBack , center, rotation, out topRightBack );
+            Eloi.E_RelocationUtility.GetLocalToWorld_Point(downLeftFront, center, rotation, out downLeftFront);
+            Eloi.E_RelocationUtility.GetLocalToWorld_Point(downRightFront, center, rotation, out downRightFront);
+            Eloi.E_RelocationUtility.GetLocalToWorld_Point(downLeftBack , center, rotation, out downLeftBack );
+            Eloi.E_RelocationUtility.GetLocalToWorld_Point(downRightBack, center, rotation, out downRightBack);
+
+            DrawLines(time, color,
+                topLeftFront, topRightFront, topRightBack, topLeftBack, topLeftFront,
+                downLeftFront, downRightFront, downRightBack, downLeftBack, downLeftFront);
+            DrawLines(time, color, topLeftBack, downLeftBack);
+            DrawLines(time, color, topRightBack, downRightBack);
+            DrawLines(time, color, topLeftFront, downLeftFront);
+            DrawLines(time, color, topRightFront, downRightFront);
         }
     }
 }

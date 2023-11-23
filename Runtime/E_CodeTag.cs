@@ -60,6 +60,9 @@ namespace Eloi {
         {
         }
 
+        public static void ChatGPTSource() { }
+        public static void ChatGPTSource(string message) { }
+
         public class NotSureIfGoodIdea {
             public static void Info(string message)
             {

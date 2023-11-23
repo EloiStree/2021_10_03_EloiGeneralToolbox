@@ -101,6 +101,15 @@ namespace Eloi
             return !IsFilled(t);
         }
 
+        public static int IndexOf(string text, string lookFor, bool trim, bool ignoreCase)
+        {
+            if (trim)
+                text = text.Trim();
+            if (ignoreCase)
+                text = text.ToLower();
+            return text.IndexOf(lookFor);
+        }
+
         public static void ConvertToAlphaNumByReplacing(in string text, out string textResult, in string replaceNoneAlphaby="_")
         {
             Regex rgx = new Regex("[^a-zA-Z0-9_]");

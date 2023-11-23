@@ -6,7 +6,7 @@ using UnityEngine;
 public class UI_PageCyclingSwitcher : MonoBehaviour
 {
 
-    public GameObject[] m_keyboards;
+    public GameObject[] m_pages;
     public int m_index;
 
 
@@ -14,7 +14,7 @@ public class UI_PageCyclingSwitcher : MonoBehaviour
     public void Next() {
 
         m_index++;
-        if (m_index >= m_keyboards.Length)
+        if (m_index >= m_pages.Length)
             m_index = 0;
         SetAt(m_index);
     }
@@ -24,18 +24,18 @@ public class UI_PageCyclingSwitcher : MonoBehaviour
 
         m_index--;
         if (m_index < 0) {
-            m_index = m_keyboards.Length-1; 
+            m_index = m_pages.Length-1; 
         }
         SetAt(m_index);
     }
 
     private void SetAt(int index)
     {
-        for (int i = 0; i < m_keyboards.Length; i++)
+        for (int i = 0; i < m_pages.Length; i++)
         {
             bool isOn = index == i;
-            if (m_keyboards != null)
-                m_keyboards[i].SetActive(isOn);
+            if (m_pages != null)
+                m_pages[i].SetActive(isOn);
         }
     }
 }
