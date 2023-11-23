@@ -13,7 +13,8 @@ namespace be.eloistree.generaltoolbox
        
         void Update()
         {
-            m_toAffect.Rotate(m_rotation* m_multiplicator * Time.deltaTime , m_rotationType) ;
+            m_toAffect.Rotate(m_rotation * m_multiplicator * Time.deltaTime , m_rotationType) ;
+
         }
 
         [ContextMenu("FetchCurrentTransform")]

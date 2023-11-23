@@ -7,7 +7,7 @@ namespace Eloi
 {
     public class E_ColorUtility : MonoBehaviour
     {
-
+     
         public static bool IsAlmostEqual(in Color a, in Color b, in float minPourcent) {
 
             return
@@ -19,28 +19,26 @@ namespace Eloi
 
         public static class RGBCodesChart
         {
-            public static Color Black = new Color(0, 0, 0);
-            public static Color White = new Color(255, 255, 255);
-            public static Color Red = new Color(255, 0, 0);
-            public static Color Lime = new Color(0, 255, 0);
-            public static Color Blue = new Color(0, 0, 255);
-            public static Color Yellow = new Color(255, 255, 0);
-            public static Color Cyan_Aqua = new Color(0, 255, 255);
-            public static Color Magenta_Fuchsia = new Color(255, 0, 255);
-            public static Color Silver = new Color(192, 192, 192);
-            public static Color Gray = new Color(128, 128, 128);
-            public static Color Maroon = new Color(128, 0, 0);
-            public static Color Olive = new Color(128, 128, 0);
-            public static Color Green = new Color(0, 128, 0);
-            public static Color Purple = new Color(128, 0, 128);
-            public static Color Teal = new Color(0, 128, 128);
-            public static Color Navy = new Color(0, 0, 128);
+            public static Color black = new Color(0, 0, 0);
+            public static Color white = new Color(255, 255, 255);
+            public static Color red = new Color(255, 0, 0);
+            public static Color lime = new Color(0, 255, 0);
+            public static Color blue = new Color(0, 0, 255);
+            public static Color yellow = new Color(255, 255, 0);
+            public static Color cyan_Aqua = new Color(0, 255, 255);
+            public static Color magenta_Fuchsia = new Color(255, 0, 255);
+            public static Color silver = new Color(192, 192, 192);
+            public static Color gray = new Color(128, 128, 128);
             public static Color maroon = new Color(128, 0, 0);
+            public static Color olive = new Color(128, 128, 0);
+            public static Color freen = new Color(0, 128, 0);
+            public static Color purple = new Color(128, 0, 128);
+            public static Color teal = new Color(0, 128, 128);
+            public static Color navy = new Color(0, 0, 128);
             public static Color darkred = new Color(139, 0, 0);
             public static Color brown = new Color(165, 42, 42);
             public static Color firebrick = new Color(178, 34, 34);
             public static Color crimson = new Color(220, 20, 60);
-            public static Color red = new Color(255, 0, 0);
             public static Color tomato = new Color(255, 99, 71);
             public static Color coral = new Color(255, 127, 80);
             public static Color indianred = new Color(205, 92, 92);
@@ -57,8 +55,6 @@ namespace Eloi
             public static Color palegoldenrod = new Color(238, 232, 170);
             public static Color darkkhaki = new Color(189, 183, 107);
             public static Color khaki = new Color(240, 230, 140);
-            public static Color olive = new Color(128, 128, 0);
-            public static Color yellow = new Color(255, 255, 0);
             public static Color yellowgreen = new Color(154, 205, 50);
             public static Color darkolivegreen = new Color(85, 107, 47);
             public static Color olivedrab = new Color(107, 142, 35);
@@ -68,7 +64,6 @@ namespace Eloi
             public static Color darkgreen = new Color(0, 100, 0);
             public static Color green = new Color(0, 128, 0);
             public static Color forestgreen = new Color(34, 139, 34);
-            public static Color lime = new Color(0, 255, 0);
             public static Color limegreen = new Color(50, 205, 50);
             public static Color lightgreen = new Color(144, 238, 144);
             public static Color palegreen = new Color(152, 251, 152);
@@ -80,7 +75,6 @@ namespace Eloi
             public static Color mediumseagreen = new Color(60, 179, 113);
             public static Color lightseagreen = new Color(32, 178, 170);
             public static Color darkslategray = new Color(47, 79, 79);
-            public static Color teal = new Color(0, 128, 128);
             public static Color darkcyan = new Color(0, 139, 139);
             public static Color aqua = new Color(0, 255, 255);
             public static Color cyan = new Color(0, 255, 255);
@@ -100,10 +94,8 @@ namespace Eloi
             public static Color skyblue = new Color(135, 206, 235);
             public static Color lightskyblue = new Color(135, 206, 250);
             public static Color midnightblue = new Color(25, 25, 112);
-            public static Color navy = new Color(0, 0, 128);
             public static Color darkblue = new Color(0, 0, 139);
             public static Color mediumblue = new Color(0, 0, 205);
-            public static Color blue = new Color(0, 0, 255);
             public static Color royalblue = new Color(65, 105, 225);
             public static Color blueviolet = new Color(138, 43, 226);
             public static Color indigo = new Color(75, 0, 130);
@@ -115,7 +107,6 @@ namespace Eloi
             public static Color darkviolet = new Color(148, 0, 211);
             public static Color darkorchid = new Color(153, 50, 204);
             public static Color mediumorchid = new Color(186, 85, 211);
-            public static Color purple = new Color(128, 0, 128);
             public static Color thistle = new Color(216, 191, 216);
             public static Color plum = new Color(221, 160, 221);
             public static Color violet = new Color(238, 130, 238);
@@ -165,15 +156,12 @@ namespace Eloi
             public static Color ivory = new Color(255, 255, 240);
             public static Color azure = new Color(240, 255, 255);
             public static Color snow = new Color(255, 250, 250);
-            public static Color black = new Color(0, 0, 0);
             public static Color dimgray_dimgrey = new Color(105, 105, 105);
             public static Color gray_grey = new Color(128, 128, 128);
             public static Color darkgray_darkgrey = new Color(169, 169, 169);
-            public static Color silver = new Color(192, 192, 192);
             public static Color lightgray_lightgrey = new Color(211, 211, 211);
             public static Color gainsboro = new Color(220, 220, 220);
             public static Color whitesmoke = new Color(245, 245, 245);
-            public static Color white = new Color(255, 255, 255);
 
 
 
