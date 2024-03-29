@@ -20,6 +20,7 @@ namespace Eloi
         [ContextMenu("Search For Files")]
         public void SearchForFiles() {
             string[] files = new string[0];
+            
             E_FileAndFolderUtility.GetAllfilesInAndInChildren(m_targetDirectory, out files);
            // E_FileAndFolderUtility.GetAllfilesInAndOnlyInFolder(m_targetDirectory, out files);
             E_FileAndFolderUtility.FilterWithSize(in files, out m_filesFound, in m_minimumFileSize, in m_maxFileSize);

@@ -832,6 +832,11 @@ namespace Eloi
             CreateFolderIfNotThere(path);
             File.WriteAllText(path.GetPath(), text);
         }
+        public static void CreateOrOverrideFile(IMetaAbsolutePathFileGet whereToSTore, string text)
+        {
+            CreateFolderIfNotThere(whereToSTore);
+            File.WriteAllText(whereToSTore.GetPath(), text);
+        }
 
         public static void GetFileInfoFromPath(in IMetaAbsolutePathFileGet filePath,
             out IMetaFileNameWithExtensionGet fileName)
