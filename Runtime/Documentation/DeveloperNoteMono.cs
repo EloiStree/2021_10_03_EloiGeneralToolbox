@@ -5,20 +5,21 @@ using UnityEngine;
 public class DeveloperNoteMono : MonoBehaviour
 {
     [Tooltip("Just a note of the developer")]
-    [TextArea(0,10)]
+    [TextArea(4,10)]
     public string m_note;
+    [Tooltip("Who wrote the developer note")]
     public string m_author;
     protected virtual void OnValidate()
     {
-        m_currentDev = m_author;
+#if UNITY_EDITOR
+        UnityEditor.EditorPrefs.SetString("CurrentDev", m_author);
+#endif
     }
 
     private void Reset()
     {
-        if (m_author == "") 
-            m_author = m_currentDev;
+#if UNITY_EDITOR
+        m_author= UnityEditor.EditorPrefs.GetString("CurrentDev","");
+#endif
     }
-
-    public static string m_currentDev="";
-
 }
