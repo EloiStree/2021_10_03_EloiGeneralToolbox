@@ -7,6 +7,12 @@ namespace Eloi
     {
         public List<T> m_array = new List<T>();
 
+
+        public void AppendStartToArray(T value) { m_array.Insert(0, value); }
+        public void AppendEndToArray(T value) { m_array.Add(value); }
+
+
+
         public void SetArray(IEnumerable<T> array)
         {
             Clear();
