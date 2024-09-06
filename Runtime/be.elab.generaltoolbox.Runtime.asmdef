@@ -1,7 +1,13 @@
 {
-    "name": "be.eloistree.generaltoolbox",
+    "name": "be.elab.generaltoolbox",
     "rootNamespace": "Eloi",
-    "references": [],
+    "references": [
+        "GUID:88654a602f4bf1e47b4b300ef3c24b28",
+        "GUID:3c65854bb7d10fb4cb14249cca8513af",
+        "be.elab.codetag",
+        "be.elab.pathtypereadwrite",
+        "be.elab.clamphistory"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

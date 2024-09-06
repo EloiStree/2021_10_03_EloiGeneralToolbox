@@ -25,7 +25,6 @@ namespace Eloi
                 return false;
             }
             return true;
-
         }
         public static void  ComputeSha256Hash(string textTohash, out string hash256Result)
         {

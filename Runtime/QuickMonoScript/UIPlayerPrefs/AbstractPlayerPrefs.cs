@@ -114,5 +114,17 @@ namespace Eloi
         public void SaveAndReload() {
             Save();Load();
         }
+
+        [ContextMenu("Open Folder")]
+        public void OpenFolder()
+        {
+            Application.OpenURL(Application.persistentDataPath);
+        }
+        [ContextMenu("Open File")]
+        public void OpenFile()
+        {
+            Application.OpenURL(GetFilePathWhereToStore());
+        }
+
     }
 }

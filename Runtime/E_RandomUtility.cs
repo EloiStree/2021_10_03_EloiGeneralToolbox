@@ -54,6 +54,21 @@ namespace Eloi {
             GetRandom_0_1(out float a);
             color = new Color(r, g, b, a);
         }
+        public static Color GetRandomColor()
+        {
+            GetRandom_0_1(out float r);
+            GetRandom_0_1(out float g);
+            GetRandom_0_1(out float b);
+            GetRandom_0_1(out float a);
+            return new Color(r, g, b, a);
+        }
+        public static Color GetRandomColor(float alhaPercent=1)
+        {
+            GetRandom_0_1(out float r);
+            GetRandom_0_1(out float g);
+            GetRandom_0_1(out float b);
+            return new Color(r, g, b, alhaPercent);
+        }
 
         public static void GetRandomGUID(out string id)
         {

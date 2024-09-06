@@ -1,7 +1,7 @@
 
 {                                                                   
-            "name": "be.eloistree.generaltoolboxEditor",          
-    "references": ["be.eloistree.generaltoolbox"
+            "name": "be.elab.generaltoolboxEditor",          
+    "references": ["be.elab.generaltoolbox"
 ],                                                              
     "optionalUnityReferences": [],                                  
     "includePlatforms": [                                           

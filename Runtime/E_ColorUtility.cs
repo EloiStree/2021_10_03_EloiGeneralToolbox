@@ -213,5 +213,16 @@ namespace Eloi
             }
             converted = true;
         }
+
+        public static Color GetRandomColor()
+        {
+            Eloi.E_UnityRandomUtility.GetRandomColor(out Color c);
+            return c;
+        }
+        public static Color GetRandomColor(float alphaPercent)
+        {
+            Eloi.E_UnityRandomUtility.GetRandomColor(alphaPercent, out  Color c);
+            return c;
+        }
     }
 }
